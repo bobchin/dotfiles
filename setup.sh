@@ -1,6 +1,8 @@
 #!/bin/sh
 
-[[ -e ~/dotfiles ]] || git clone git@github.com:bobchin/dotfiles.git ~/dotfiles
+if [ ! -d ~/dotfiles ]; then
+  git clone git@github.com:bobchin/dotfiles.git ~/dotfiles
+fi
 pushd ~/dotfiles
 
 git submodule init
@@ -12,17 +14,19 @@ do
   [ $i = ".." ] && continue
   [ $i = ".git" ] && continue
   [ $i = ".gitmodules" ] && continue
+  [ $i = ".vim" ] && continue
   [ $i = "README.md" ] && continue
   [ $i = "setup.sh" ] && continue
   [ $i = "antigen" ] && continue
-  ln -s ~/dotfiles/$i ~/
+
+  [ -a ~/$i ] || ln -s ~/dotfiles/$i ~/
 done
 
-#vim -c ':NeoBundleInstall' -c ':q!' -c ':q!'
-#if [ `uname` = "Darwin" ]; then
-#  pushd ~/dotfiles/.vim/bundle/vimproc
-#  make -f make_mac.mak
-#  popd
-#fi
+if [ ! -d ~/.vim/bundle/neobundle ]; then
+  mkdir -p ~/.vim/bundle/neobundle
+  git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
+fi
+
+vim -c ':NeoBundleInstall' -c ':q!' -c ':q!'
 
 popd
