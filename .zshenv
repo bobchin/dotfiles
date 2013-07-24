@@ -13,7 +13,7 @@ path=(# システム用
       /bin(N-/)
       # システム用
       /usr/local/bin(N-/)
-      /usr/bin(N-/)
+      /usr/bin(N-/))
 
 # sudo時のパスの設定
 ## -x: export SUDO_PATHも一緒に行う。
