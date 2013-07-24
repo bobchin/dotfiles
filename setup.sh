@@ -11,8 +11,10 @@ do
   [ $i = "." ] && continue
   [ $i = ".." ] && continue
   [ $i = ".git" ] && continue
+  [ $i = ".gitmodules" ] && continue
   [ $i = "README.md" ] && continue
   [ $i = "setup.sh" ] && continue
+  [ $i = "antigen" ] && continue
   ln -s ~/dotfiles/$i ~/
 done
 
