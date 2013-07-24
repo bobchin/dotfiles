@@ -1,0 +1,37 @@
+AFILE=$HOME/dotfiles/antigen/antigen.zsh
+
+if [ -f $AFILE ]; then
+
+    source $AFILE
+    ADOTDIR=$HOME/zsh/package
+
+    # preconfig
+    # for z
+    _Z_CMD=j
+
+    # Load the oh-my-zsh's library.
+    antigen use oh-my-zsh
+
+    # Bundles from the default repo (robbyrussell's oh-my-zsh).
+    antigen-bundles <<EOBUNDLES
+    brew
+    git
+    npm
+    ruby
+    rbenv
+    tmux
+    yum
+    rupa/z
+    zsh-users/zsh-syntax-highlighting
+EOBUNDLES
+
+    # Load the theme.
+    antigen-theme dpoggi
+
+    # Tell antigen that you're done.
+    antigen-apply
+
+    # for zsh-completions
+    # fpath=(~/zsh/package/repos/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-completions.git/src $fpath)
+fi
+
