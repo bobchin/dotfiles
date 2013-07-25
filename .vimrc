@@ -107,9 +107,7 @@ NeoBundle 'Shougo/vimproc', {
 NeoBundle 'nathanaelkane/vim-indent-guides'
 
 " ステータスラインをきれいに表示
-NeoBundle 'taichouchou2/alpaca_powertabline'
-NeoBundle 'Lokaltog/powerline', { 'rtp' : 'powerline/bindings/vim' }
-" NeoBundle 'Lokaltog/vim-powerline'
+NeoBundle 'bling/vim-airline'
 
 " colorscheme
 NeoBundle 'altercation/vim-colors-solarized'
