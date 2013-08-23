@@ -16,9 +16,13 @@ if [ -f $AFILE ]; then
     antigen-bundles <<EOBUNDLES
     brew
     git
+    knife
+    node
     npm
+    postgres
     ruby
     rbenv
+    rsync
     tmux
     yum
     rupa/z
