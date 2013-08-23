@@ -234,7 +234,7 @@ NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'banyan/recognize_charcode.vim'
 
 " 正規表現で検索 :M/ | :S | :G
-NeoBundle 'othree/eregex.vim'
+" NeoBundle 'othree/eregex.vim'
 " }}}
 
 
