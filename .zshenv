@@ -9,11 +9,12 @@ typeset -U path
 ##               globがマッチしなかったり存在しないパスを無視する。
 ##            -: シンボリックリンク先のパスを評価。
 ##            /: ディレクトリのみ残す。
-path=(# システム用
+path=(/usr/local/bin(N-/)
+      /usr/local/sbin(N-/)
       /bin(N-/)
-      # システム用
-      /usr/local/bin(N-/)
-      /usr/bin(N-/))
+      /sbin(N-/)
+      /usr/bin(N-/)
+      /usr/sbin(N-/))
 
 # sudo時のパスの設定
 ## -x: export SUDO_PATHも一緒に行う。
