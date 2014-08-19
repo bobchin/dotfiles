@@ -64,6 +64,7 @@ NeoBundle 'Shougo/neocomplcache'
 
 " スニペット入力
 NeoBundle 'Shougo/neosnippet'
+NeoBundle 'Shougo/neosnippet-snippets'
 
 " javascript の補完
 " NeoBundle 'teramako/jscomplete-vim'
@@ -195,7 +196,8 @@ NeoBundle 'camelcasemotion'
 NeoBundle 'tomtom/tcomment_vim'
 
 " <C-y>, で展開する vim bible 9-7
-NeoBundle 'mattn/zencoding-vim'
+" NeoBundle 'mattn/zencoding-vim'
+NeoBundle 'mattn/emmet-vim'
 
 " <Leader>tsp で空白整形 or <Leader>t{separator} でセパレータで整形 vim bible 5-11
 " NeoBundle 'Align'
@@ -500,9 +502,11 @@ au FileType php imap <buffer><C-_>e :TCommentAs php_surround_echo<CR>
 " }}}
 
 
-" Zencoding
+" emmet/Zencoding
 " <C-y>,
-let g:user_zen_settings = {
+" let g:user_zen_settings = {
+let g:user_emmet_settings = {
+\   'lang' : 'ja',
 \   'indentation' : '    ',
 \   'javascript' : {
 \       'snippets' : {
@@ -510,6 +514,11 @@ let g:user_zen_settings = {
 \           'jq:each' : "$.each(${cursor}, function(index, item){\n\t${child}\n});",
 \           'fn' : "(function(){\n\t${cursor}\n})();",
 \           'tm' : "setTimeout(function(){\n\t${cursor}\n}, 100);",
+\       },
+\   },
+\   'php' : {
+\       'snippets' : {
+\           '<?' : "<?php echo ${cursor}; ?>",
 \       },
 \   },
 \}
