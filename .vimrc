@@ -5,8 +5,6 @@
 " https://github.com/yuroyoro/dotfiles
 " ---------------------------------------------------------------------
 
-" vi との互換性をもたない
-set nocompatible
 
 " NeoBundle {{{
 " NeoBundle 起動設定 {{{
@@ -25,12 +23,24 @@ set nocompatible
 " 上記以外のgitリポジトリから取得する場合
 " NeoBundle 'git://repository_url'
 " ---------------------------------------------------------------------
-filetype off
 if has('vim_starting')
+  " vi との互換性をもたない
+  set nocompatible
+
   set rtp+=~/.vim/bundle/neobundle.vim/
-  call neobundle#rc(expand('~/.vim/bundle/'))
 endif
 " }}}
+
+let vundle_readme=expand('~/.vim/bundle/neobundle.vim/README.md')
+if !filereadable(vundle_readme)
+  echo "Installing NeoBundle..."
+  echo ""
+  silent !mkdir -p ~/.vim/bundle
+  silent !git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim/
+endif
+
+" Required
+call neobundle#begin(expand('~/.vim/bundle/'))
 
 let mapleader=' '
 
@@ -279,7 +289,15 @@ NeoBundle 'jQuery'
 " ヤンクの履歴を保存し後から使用できるようにする vim bible 4-4
 NeoBundle "YankRing.vim"
 
-filetype plugin indent on       " ファイル別 plugin (~/.vim/ftplugin/拡張子.vim)
+
+" Required
+call neobundle#end()
+
+filetype plugin indent on " ファイル別 plugin (~/.vim/ftplugin/拡張子.vim)
+
+" If there are uninstalled bundles found on startup,
+" this will convenientlly prompt you to install them.
+NeoBundleCheck
 " }}}
 
 
