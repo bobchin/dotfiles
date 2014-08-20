@@ -79,7 +79,7 @@ NeoBundle 'taglist.vim'
 " unite {{{
 " Unite vim bible 10-1
 NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/neomru'
+NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'tsukkee/unite-help'
 " NeoBundle 'h1mesuke/unite-outline'
 " NeoBundle 'tsukkee/unite-tag'
