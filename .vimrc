@@ -75,12 +75,15 @@ endfunction
 if s:meet_neocomplete_requirements()
   NeoBundle 'Shougo/neocomplete.vim'
   NeoBundleFetch 'Shougo/neocomplcache.vim'
+  NeoBundle 'violetyk/neocomplete-php.vim'
 else
   NeoBundleFetch 'Shougo/neocomplete.vim'
   NeoBundle 'Shougo/neocomplcache.vim'
 endif
+" }}}
 
-" スニペット入力
+
+" スニペット入力 {{{
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 " }}}
@@ -104,18 +107,29 @@ NeoBundle 'arnaud-lb/vim-php-namespace'
 
 " javascript {{{
 " syntax
-NeoBundle 'jelera/vim-javascript-syntax'
-NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'jQuery'
-
+" NeoBundle 'jelera/vim-javascript-syntax'
+" NeoBundle 'pangloss/vim-javascript'
+" NeoBundle 'jQuery'
+NeoBundle 'scrooloose/syntastic'
 " }}}
 
 
-" html {{{
-" NeoBundle 'hail2u/vim-css3-syntax'
-" NeoBundle 'othree/html5.vim'
-" NeoBundle 'AtsushiM/sass-compile.vim'
+" HTML {{{
+NeoBundle 'amirh/HTML-AutoCloseTag'
+NeoBundle 'hail2u/vim-css3-syntax'
+NeoBundle 'gorodinskiy/vim-coloresque'
+NeoBundle 'tpope/vim-haml'
+" <C-y>, で展開する vim bible 9-7
+" NeoBundle 'mattn/zencoding-vim'
+NeoBundle 'mattn/emmet-vim'
 " }}}
+
+
+" Ruby {{{
+NeoBundle 'thoughtbot/vim-rspec'
+NeoBundle 'majutsushi/tagbar'
+" }}}
+
 
 " SQL {{{
 " NeoBundle 'dbext.vim'
@@ -150,6 +164,7 @@ NeoBundle 'taglist.vim'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'tsukkee/unite-help'
+NeoBundle 'basyura/unite-rails'
 " NeoBundle 'h1mesuke/unite-outline'
 " NeoBundle 'tsukkee/unite-tag'
 " NeoBundle 'thinca/vim-unite-history'
@@ -251,10 +266,6 @@ NeoBundle 'camelcasemotion'
 " edit {{{
 " gcc/<C-_><C-_> でコメントアウト vim bible 6-3
 NeoBundle 'tomtom/tcomment_vim'
-
-" <C-y>, で展開する vim bible 9-7
-" NeoBundle 'mattn/zencoding-vim'
-NeoBundle 'mattn/emmet-vim'
 
 " <Leader>tsp で空白整形 or <Leader>t{separator} でセパレータで整形 vim bible 5-11
 " NeoBundle 'Align'
@@ -364,7 +375,7 @@ if s:meet_neocomplete_requirements()
   " 起動時にneocomplecacheを有効にする
   let g:neocomplete#enable_at_startup = 1
   " 補完が自動的に開始される文字数
-  let g:neocomplete#auto_completion_start_length = 3
+  " let g:neocomplete#auto_completion_start_length = 3
   " 大文字が入力されるまで大文字小文字の区別を無視する
   let g:neocomplete#enable_smart_case = 1
   " シンタックスをキャッシュするときの最小文字数
@@ -377,6 +388,7 @@ if s:meet_neocomplete_requirements()
   " 辞書補完の辞書を指定。filetype:辞書ファイル名
   let g:neocomplete#sources#dictionary#dictionaries = {
       \ 'default' : '',
+      \ 'vimshell' : $HOME.'/.vimshell_hist',
       \ 'javascript' : $HOME.'/.vim/dict/jacascript.dict',
       \ 'php' : $HOME.'/.vim/dict/php.dict',
       \ }
@@ -416,8 +428,8 @@ if s:meet_neocomplete_requirements()
   autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
 
   " オムニ補完
-  if !exists('g:neocomplete#resources#omni#input_patterns')
-    let g:neocomplete_omni_patterns = {}
+  if !exists('g:neocomplete#sources#omni#input_patterns')
+    let g:neocomplete#sources#omni#input#patterns = {}
   endif
 
   "ファイルタイプの関連付け
@@ -425,6 +437,8 @@ if s:meet_neocomplete_requirements()
     let g:neocomplete_same_filetype_lists = {}
   endif
   let g:neocomplete_same_filetype_lists['ctp'] = 'php'
+
+  let g:neocomplete_php_locale = 'ja'
 else
   " neocomplcacheを使用する場合の設定
 
