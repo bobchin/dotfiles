@@ -24,19 +24,19 @@
 " NeoBundle 'git://repository_url'
 " ---------------------------------------------------------------------
 if has('vim_starting')
-" vi との互換性をもたない
-set nocompatible
+  " vi との互換性をもたない
+  set nocompatible
 
-set rtp+=~/.vim/bundle/neobundle.vim/
+  set rtp+=~/.vim/bundle/neobundle.vim/
 endif
 " }}}
 
 let vundle_readme=expand('~/.vim/bundle/neobundle.vim/README.md')
 if !filereadable(vundle_readme)
-echo "Installing NeoBundle..."
-echo ""
-silent !mkdir -p ~/.vim/bundle
-silent !git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim/
+  echo "Installing NeoBundle..."
+  echo ""
+  silent !mkdir -p ~/.vim/bundle
+  silent !git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim/
 endif
 
 " Required
