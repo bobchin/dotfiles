@@ -24,19 +24,19 @@
 " NeoBundle 'git://repository_url'
 " ---------------------------------------------------------------------
 if has('vim_starting')
-  " vi との互換性をもたない
-  set nocompatible
+" vi との互換性をもたない
+set nocompatible
 
-  set rtp+=~/.vim/bundle/neobundle.vim/
+set rtp+=~/.vim/bundle/neobundle.vim/
 endif
 " }}}
 
 let vundle_readme=expand('~/.vim/bundle/neobundle.vim/README.md')
 if !filereadable(vundle_readme)
-  echo "Installing NeoBundle..."
-  echo ""
-  silent !mkdir -p ~/.vim/bundle
-  silent !git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim/
+echo "Installing NeoBundle..."
+echo ""
+silent !mkdir -p ~/.vim/bundle
+silent !git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim/
 endif
 
 " Required
@@ -672,21 +672,21 @@ let g:quickrun_config.markdown = {
 
 
 " CakePHP
-let g:cakephp_enable_fix_mode = 1
-let g:cakephp_app = ""
-let g:cakephp_enable_auto_mode = 1
-
-nnoremap <Leader>ca :Cakephp<Space>./<CR>
-nnoremap <Leader>cc :Ccontroller<Space>
-nnoremap <Leader>cm :Cmodel<Space>
-nnoremap <Leader>cv :Cview<Space>
-nnoremap <Leader>cs :Cshell<Space>
-nnoremap <Leader>ct :Ctask<Space>
-nnoremap <Leader>ccf :Cconfig<Space>
-nnoremap <Leader>cf :Cconfig<Space>
-nnoremap <Leader>ccp :Ccomponent<Space>
-nnoremap <Leader>cp :Ccomponent<Space>
-nnoremap <Leader>cl :Clog<Space>
+" let g:cakephp_enable_fix_mode = 1
+" let g:cakephp_app = ""
+" let g:cakephp_enable_auto_mode = 1
+"
+" nnoremap <Leader>ca :Cakephp<Space>./<CR>
+" nnoremap <Leader>cc :Ccontroller<Space>
+" nnoremap <Leader>cm :Cmodel<Space>
+" nnoremap <Leader>cv :Cview<Space>
+" nnoremap <Leader>cs :Cshell<Space>
+" nnoremap <Leader>ct :Ctask<Space>
+" nnoremap <Leader>ccf :Cconfig<Space>
+" nnoremap <Leader>cf :Cconfig<Space>
+" nnoremap <Leader>ccp :Ccomponent<Space>
+" nnoremap <Leader>cp :Ccomponent<Space>
+" nnoremap <Leader>cl :Clog<Space>
 
 " YankRing
 let g:yankring_history_dir = expand('$HOME')
@@ -712,10 +712,12 @@ set langmenu=japanese
 scriptencoding utf-8
 
 " 以下のファイルの時は文字コードをutf-8に設定
-autocmd FileType js :set fileencoding=utf-8
-autocmd FileType css :set fileencoding=utf-8
-autocmd FileType html :set fileencoding=utf-8
-autocmd FileType php :set fileencoding=utf-8
+" autocmd FileType js :set fileencoding=utf-8
+" autocmd FileType css :set fileencoding=utf-8
+" autocmd FileType html :set fileencoding=utf-8
+" autocmd FileType php :set fileencoding=utf-8
+set fileencoding=utf-8
+set fileencodings=utf-8
 
 " 指定文字コードで強制的にファイルを開く
 command! Cp932 edit ++enc=cp932
@@ -735,28 +737,32 @@ set shiftwidth=4                " tab 文字の入力幅
 set tabstop=4                   " tab 文字の表示幅
 set softtabstop=0               " tab キーを押したときに挿入される空白の量
 set expandtab                   " tab を空白文字に置き換え
-if has("autocmd")
-  "ファイルタイプの検索を有効にする
-  filetype plugin on
-  "そのファイルタイプにあわせたインデントを利用する
-  filetype indent on
-
-  autocmd FileType apache     setlocal sw=4 sts=4 ts=4 et
-  autocmd FileType c          setlocal sw=4 sts=4 ts=4 et
-  autocmd FileType cs         setlocal sw=4 sts=4 ts=4 et
-  autocmd FileType css        setlocal sw=2 sts=2 ts=2 et
-  autocmd FileType html       setlocal sw=2 sts=2 ts=2 et
-  autocmd FileType java       setlocal sw=4 sts=4 ts=4 et
-  autocmd FileType javascript setlocal sw=2 sts=2 ts=2 et
-  autocmd FileType perl       setlocal sw=4 sts=4 ts=4 et
-  autocmd FileType php        setlocal sw=4 sts=4 ts=4 et
-  autocmd FileType sh         setlocal sw=4 sts=4 ts=4 et
-  autocmd FileType sql        setlocal sw=4 sts=4 ts=4 et
-  autocmd FileType vim        setlocal sw=2 sts=2 ts=2 et
-  autocmd FileType xhtml      setlocal sw=4 sts=4 ts=4 et
-  autocmd FileType xml        setlocal sw=4 sts=4 ts=4 et
-  autocmd FileType zsh        setlocal sw=4 sts=4 ts=4 et
-endif
+" if has("autocmd")
+"   "ファイルタイプの検索を有効にする
+"   filetype plugin on
+"   "そのファイルタイプにあわせたインデントを利用する
+"   filetype indent on
+"
+"   autocmd FileType apache     setlocal sw=4 sts=4 ts=4 et
+"   autocmd FileType c          setlocal sw=4 sts=4 ts=4 et
+"   autocmd FileType cs         setlocal sw=4 sts=4 ts=4 et
+"   autocmd FileType css        setlocal sw=2 sts=2 ts=2 et
+"   autocmd FileType html       setlocal sw=2 sts=2 ts=2 et
+"   autocmd FileType java       setlocal sw=4 sts=4 ts=4 et
+"   autocmd FileType javascript setlocal sw=2 sts=2 ts=2 et
+"   autocmd FileType perl       setlocal sw=4 sts=4 ts=4 et
+"   autocmd FileType php        setlocal sw=4 sts=4 ts=4 et
+"   autocmd FileType sh         setlocal sw=4 sts=4 ts=4 et
+"   autocmd FileType sql        setlocal sw=4 sts=4 ts=4 et
+"   autocmd FileType vim        setlocal sw=2 sts=2 ts=2 et
+"   autocmd FileType xhtml      setlocal sw=4 sts=4 ts=4 et
+"   autocmd FileType xml        setlocal sw=4 sts=4 ts=4 et
+"   autocmd FileType zsh        setlocal sw=4 sts=4 ts=4 et
+" endif
+"ファイルタイプの検索を有効にする
+filetype plugin on
+"そのファイルタイプにあわせたインデントを利用する
+filetype indent on
 
 
 " ---------------------------------------------------------------------
@@ -787,6 +793,8 @@ vnoremap * y/\V<c-r>=substitute(escape(@@,"/\\"),"\n","\\\\n","ge")<cr><cr>gV
 "set backup                      " ファイル上書きでバックアップファイルを作成
 "set backupdir=/vim_back
 "set directory=/vim_back
+set nobackup
+set noswapfile
 
 
 " ---------------------------------------------------------------------
@@ -871,6 +879,9 @@ inoremap <C-a> <HOME>
 map <F2> <ESC>:bp<CR>
 " F3で次のバッファ
 map <F3> <ESC>:bn<CR>
+noremap <Leader>p <ESC>:bp<CR>
+noremap <Leader>n <ESC>:bn<CR>
+noremap <Leader>d <ESC>:bd<CR>
 
 " 矩形選択時にテキストがないところでも選択可能にする
 set virtualedit+=block
@@ -893,6 +904,10 @@ vnoremap > >gv
 vnoremap < <gv
 vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
+
+" ウィンドウ分割
+noremap <Leader>h :split<CR>
+noremap <Leader>v :vsplit<CR>
 
 
 " ---------------------------------------------------------------------
