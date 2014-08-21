@@ -279,6 +279,7 @@ NeoBundle 'taku-o/vim-toggle'
 
 " Markdownでメモ
 NeoBundle 'tpope/vim-markdown'
+NeoBundle 'kannokanno/previm'
 
 " 翻訳
 NeoBundle 'mattn/webapi-vim'
@@ -649,6 +650,13 @@ let g:user_emmet_settings = {
 imap <C-t> <Plug>ToggleI
 nmap <C-t> <Plug>ToggleN
 vmap <C-t> <Plug>ToggleV
+
+
+" previm
+augroup PrevimSettings
+  autocmd!
+  autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+augroup END
 
 
 " open-browser
