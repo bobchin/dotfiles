@@ -283,6 +283,9 @@ NeoBundle 'mattn/webapi-vim'
 " other {{{
 " <Leader>r で編集中のファイルを簡単に実行できる vim bible 6-10
 NeoBundle 'thinca/vim-quickrun'
+NeoBundle 'osyo-manga/shabadou.vim'
+NeoBundle 'osyo-manga/vim-watchdogs'
+
 
 " gx でカーソルの文字をブラウザで検索
 NeoBundle 'tyru/open-browser.vim'
@@ -569,6 +572,7 @@ nnoremap <silent> [unite]a :<C-u>UniteWithBufferDir -buffer-name=files buffer fi
 " help
 nnoremap <C-i> :<C-u>Unite -start-insert help<CR>
 nnoremap <C-i><C-i> :<C-u>UniteWithCursorWord help<CR>
+
 " }}}
 
 
@@ -770,10 +774,33 @@ let g:quickrun_config = {
     \   'outputter': 'multi:buffer:quickfix',
     \   'outputter/buffer/split': ':botright',
     \ },
+    \ 'watchdogs_checker': {
+    \   '_': {
+    \     'hook/close_quickfix/enable_exit': 1,
+    \     'hook/back_window/enable_exit': 1,
+    \     'hook/back_window/priority_exit': 1,
+    \     'hook/quickfix_status_enable/enable_exit': 1,
+    \     'hook/quickfix_status_enable/priority_exit':1,
+    \   },
+    \   'php': {
+    \     'command': 'php',
+    \     'exec': '%c -d error_reporting=E_ALL -d display_errors=1 -d display_startup_errors=1 -d log_errors=0 -d xdebug.cli_color=0 -l %o %s:p',
+    \     'errorformat': '%m\ in\ %f\ on\ line\ %l',
+    \   },
+    \ },
     \ 'markdown': {
     \   'outputter': 'browser',
     \ },
     \ }
+
+" ファイル書き込み時にチェックするかどうか
+let g:watchdogs_check_BufWritePost_enable = 0
+" ファイルタイプ毎の設定
+let g:watchdogs_check_BufWritePost_enables = {
+    \   'php': 1,
+    \ }
+" キー入力がなかったらチェックする
+let g:watchdogs_checkCursorHold_enable = 1
 
 
 " CakePHP
@@ -1052,7 +1079,7 @@ set hidden                      " 編集中に他ファイルを開ける
 set pastetoggle=<Space>sp
 
 " フォーカスを失ったら保存
-au FocusLost * :wa
+autocmd FocusLost * :wa
 
 
 " ---------------------------------------------------------------------
