@@ -95,6 +95,7 @@ NeoBundle 'nathanaelkane/vim-indent-guides'
 
 " colorscheme
 NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'w0ng/vim-hybrid'
 " }}}
 
 
@@ -586,12 +587,93 @@ let g:indent_guides_guide_size = 1
 " }}}
 
 
-" lightline
+" lightline {{{
+" http://itchyny.hatenablog.com/entry/20130828/1377653592
+" http://itchyny.hatenablog.com/entry/20130917/1379369171
+" 
+" mode: モード表示(ex. NORMAL )
+" paste: Paste表示(ex. PASTE)
+" readonly: 読み込み専用表示(ex. RO)
+" filename: ファイル名表示(ex. .vimrc)
+" modified: 変更状態表示(ex. +)
+" fugitive: Gitリポジトリ表示
+" fileformat: 改行コード(ex. unix)
+" filetype: ファイル形式(ex. vim)
+" fileencoding: 文字コード(ex. utf-8)
+"
+" 'active': 左側表示を[モード+Paste][Gitリポジトリ+ファイル名]にする
 let g:lightline = {
-  \ 'colorscheme': 'solarized',
+  \ 'colorscheme': 'jellybeans',
+  \ 'mod_map': {'c': 'NORMAL'},
+  \ 'active': {
+  \     'left': [ ['mode', 'paste'], ['fugitive', 'filename']]
+  \ },
+  \ 'component_function': {
+  \     'mode': 'MyMode',
+  \     'readonly': 'MyReadonly',
+  \     'modified': 'MyModified',
+  \     'filename': 'MyFilename',
+  \     'fugitive': 'MyFugitive',
+  \     'fileformat': 'MyFileformat',
+  \     'filetype': 'MyFiletype',
+  \     'fileencoding': 'MyFileencoding',
+  \ },
   \ }
+
+" モード表示(表示幅が狭ければ表示しない)
+function!MyMode()
+    return winwidth(0) > 60 ? lightline#mode() : ''
+endfunction
+
+" 読み込み専用(読み込み専用であれば"x")
+function! MyReadonly()
+    return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? 'x' : ''
+endfunction
+
+" 変更状態(変更されていれば"+"、変更できない場合は"-")
+function! MyModified()
+    return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction
+
+" ファイル名(前後に読み込み専用と変更状態を挿入する)
+function! MyFilename()
+    return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
+        \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+        \  &ft == 'unite' ? unite#get_status_string() :
+        \  &ft == 'vimshell' ? vimshell#get_status_string() :
+        \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+        \ ('' != MyModified() ? ' ' . MyModified() : '')
+endfunction
+
+" Gitリポジトリ(fugitiveがあればリポジトリのHEAD名を表示)
+function! MyFugitive()
+    try
+        if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head')
+            return fugitive#head()
+        endif
+    catch
+    endtry
+    return ''
+endfunction
+
+function! MyFileformat()
+    return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+
+function! MyFiletype()
+    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+endfunction
+
+function! MyFileencoding()
+    return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+endfunction
+
 set laststatus=2
 set noshowmode
+if !has('gui_running')
+    set t_Co=256
+endif
+" }}}
 
 
 " matchit
@@ -834,7 +916,9 @@ augroup END
 set list
 set listchars=tab:>.,trail:_,nbsp:%,extends:>,precedes:<
 
-set t_Co=256
+if !has('gui_running')
+    set t_Co=256
+endif
 set ttymouse=xterm2
 
 " カラーテーマ
@@ -846,7 +930,8 @@ let g:solarized_underline=1
 let g:solarized_italic=1
 let g:solarized_contrast='normal'
 let g:solarized_visibility='normal'
-colorscheme solarized
+" colorscheme solarized
+colorscheme hybrid
 
 
 " ---------------------------------------------------------------------
