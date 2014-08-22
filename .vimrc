@@ -45,7 +45,7 @@ call neobundle#begin(expand('~/.vim/bundle/'))
 " Let NeoBundle manage NeoBundle
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-" let mapleader=' '
+let mapleader=' '
 
 
 "*****************************************************************************
@@ -986,7 +986,6 @@ colorscheme hybrid
 " ---------------------------------------------------------------------
 " 補完
 " ---------------------------------------------------------------------
-let mapleader=' '
 set wildmenu                    " コマンド入力をタブで補完
 set wildchar=<Tab>              " コマンド補完を開始するキー
 set wildmode=list:longest,full  " 補完動作（リスト表示で最長一致、その後選択）
