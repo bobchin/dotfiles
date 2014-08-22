@@ -166,6 +166,7 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'tsukkee/unite-help'
 NeoBundle 'basyura/unite-rails'
+NeoBundle 'osyo-manga/unite-quickfix'
 " NeoBundle 'h1mesuke/unite-outline'
 " NeoBundle 'tsukkee/unite-tag'
 " NeoBundle 'thinca/vim-unite-history'
@@ -752,13 +753,23 @@ vmap gx <Plug>(openbrowser-smart-search)
 " quickrun
 " <Leader>r で実行
 " 横分割するようにする
-let g:quickrun_config   = {}
-let g:quickrun_config._ = {
-  \ 'split': 'below',
-  \ }
-let g:quickrun_config.markdown = {
-  \ 'outputter': 'browser',
-  \ }
+" nnoremap <Leader>r :Quickrun<CR>
+let g:quickrun_config = {
+    \ '_': {
+    \   'hook/close_unite_quickfix/enable_hook_loaded': 1,
+    \   'hook/unite_quickfix/enable_failure': 1,
+    \   'hook/close_quickfix/enable_exit': 1,
+    \   'hook/close_buffer/enable_failure': 1,
+    \   'hook/close_buffer/enable_empty_data': 1,
+    \   'runner': 'vimproc',
+    \   'runner/vimproc/updatetime': 40,
+    \   'outputter': 'multi:buffer:quickfix',
+    \   'outputter/buffer/split': ':botright',
+    \ },
+    \ 'markdown': {
+    \   'outputter': 'browser',
+    \ },
+    \ }
 
 
 " CakePHP
