@@ -723,9 +723,8 @@ let g:user_emmet_settings = {
     \     },
     \ },
     \ 'php' : {
-    \     'snippets' : {
-    \         '<?' : "<?php echo ${cursor}; ?>",
-    \     },
+    \     'extends' : 'html',
+    \     'filters' : 'html',
     \ },
     \ }
 
