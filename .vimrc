@@ -587,6 +587,10 @@ nnoremap <silent> fi :<C-u>:VimFilerBufferDir -buffer-name=explorer -split -simp
 " }}}
 
 
+" vimshell {{{
+nnoremap <Leader>s :<C-u>VimShell<CR>
+" }}}
+
 " indent-guides {{{
 " let g:indent_guideson_vim_startup = 1
 let g:indent_guides_color_change_percent = 30
