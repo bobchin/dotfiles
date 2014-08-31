@@ -974,15 +974,18 @@ endif
 set ttymouse=xterm2
 
 " カラーテーマ
-let g:solarized_termcolors=16
-let g:solarized_termtrans=0
-let g:solarized_degrade=0
-let g:solarized_bold=1
-let g:solarized_underline=1
-let g:solarized_italic=1
-let g:solarized_contrast='normal'
-let g:solarized_visibility='normal'
+" let g:solarized_termcolors=16
+" let g:solarized_termtrans=0
+" let g:solarized_degrade=0
+" let g:solarized_bold=1
+" let g:solarized_underline=1
+" let g:solarized_italic=1
+" let g:solarized_contrast='normal'
+" let g:solarized_visibility='normal'
 " colorscheme solarized
+if has('mac')
+    let g:hybrid_use_iTerm_colors = 1
+endif
 colorscheme hybrid
 
 
