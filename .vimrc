@@ -51,7 +51,7 @@ call neobundle#begin(expand('~/.vim/bundle/'))
 " Let NeoBundle manage NeoBundle
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-let mapleader=' '
+let mapleader='\<Space>'
 
 
 "*****************************************************************************
