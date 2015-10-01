@@ -102,6 +102,7 @@ NeoBundle 'nathanaelkane/vim-indent-guides'
 " colorscheme
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'w0ng/vim-hybrid'
+NeoBundle 'tomasr/molokai'
 " }}}
 
 
