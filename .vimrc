@@ -51,7 +51,7 @@ call neobundle#begin(expand('~/.vim/bundle/'))
 " Let NeoBundle manage NeoBundle
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-let mapleader=' '
+let mapleader='\<Space>'
 
 
 "*****************************************************************************
@@ -303,6 +303,10 @@ NeoBundle 'banyan/recognize_charcode.vim'
 
 " 正規表現で検索 :M/ | :S | :G
 " NeoBundle 'othree/eregex.vim'
+
+" region
+NeoBundle 'terryma/vim-expand-region'
+
 " }}}
 
 
@@ -825,6 +829,11 @@ let g:yankring_history_dir = expand('$HOME')
 let g:yankring_history_file = '.yankring_history'
 let g:yankring_max_history = 10
 let g:yankring_window_height = 13
+
+
+" ExpandRegion
+vmap v <Plug>(expand_region_expand)
+vmap <C-v> <Plug>(expand_region_shrink)
 
 
 " ---------------------------------------------------------------------
