@@ -1,25 +1,47 @@
 #!/bin/sh
 
-if [ ! -d ~/dotfiles ]; then
-  git clone git@github.com:bobchin/dotfiles.git ~/dotfiles
+DOTPATH=~/dotfiles
+GITHUB_URL=git@github.com:bobchin/dotfiles.git
+TARBALL=https://github.com/bobchin/dotfiles/archive/master.tar.gz
+
+# ファイルのダウンロード
+if [ ! -d ${DOTPATH} ]; then
+
+  # git を使う場合
+  if has "git"; then
+    git clone --recursive ${GITHUB_URL} ${DOTPATH}
+
+  # curl or wget
+  elif has "curl" || has "wget"; then
+    if has "curl"; then
+      curl -L ${TARBALL}
+    elif has "wget"; then
+      wget -O ${TARBALL}
+    fi | tar xv -
+
+    # 解凍後リネーム
+    mv -f dotfiles-master ${DOTPATH}
+
+  else
+    die "curl or wget required"
+  fi
 fi
-pushd ~/dotfiles
+
+# 配置処理
+pushd ${DOTPATH}
+if [ $? -ne 0 ]; then
+  die "not found: ${DOTPATH}"
+fi
 
 git submodule init
 git submodule update
 
-for i in `ls -a`
+for i in .??*
 do
-  [ $i = "." ] && continue
-  [ $i = ".." ] && continue
   [ $i = ".git" ] && continue
   [ $i = ".gitmodules" ] && continue
-  [ $i = ".vim" ] && continue
-  [ $i = "README.md" ] && continue
-  [ $i = "setup.sh" ] && continue
-  [ $i = "antigen" ] && continue
 
-  [ -a ~/$i ] || ln -s ~/dotfiles/$i ~/
+  [ -a ~/$i ] || ln -snfv ${DOTPATH}/$i ~/$i
 done
 
 if [ ! -d ~/.vim/bundle/neobundle ]; then
