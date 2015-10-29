@@ -100,9 +100,9 @@ NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'nathanaelkane/vim-indent-guides'
 
 " colorscheme
-NeoBundle 'altercation/vim-colors-solarized'
+" NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'w0ng/vim-hybrid'
-NeoBundle 'tomasr/molokai'
+" NeoBundle 'tomasr/molokai'
 " }}}
 
 
@@ -182,9 +182,10 @@ NeoBundle 'Shougo/vimshell'
 NeoBundle 'Shougo/vimproc', { 
     \ 'build' : {
     \     'cygwin' : 'make -f make_cygwin.mak',
-    \     'mac' : 'make -f make_mac.mak',
-    \     'unix' : 'make -f make_unix.mak',
-    \ },
+    \     'mac'    : 'make',
+    \     'linux'  : 'make',
+    \     'unix'   : 'gmake',
+    \     },
     \ }
 " }}}
 

@@ -44,11 +44,7 @@ do
   [ -a ~/$i ] || ln -snfv ${DOTPATH}/$i ~/$i
 done
 
-if [ ! -d ~/.vim/bundle/neobundle ]; then
-  mkdir -p ~/.vim/bundle/neobundle
-  git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
-fi
-
-vim -c ':NeoBundleInstall' -c ':q!' -c ':q!'
+vim -c ':NeoBundleInstall vimproc' -c ':q!' -c ':q!'
+vim
 
 popd
