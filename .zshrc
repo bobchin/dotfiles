@@ -382,6 +382,7 @@ alias man="jman"
 # for git
 alias gs='git status '
 alias ga='git add '
+alias gaa='git add -A'
 alias gb='git branch '
 alias gc='git commit'
 alias gd='git diff'
