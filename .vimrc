@@ -851,6 +851,7 @@ set foldcolumn=3
 set fillchars=vert:\|
 set foldmethod=marker
 
+" マーカーの追加
 nnoremap  z[     :<C-u>call <SID>put_foldmarker(0)<CR>
 nnoremap  z]     :<C-u>call <SID>put_foldmarker(1)<CR>
 function! s:put_foldmarker(foldclose_p) " {{{
@@ -866,7 +867,47 @@ function! s:put_foldmarker(foldclose_p) " {{{
     exe 'norm! A'. padding. cms_start. fmr. cms_end
 endfunction
 " }}}
-" }}}
+
+" 次のマーカーへ移動
+nnoremap <silent>zj :<C-u>call <SID>smart_foldjump('j')<CR>
+nnoremap <silent>zk :<C-u>call <SID>smart_foldjump('k')<CR>
+function! s:smart_foldjump(direction) "{{{
+  if a:direction == 'j'
+    let [cross, trace, compare] = ['zj', ']z', '<']
+  else
+    let [cross, trace, compare] = ['zk', '[z', '>']
+  endif
+ 
+  let i = v:count1
+  while i
+    let save_lnum = line('.')
+    exe 'keepj norm! '. trace
+    let trace_lnum = line('.')
+    exe save_lnum
+ 
+    exe 'keepj norm! '. cross
+    let cross_lnum = line('.')
+    if cross_lnum != save_lnum && eval('cross_lnum '. compare. ' trace_lnum') || trace_lnum == save_lnum
+      let i -= 1
+      continue
+    endif
+ 
+    exe trace_lnum
+    let i -= 1
+  endwhile
+  mark `
+  norm! zz
+endfunction
+"}}}
+
+" フォールドレベル
+nnoremap <silent>z0    :set foldlevel=0<CR>
+nnoremap <silent>z1    :set foldlevel=1<CR>
+nnoremap <silent>z2    :set foldlevel=2<CR>
+nnoremap <silent>z3    :set foldlevel=3<CR>
+nnoremap <silent>zu    :set foldlevel=<C-r>=foldlevel('.')-1<CR><CR>
+
+"}}}
 
 " 文字コード {{{
 set encoding=utf-8                " vim 内部文字コード
