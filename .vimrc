@@ -6,7 +6,8 @@
 " ---------------------------------------------------------------------
 
 
-" NeoBundle {{{
+" NeoBundle プラグインの指定 {{{
+
 " NeoBundle 起動設定 {{{
 " ---------------------------------------------------------------------
 " インストール
@@ -24,7 +25,7 @@
 " NeoBundle 'git://repository_url'
 " ---------------------------------------------------------------------
 
-" Note: Skip initialization for vim-tiny or vim-small.
+" Note: vim-tiny か vim-small の場合は初期化しない
 if 0 | endif
 
 if has('vim_starting')
@@ -35,7 +36,6 @@ if has('vim_starting')
 
   set rtp+=~/.vim/bundle/neobundle.vim/
 endif
-" }}}
 
 let vundle_readme=expand('~/.vim/bundle/neobundle.vim/README.md')
 if !filereadable(vundle_readme)
@@ -44,27 +44,35 @@ if !filereadable(vundle_readme)
   silent !mkdir -p ~/.vim/bundle
   silent !git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim/
 endif
-
-" Required
-call neobundle#begin(expand('~/.vim/bundle/'))
-
-" Let NeoBundle manage NeoBundle
-NeoBundleFetch 'Shougo/neobundle.vim'
-
-let mapleader=' '
-
+" }}}
 
 "*****************************************************************************
 "" NeoBundle Install Packages
 "*****************************************************************************
 
-" ツリー表示
-NeoBundle 'scrooloose/nerdtree'
-" 言語パック（言語毎のインデントとか構文のサポート）
-NeoBundle 'sheerun/vim-polyglot'
+" ここから実際のプラグイン指定 {{{
 
-" ステータスラインをきれいに表示
+call neobundle#begin(expand('~/.vim/bundle/'))
+
+" NeoBundle 自身を NeoBundle で管理する {{{
+NeoBundleFetch 'Shougo/neobundle.vim'
+" }}}
+
+" <Leader> をスペースにする<Space>ではうまく動かない {{{
+let mapleader=' '
+" }}}
+
+" ツリー表示 {{{
+NeoBundle 'scrooloose/nerdtree'
+" }}}
+
+" 言語パック（言語毎のインデントとか構文のサポート） {{{
+NeoBundle 'sheerun/vim-polyglot'
+" }}}
+
+" ステータスラインをきれいに表示 {{{
 NeoBundle 'itchyny/lightline.vim'
+" }}}
 
 " Git {{{
 NeoBundle 'tpope/vim-fugitive'
@@ -72,7 +80,6 @@ NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'gregsexton/gitv'
 NeoBundle 'extradite.vim'
 " }}}
-
 
 " 入力補完 {{{
 function! s:meet_neocomplete_requirements()
@@ -88,12 +95,10 @@ else
 endif
 " }}}
 
-
 " スニペット入力 {{{
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 " }}}
-
 
 " looks {{{
 " <Leader>ig でインデントガイドのトグル vim bible 4-14
@@ -105,18 +110,15 @@ NeoBundle 'w0ng/vim-hybrid'
 " NeoBundle 'tomasr/molokai'
 " }}}
 
-
 " php {{{
 " CakePHP
 " NeoBundle 'violetyk/cake.vim'
 NeoBundle 'arnaud-lb/vim-php-namespace'
 " }}}
 
-
 " javascript {{{
 " NeoBundle 'scrooloose/syntastic'
 " }}}
-
 
 " HTML {{{
 NeoBundle 'amirh/HTML-AutoCloseTag'
@@ -128,17 +130,14 @@ NeoBundle 'tpope/vim-haml'
 NeoBundle 'mattn/emmet-vim'
 " }}}
 
-
 " Ruby {{{
 NeoBundle 'thoughtbot/vim-rspec'
 NeoBundle 'majutsushi/tagbar'
 " }}}
 
-
 " SQL {{{
 " NeoBundle 'dbext.vim'
 " }}}
-
 
 " ドキュメント管理 {{{
 " vimdoc-ja
@@ -162,7 +161,6 @@ NeoBundle 'mattn/excitetranslate-vim', {
 " ctags {{{
 NeoBundle 'taglist.vim'
 " }}}
-
 
 " unite {{{
 " Unite vim bible 10-1
@@ -189,8 +187,7 @@ NeoBundle 'Shougo/vimproc', {
     \ }
 " }}}
 
-
-" text-object {{{
+" テキストオブジェクト {{{
 " テキストオブジェクトを囲んだりする vim bible 5-14
 " ys{motion}{surround}            : surround で囲む
 " ds{surround}                    : surround を削除する
@@ -248,8 +245,7 @@ NeoBundle 'kana/vim-textobj-function'
 
 " }}}
 
-
-" move cursor {{{
+" カーソル移動 {{{
 " <Leader><Leader>w/f で検索先をハイライトして移動 vim bible 4-9
 NeoBundle 'Lokaltog/vim-easymotion'
 
@@ -264,8 +260,7 @@ NeoBundle 'camelcasemotion'
 
 " }}}
 
-
-" edit {{{
+" 編集 {{{
 " gcc/<C-_><C-_> でコメントアウト vim bible 6-3
 NeoBundle 'tomtom/tcomment_vim'
 
@@ -288,28 +283,33 @@ NeoBundle 'mattn/webapi-vim'
 
 " }}}
 
+" その他 {{{
 
-" other {{{
-" <Leader>r で編集中のファイルを簡単に実行できる vim bible 6-10
+" folding {{{
+NeoBundle 'LeafCage/foldCC.vim'
+" }}}
+
+" <Leader>r で編集中のファイルを簡単に実行できる vim bible 6-10 {{{
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'osyo-manga/shabadou.vim'
 NeoBundle 'osyo-manga/vim-watchdogs'
-
-
-" gx でカーソルの文字をブラウザで検索
-NeoBundle 'tyru/open-browser.vim'
-
-" 文字コードの自動認識
-NeoBundle 'banyan/recognize_charcode.vim'
-
-" 正規表現で検索 :M/ | :S | :G
-" NeoBundle 'othree/eregex.vim'
-
-" region
-NeoBundle 'terryma/vim-expand-region'
-
 " }}}
 
+" gx でカーソルの文字をブラウザで検索 {{{
+NeoBundle 'tyru/open-browser.vim'
+" }}}
+
+" 文字コードの自動認識 {{{
+NeoBundle 'banyan/recognize_charcode.vim'
+" }}}
+
+" 正規表現で検索 :M/ | :S | :G {{{
+" NeoBundle 'othree/eregex.vim'
+" }}}
+
+" region {{{
+NeoBundle 'terryma/vim-expand-region'
+" }}}
 
 " coding {{{
 " trinity
@@ -318,10 +318,11 @@ NeoBundle 'trinity.vim'
 
 " }}}
 
-
-" ヤンクの履歴を保存し後から使用できるようにする vim bible 4-4
+" ヤンクの履歴を保存し後から使用できるようにする vim bible 4-4 {{{
 NeoBundle "YankRing.vim"
+" }}}
 
+" }}} その他
 
 " Required
 call neobundle#end()
@@ -331,6 +332,8 @@ filetype plugin indent on " ファイル別 plugin (~/.vim/ftplugin/拡張子.vi
 " If there are uninstalled bundles found on startup,
 " this will convenientlly prompt you to install them.
 NeoBundleCheck
+" }}}
+
 " }}}
 
 
@@ -371,7 +374,6 @@ augroup END
 " カーソル下のキーワードをヘルプでひく
 nnoremap <C-i>k :<C-u>Ref webdict <C-r><C-w><Enter>
 " }}}
-
 
 " neocomplete/neocomplcache {{{
 if s:meet_neocomplete_requirements()
@@ -523,7 +525,6 @@ else
 endif
 " }}}
 
-
 " neosnippet{{{
 let g:neosnippet#snippets_directory = $HOME.'/.vim/snippets'
 
@@ -532,7 +533,6 @@ imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
 xmap <C-k> <Plug>(neosnippet_expand_target)
 " }}}
-
 
 " taglist {{{
 if (executable('/usr/bin/ctags'))
@@ -543,7 +543,6 @@ endif
 
 nnoremap <silent> ft :<C-u>TlistToggle<CR>
 " }}}
-
 
 " unite {{{
 autocmd FileType unite call s:unite_my_settings()
@@ -576,7 +575,6 @@ nnoremap <C-i><C-i> :<C-u>UniteWithCursorWord help<CR>
 
 " }}}
 
-
 " vimfiler {{{
 " vimfiler をデフォルトのファイラーにする
 let g:vimfiler_as_default_explorer = 1
@@ -587,7 +585,6 @@ nnoremap <silent> ff :<C-u>VimFilerBufferDir -quit<CR>
 nnoremap <silent> fi :<C-u>:VimFilerBufferDir -buffer-name=explorer -split -simple -winwidth=35 -no-quit<CR>
 " }}}
 
-
 " vimshell {{{
 nnoremap <Leader>sh :<C-u>VimShell<CR>
 " }}}
@@ -597,7 +594,6 @@ nnoremap <Leader>sh :<C-u>VimShell<CR>
 let g:indent_guides_color_change_percent = 30
 let g:indent_guides_guide_size = 1
 " }}}
-
 
 " lightline {{{
 " http://itchyny.hatenablog.com/entry/20130828/1377653592
@@ -687,11 +683,10 @@ if !has('gui_running')
 endif
 " }}}
 
-
-" matchit
+" matchit {{{
 let b:match_words = &matchpairs . ",\<if\>:\<endif\>,\<:\>"
 let b:match_ignorecase = 1
-
+" }}}
 
 " tcomment {{{
 if !exists( 'g:tcomment_types' )
@@ -712,8 +707,7 @@ nmap <Leader>/ <C-_><C-_>
 vmap <Leader>/ <C-_><C-_>
 " }}}
 
-
-" emmet/Zencoding
+" emmet/Zencoding {{{
 " <C-y>,
 " let g:user_zen_settings = {
 let g:user_emmet_settings = {
@@ -732,37 +726,37 @@ let g:user_emmet_settings = {
     \     'filters' : 'html',
     \ },
     \ }
+" }}}
 
-
-" Align
+" Align {{{
 " let g:Align_xstrlen = 3       " for japanese string
 " let g:DrChipTopLvlMenu = ''   " remove 'DrChip' menu
+" }}}
 
-
-" toggle
+" toggle {{{
 imap <C-t> <Plug>ToggleI
 nmap <C-t> <Plug>ToggleN
 vmap <C-t> <Plug>ToggleV
+"}}}
 
-
-" previm
+" previm {{{
 augroup PrevimSettings
   autocmd!
   autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
 augroup END
+"}}}
 
-
-" open-browser
+" open-browser {{{
 let g:netrw_nogx = 1
 nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
+"}}}
 
-
-" qtmplsel
+" qtmplsel {{{
 " let g:qts_templatedir = $HOME.'/.vim/template'
+"}}}
 
-
-" quickrun
+" quickrun {{{
 " <Leader>r で実行
 " 横分割するようにする
 " nnoremap <Leader>r :Quickrun<CR>
@@ -805,9 +799,9 @@ let g:watchdogs_check_BufWritePost_enables = {
     \ }
 " キー入力がなかったらチェックする
 let g:watchdogs_checkCursorHold_enable = 1
+"}}}
 
-
-" CakePHP
+" CakePHP {{{
 " let g:cakephp_enable_fix_mode = 1
 " let g:cakephp_app = ""
 " let g:cakephp_enable_auto_mode = 1
@@ -823,36 +817,60 @@ let g:watchdogs_checkCursorHold_enable = 1
 " nnoremap <Leader>ccp :Ccomponent<Space>
 " nnoremap <Leader>cp :Ccomponent<Space>
 " nnoremap <Leader>cl :Clog<Space>
+"}}}
 
-
-" YankRing
+" YankRing {{{
 let g:yankring_history_dir = expand('$HOME')
 let g:yankring_history_file = '.yankring_history'
 let g:yankring_max_history = 10
 let g:yankring_window_height = 13
+"}}}
 
-
-" ExpandRegion
+" ExpandRegion {{{
 vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
+"}}}
 
-
-" ---------------------------------------------------------------------
-" HTML
-" ---------------------------------------------------------------------
+" HTML {{{
 let g:html_indent_inctags = "html,body,head,tbody"
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
-
+"}}}
 
 
 "*****************************************************************************
 "" Basic Settings
 "*****************************************************************************
 
+" folding {{{
 " ---------------------------------------------------------------------
-" 文字コード
+" http://d.hatena.ne.jp/leafcage/20111223/1324705686
+" http://leafcage.hateblo.jp/entry/2013/04/24/053113
 " ---------------------------------------------------------------------
+set foldtext=FoldCCtext()
+let g:foldCCtext_enable_autofdc_adjuster = 1
+set foldcolumn=3
+set fillchars=vert:\|
+set foldmethod=marker
+
+nnoremap  z[     :<C-u>call <SID>put_foldmarker(0)<CR>
+nnoremap  z]     :<C-u>call <SID>put_foldmarker(1)<CR>
+function! s:put_foldmarker(foldclose_p) " {{{
+  let crrstr = getline('.')
+  let padding = crrstr=='' ? '' : crrstr=~'\s$' ? '' : ' '
+  let [cms_start, cms_end] = ['', '']
+  let outside_a_comment_p = synIDattr(synID(line('.'), col('$')-1, 1), 'name') !~? 'comment'
+  if outside_a_comment_p
+    let cms_start = matchstr(&cms,'\V\s\*\zs\.\+\ze%s')
+    let cms_end = matchstr(&cms,'\V%s\zs\.\+')
+  endif
+  let fmr = split(&fmr, ',')[a:foldclose_p]. (v:count ? v:count : '')
+    exe 'norm! A'. padding. cms_start. fmr. cms_end
+endfunction
+" }}}
+" }}}
+
+" 文字コード {{{
 set encoding=utf-8                " vim 内部文字コード
 set ffs=unix,dos,mac              "
 " set fencs=                      " 空白設定すると常に enc で開く
@@ -874,11 +892,9 @@ command! Iso2022jp edit ++enc=iso-2022-jp
 command! Utf8 edit ++enc=utf-8
 command! Jis Iso2022jp
 command! Sjis Cp932
+"}}}
 
-
-" ---------------------------------------------------------------------
-" インデント
-" ---------------------------------------------------------------------
+" インデント {{{
 set autoindent                  " 自動でインデント
 set smartindent                 " インデント調整あり・コメント維持
 set shiftwidth=4                " tab 文字の入力幅
@@ -911,18 +927,14 @@ set expandtab                   " tab を空白文字に置き換え
 filetype plugin on
 "そのファイルタイプにあわせたインデントを利用する
 filetype indent on
+"}}}
 
-
-" ---------------------------------------------------------------------
-" 削除
-" ---------------------------------------------------------------------
+" 削除 {{{
 set backspace=indent,eol,start  " BS でindent,改行,挿入開始前を削除
 set smarttab                    " BS でインデント幅を削除
+"}}}
 
-
-" ---------------------------------------------------------------------
-" 検索
-" ---------------------------------------------------------------------
+" 検索 {{{
 set hlsearch                    " 検索文字列を色付け
 set ignorecase                  " 大文字小文字を判別しない
 set smartcase                   " でも大文字小文字が混ざってい入力されたら区別する
@@ -933,21 +945,17 @@ set gdefault                    " 置換で g オプションをデフォルト�
 nnoremap <silent> <cr> :noh<cr><cr>
 " visual 選択中に * で選択文字列を検索
 vnoremap * y/\V<c-r>=substitute(escape(@@,"/\\"),"\n","\\\\n","ge")<cr><cr>gV
+"}}}
 
-
-" ---------------------------------------------------------------------
-" バックアップ
-" ---------------------------------------------------------------------
+" バックアップ {{{
 "set backup                      " ファイル上書きでバックアップファイルを作成
 "set backupdir=/vim_back
 "set directory=/vim_back
 set nobackup
 set noswapfile
+"}}}
 
-
-" ---------------------------------------------------------------------
-" 表示
-" ---------------------------------------------------------------------
+" 表示 {{{
 set background=dark             " 背景の明るさ。light or dark
 syntax on                       " シンタックスの色付けを有効
 set ruler                       " 左下に行列位置を表示
@@ -993,11 +1001,9 @@ if has('mac')
     let g:hybrid_use_iTerm_colors = 1
 endif
 colorscheme hybrid
+"}}}
 
-
-" ---------------------------------------------------------------------
-" 補完
-" ---------------------------------------------------------------------
+" 補完 {{{
 set wildmenu                    " コマンド入力をタブで補完
 set wildchar=<Tab>              " コマンド補完を開始するキー
 set wildmode=list:longest,full  " 補完動作（リスト表示で最長一致、その後選択）
@@ -1005,11 +1011,9 @@ set history=1000                " コマンドの履歴数
 
 " <c-space> で omni 補完
 " inoremap <C-Space> <C-x><C-o>
+"}}}
 
-
-" ---------------------------------------------------------------------
-" 入力
-" ---------------------------------------------------------------------
+" 入力 {{{
 inoremap {} {}<Left>
 inoremap [] []<Left>
 inoremap () ()<Left>
@@ -1062,12 +1066,10 @@ vnoremap <S-Tab> <gv
 " ウィンドウ分割
 noremap <Leader>h :split<CR>
 noremap <Leader>v :vsplit<CR>
+"}}}
 
-
-" ---------------------------------------------------------------------
-" Help
-" C-] <=> C-O
-" ---------------------------------------------------------------------
+" Help {{{
+" 移動 C-] <=> C-O
 set helplang=ja
 " Ctrl-i でヘルプ
 " nnoremap <C-i> :<C-u>help<Space>
@@ -1078,11 +1080,10 @@ augroup CloseHelpWithQ
     autocmd!
     autocmd FileType help nnoremap <buffer>q <C-w>c
 augroup END
+"}}}
 
+" その他 {{{
 
-" ---------------------------------------------------------------------
-" その他
-" ---------------------------------------------------------------------
 " set mouse=a                     " ターミナルマウスを有効
 set hidden                      " 編集中に他ファイルを開ける
 
@@ -1092,10 +1093,7 @@ set pastetoggle=<Space>sp
 " フォーカスを失ったら保存
 autocmd FocusLost * :wa
 
-
-" ---------------------------------------------------------------------
-" Web+DB Vol52
-" ---------------------------------------------------------------------
+" Web+DB Vol52 {{{
 " .vimrc を編集する
 nnoremap <Space>. :<C-u>edit $MYVIMRC<Enter>
 " .vimrc をリロードする
@@ -1110,6 +1108,7 @@ inoremap <expr> ,dt strftime('%H:%M:%S')
 " nnoremap gc `[v`]
 " vnoremap gc :<C-u>normal gc<Enter>
 " onoremap gc :<C-u>normal gc<Enter>
+"}}}
 
 " カレントウィンドウのみカーソル行をハイライトする
 augroup highlightOnlyCurrentWindow
@@ -1142,7 +1141,7 @@ if !has('gui_running') && $TMUX !=# ''
     augroup END
 endif
 
-
+"}}}
 
 
 
