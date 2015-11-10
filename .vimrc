@@ -25,7 +25,7 @@
 " NeoBundle 'git://repository_url'
 " ---------------------------------------------------------------------
 
-" Note: vim-tiny か vim-small の場合は初期化しない
+" e: vim-tiny か vim-small の場合は初期化しない
 if 0 | endif
 
 if has('vim_starting')
@@ -936,10 +936,10 @@ command! Sjis Cp932
 " インデント {{{
 set autoindent                  " 自動でインデント
 set smartindent                 " インデント調整あり・コメント維持
-set shiftwidth=4                " tab 文字の入力幅
-set tabstop=4                   " tab 文字の表示幅
-set softtabstop=0               " tab キーを押したときに挿入される空白の量
-set expandtab                   " tab を空白文字に置き換え
+set shiftwidth=4                " インデント１つ分の空白文字の数
+set tabstop=4                   " tab 文字を表示するときに使用する空白文字の数
+set softtabstop=0               " 編集で tab 文字の幅として使用する空白文字の数（0で無効にする）
+set expandtab                   " 挿入モード時にtab文字を使用しないで空白文字を使用する
 " if has("autocmd")
 "   "ファイルタイプの検索を有効にする
 "   filetype plugin on
