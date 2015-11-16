@@ -62,8 +62,31 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 let mapleader=' '
 " }}}
 
-" ツリー表示 {{{
-NeoBundle 'scrooloose/nerdtree'
+" unite {{{
+" Unite vim bible 10-1
+NeoBundleLazy 'Shougo/unite.vim'
+NeoBundleLazy 'thinca/vim-unite-history'
+NeoBundleLazy 'Shougo/unite-help'
+NeoBundleLazy 'tsukkee/unite-tag'
+NeoBundleLazy 'osyo-manga/unite-quickfix'
+NeoBundleLazy 'osyo-manga/unite-filetype'
+NeoBundle 'h1mesuke/vim-alignta'
+
+" vim のファイラー vim bible 2-2
+NeoBundle 'Shougo/vimfiler'
+
+" vim でシェル vim bible 6-11
+NeoBundle 'Shougo/vimshell'
+
+" vim から非同期実行
+NeoBundle 'Shougo/vimproc', { 
+    \ 'build' : {
+    \     'cygwin' : 'make -f make_cygwin.mak',
+    \     'mac'    : 'make',
+    \     'linux'  : 'make',
+    \     'unix'   : 'gmake',
+    \     },
+    \ }
 " }}}
 
 " 言語パック（言語毎のインデントとか構文のサポート） {{{
@@ -162,31 +185,6 @@ NeoBundle 'mattn/excitetranslate-vim', {
 NeoBundle 'taglist.vim'
 " }}}
 
-" unite {{{
-" Unite vim bible 10-1
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'tsukkee/unite-help'
-NeoBundle 'basyura/unite-rails'
-NeoBundle 'osyo-manga/unite-quickfix'
-
-" vim のファイラー vim bible 2-2
-NeoBundle 'Shougo/vimfiler'
-
-" vim でシェル vim bible 6-11
-NeoBundle 'Shougo/vimshell'
-
-" vim から非同期実行
-NeoBundle 'Shougo/vimproc', { 
-    \ 'build' : {
-    \     'cygwin' : 'make -f make_cygwin.mak',
-    \     'mac'    : 'make',
-    \     'linux'  : 'make',
-    \     'unix'   : 'gmake',
-    \     },
-    \ }
-" }}}
-
 " テキストオブジェクト {{{
 " テキストオブジェクトを囲んだりする vim bible 5-14
 " ys{motion}{surround}            : surround で囲む
@@ -264,12 +262,6 @@ NeoBundle 'camelcasemotion'
 " gcc/<C-_><C-_> でコメントアウト vim bible 6-3
 NeoBundle 'tomtom/tcomment_vim'
 
-" <Leader>tsp で空白整形 or <Leader>t{separator} でセパレータで整形 vim bible 5-11
-" NeoBundle 'Align'
-
-" マルチバイト対応の整形
-NeoBundle 'h1mesuke/vim-alignta'
-
 " true <=> false などをトグル。Insertモードでは<C-t>, それ以外では +
 " <C-t> でトグル用にしている。
 NeoBundle 'taku-o/vim-toggle'
@@ -338,6 +330,77 @@ NeoBundleCheck
 
 
 " NeoBundle 各プラグインの設定 {{{
+
+" unite {{{
+if neobundle#tap('unite.vim')
+    call neobundle#config({
+                \ 'depends': 'Shougo/neomru.vim',
+                \ 'commands': [{
+                \   'name': ['unite'],
+                \   'complete': 'customlist,unite#complete_source',
+                \ }],
+                \ })
+
+    function! neobundle#hooks.on_source(bundle)
+        call unite#custom#profile('default', 'context', {
+                    \ 'auto_select': 0,
+                    \ 'start_insert': 0,
+                    \ })
+    endfunction
+
+    autocmd FileType unite call s:unite_my_settings()
+    function! s:unite_my_settings()
+        let g:unite_enable_start_insert = 0
+
+        nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('split')
+        inoremap <silent> <buffer> <expr> <C-l> unite#do_action('split')
+        nnoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
+        inoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
+    endfunction
+
+    call neobundle#untap()
+endif
+
+" キーバインド
+nnoremap [unite] <Nop>
+nmap f [unite]
+
+" バッファ一覧
+nnoremap <silent> [unite]b :<C-u>Unite buffer<CR>
+
+" レジスタ一覧 
+nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
+
+" 最近使用したファイル一覧 
+nnoremap <silent> [unite]m :<C-u>Unite file_mru buffer<CR>
+
+" ブックマーク一覧
+nnoremap <silent> [unite]c :<C-u>Unite bookmark<CR>
+
+" ブックマークに追加
+nnoremap <silent> [unite]a :<C-u>UniteBookmarkAdd<CR>
+
+" 整形
+nnoremap <silent> [unite]l :<C-u>Unite alignta<CR>
+
+" help
+nnoremap <C-i> :<C-u>Unite -start-insert help<CR>
+nnoremap <C-i><C-i> :<C-u>UniteWithCursorWord help<CR>
+" }}}
+
+" vimfiler {{{
+" vimfiler をデフォルトのファイラーにする
+let g:vimfiler_as_default_explorer = 1
+" セーフモードを無効化する
+let g:vimfiler_safe_mode_by_default = 0
+
+nnoremap <silent> ff :<C-u>VimFilerBufferDir -quit<CR>
+nnoremap <silent> fi :<C-u>:VimFilerBufferDir -buffer-name=explorer -split -simple -winwidth=35 -no-quit<CR>
+" }}}
+
+" vimshell {{{
+nnoremap <Leader>sh :<C-u>VimShell<CR>
+" }}}
 
 " vim-ref {{{
 " S-k でマニュアル検索
@@ -540,51 +603,6 @@ elseif (executable('/usr/local/bin/ctags'))
 endif
 
 nnoremap <silent> ft :<C-u>TlistToggle<CR>
-" }}}
-
-" unite {{{
-autocmd FileType unite call s:unite_my_settings()
-function! s:unite_my_settings()
-    let g:unite_enable_start_insert = 0
-
-    nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('split')
-    inoremap <silent> <buffer> <expr> <C-l> unite#do_action('split')
-    nnoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
-    inoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
-endfunction
-
-" prefix key
-nnoremap [unite] <Nop>
-nmap f [unite]
-
-" バッファ一覧
-nnoremap <silent> [unite]b :<C-u>Unite buffer<CR>
-" ファイル一覧
-" nnoremap <silent> [unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
-" 常用セット
-nnoremap <silent> [unite]u :<C-u>Unite buffer file_mru<CR>
-" 整形
-nnoremap <silent> [unite]l :<C-u>Unite alignta<CR>
-" 全部のせ
-nnoremap <silent> [unite]a :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
-" help
-nnoremap <C-i> :<C-u>Unite -start-insert help<CR>
-nnoremap <C-i><C-i> :<C-u>UniteWithCursorWord help<CR>
-
-" }}}
-
-" vimfiler {{{
-" vimfiler をデフォルトのファイラーにする
-let g:vimfiler_as_default_explorer = 1
-" セーフモードを無効化する
-let g:vimfiler_safe_mode_by_default = 0
-
-nnoremap <silent> ff :<C-u>VimFilerBufferDir -quit<CR>
-nnoremap <silent> fi :<C-u>:VimFilerBufferDir -buffer-name=explorer -split -simple -winwidth=35 -no-quit<CR>
-" }}}
-
-" vimshell {{{
-nnoremap <Leader>sh :<C-u>VimShell<CR>
 " }}}
 
 " indent-guides {{{
