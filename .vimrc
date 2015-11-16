@@ -122,6 +122,22 @@ NeoBundle 'itchyny/lightline.vim', {
 NeoBundle 'LeafCage/foldCC.vim'
 " }}}
 
+" スニペット入力 {{{
+NeoBundleLazy 'Shougo/neosnippet.vim', {
+            \ 'depends': [
+            \   'Shougo/neosnippet-snippets',
+            \   'Shougo/context_filetype.vim',
+            \ ],
+            \ 'insert': 1,
+            \ 'filetypes': 'snippet',
+            \ 'unite_sources': [
+            \   'neosnippet',
+            \   'neosnippet/user',
+            \   'neosnippet/runtime',
+            \ ],
+            \}
+" }}}
+
 " Git {{{
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
@@ -141,11 +157,6 @@ else
   NeoBundleFetch 'Shougo/neocomplete.vim'
   NeoBundle 'Shougo/neocomplcache.vim'
 endif
-" }}}
-
-" スニペット入力 {{{
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
 " }}}
 
 " looks {{{
@@ -608,6 +619,15 @@ nnoremap <silent>zu    :set foldlevel=<C-r>=foldlevel('.')-1<CR><CR>
 
 "}}}
 
+" neosnippet{{{
+let g:neosnippet#snippets_directory = $HOME.'/.vim/snippets'
+
+" スニペットを展開する
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
+" }}}
+
 " neocomplete/neocomplcache {{{
 if s:meet_neocomplete_requirements()
     " neocomplete を使用する場合の設定
@@ -756,15 +776,6 @@ else
     " ファイル名補完をneocomplcacheで置き換える
     inoremap <expr><C-x><C-f> neocomplcache#manual_filename_complete()
 endif
-" }}}
-
-" neosnippet{{{
-let g:neosnippet#snippets_directory = $HOME.'/.vim/snippets'
-
-" スニペットを展開する
-imap <C-k> <Plug>(neosnippet_expand_or_jump)
-smap <C-k> <Plug>(neosnippet_expand_or_jump)
-xmap <C-k> <Plug>(neosnippet_expand_target)
 " }}}
 
 " vim-ref {{{
