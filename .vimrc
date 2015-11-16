@@ -62,6 +62,17 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 let mapleader=' '
 " }}}
 
+" vimproc:vim から非同期実行 {{{
+NeoBundle 'Shougo/vimproc', { 
+    \ 'build' : {
+    \     'cygwin' : 'make -f make_cygwin.mak',
+    \     'mac'    : 'make',
+    \     'linux'  : 'make',
+    \     'unix'   : 'gmake',
+    \     },
+    \ }
+" }}}
+
 " unite {{{
 " Unite vim bible 10-1
 NeoBundleLazy 'Shougo/unite.vim', {
@@ -77,28 +88,24 @@ NeoBundleLazy 'tsukkee/unite-tag'
 NeoBundleLazy 'osyo-manga/unite-quickfix'
 NeoBundleLazy 'osyo-manga/unite-filetype'
 NeoBundle 'h1mesuke/vim-alignta'
-
-" vim でシェル vim bible 6-11
-NeoBundle 'Shougo/vimshell'
-
-" vim から非同期実行
-NeoBundle 'Shougo/vimproc', { 
-    \ 'build' : {
-    \     'cygwin' : 'make -f make_cygwin.mak',
-    \     'mac'    : 'make',
-    \     'linux'  : 'make',
-    \     'unix'   : 'gmake',
-    \     },
-    \ }
 " }}}
 
 " vimfile {{{
 " vim のファイラー vim bible 2-2
-NeoBundle 'Shougo/vimfiler', {
+NeoBundleLazy 'Shougo/vimfiler', {
             \ 'depends' : 'Shougo/unite.vim',
             \ 'mappings' : '<Plug>',
             \ 'explorer' : '^\h\w*:',
             \ }
+" }}}
+
+" vim shell {{{
+" vim でシェル vim bible 6-11
+NeoBundle 'Shougo/vimshell'
+" }}}
+
+" Help {{{
+NeoBundle 'vim-jp/vimdoc-ja'
 " }}}
 
 " 言語パック（言語毎のインデントとか構文のサポート） {{{
@@ -175,9 +182,6 @@ NeoBundle 'majutsushi/tagbar'
 " }}}
 
 " ドキュメント管理 {{{
-" vimdoc-ja
-NeoBundle 'vim-jp/vimdoc-ja'
-
 " <S-k>でカーソル上のキーワードを参照する vim bible 6-5
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'yuku-t/vim-ref-ri'
@@ -386,10 +390,6 @@ nnoremap <silent> [unite]a :<C-u>UniteBookmarkAdd<CR>
 
 " 整形
 nnoremap <silent> [unite]l :<C-u>Unite alignta<CR>
-
-" help
-nnoremap <C-i> :<C-u>Unite -start-insert help<CR>
-nnoremap <C-i><C-i> :<C-u>UniteWithCursorWord help<CR>
 " }}}
 
 " vimfiler {{{
@@ -444,6 +444,43 @@ augroup END
 
 " カーソル下のキーワードをヘルプでひく
 nnoremap <C-i>k :<C-u>Ref webdict <C-r><C-w><Enter>
+" }}}
+
+" Help {{{
+set helplang=ja
+
+" キーマッピング
+nnoremap <C-i> :<C-u>Unite -start-insert help<CR>
+nnoremap <C-i><C-i> :<C-u>UniteWithCursorWord help<CR>
+
+" 'K' でヘルプを開く
+set keywordprg=:help
+
+" タブでヘルプを開く
+nnoremap <Space>t :<C-u>tab help<Space>
+nnoremap <Space>v :<C-u>vertical belowright help<CR>
+
+augroup HelpSettings
+    autocmd!
+
+    " ヘルプをqで閉じる
+    autocmd FileType help nnoremap <buffer>q <C-w>c
+    " ヘルプを別タブで表示する
+    autocmd FileType help nnoremap <silent><buffer>tm :<C-u>call <SID>MoveToNewTab()<CR>
+augroup END
+
+function! s:MoveToNewTab()
+    tab split
+    tabprevious
+
+    if winnr('$') > 1
+        close
+    elseif bufnr('$') > 1
+        buffer #
+    endif
+
+    tabnext
+endfunction
 " }}}
 
 " neocomplete/neocomplcache {{{
@@ -1028,7 +1065,7 @@ syntax on                       " シンタックスの色付けを有効
 set ruler                       " 左下に行列位置を表示
 set showcmd                     " 入力中のコマンドを右下に表示
 set showmatch                   " カッコの入力で対応するカッコを一瞬強調
-set splitbelow                  " split で新規ウィンドウは下側に
+" set splitbelow                  " split で新規ウィンドウは下側に
 set splitright                  " vsplit で新規ウィンドウは右側に
 set title                       " ウィンドウタイトルを書き換える
 set number                      " 行番号を表示する
@@ -1133,20 +1170,6 @@ vnoremap <S-Tab> <gv
 " ウィンドウ分割
 noremap <Leader>h :split<CR>
 noremap <Leader>v :vsplit<CR>
-"}}}
-
-" Help {{{
-" 移動 C-] <=> C-O
-set helplang=ja
-" Ctrl-i でヘルプ
-" nnoremap <C-i> :<C-u>help<Space>
-" カーソル下のキーワードをヘルプでひく
-" nnoremap <C-i><C-i> :<C-u>help<Space><C-r><C-w><Enter>
-" ヘルプをqで閉じる
-augroup CloseHelpWithQ
-    autocmd!
-    autocmd FileType help nnoremap <buffer>q <C-w>c
-augroup END
 "}}}
 
 " その他 {{{
