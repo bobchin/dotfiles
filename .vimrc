@@ -64,16 +64,19 @@ let mapleader=' '
 
 " unite {{{
 " Unite vim bible 10-1
-NeoBundleLazy 'Shougo/unite.vim'
+NeoBundleLazy 'Shougo/unite.vim', {
+                \ 'depends': 'Shougo/neomru.vim',
+                \ 'commands': [{
+                \   'name': ['unite'],
+                \   'complete': 'customlist,unite#complete_source',
+                \ }],
+                \ }
 NeoBundleLazy 'thinca/vim-unite-history'
 NeoBundleLazy 'Shougo/unite-help'
 NeoBundleLazy 'tsukkee/unite-tag'
 NeoBundleLazy 'osyo-manga/unite-quickfix'
 NeoBundleLazy 'osyo-manga/unite-filetype'
 NeoBundle 'h1mesuke/vim-alignta'
-
-" vim のファイラー vim bible 2-2
-NeoBundle 'Shougo/vimfiler'
 
 " vim でシェル vim bible 6-11
 NeoBundle 'Shougo/vimshell'
@@ -87,6 +90,15 @@ NeoBundle 'Shougo/vimproc', {
     \     'unix'   : 'gmake',
     \     },
     \ }
+" }}}
+
+" vimfile {{{
+" vim のファイラー vim bible 2-2
+NeoBundle 'Shougo/vimfiler', {
+            \ 'depends' : 'Shougo/unite.vim',
+            \ 'mappings' : '<Plug>',
+            \ 'explorer' : '^\h\w*:',
+            \ }
 " }}}
 
 " 言語パック（言語毎のインデントとか構文のサポート） {{{
@@ -333,14 +345,6 @@ NeoBundleCheck
 
 " unite {{{
 if neobundle#tap('unite.vim')
-    call neobundle#config({
-                \ 'depends': 'Shougo/neomru.vim',
-                \ 'commands': [{
-                \   'name': ['unite'],
-                \   'complete': 'customlist,unite#complete_source',
-                \ }],
-                \ })
-
     function! neobundle#hooks.on_source(bundle)
         call unite#custom#profile('default', 'context', {
                     \ 'auto_select': 0,
@@ -389,10 +393,16 @@ nnoremap <C-i><C-i> :<C-u>UniteWithCursorWord help<CR>
 " }}}
 
 " vimfiler {{{
+if neobundle#tap('vimfiler.vim')
+    function! neobundle#hooks.on_source(bundle)
+        call vimfiler#custom#profile('default', 'context', {
+                    \ 'safe': 0,
+                    \ })
+    endfunction
+endif
+
 " vimfiler をデフォルトのファイラーにする
 let g:vimfiler_as_default_explorer = 1
-" セーフモードを無効化する
-let g:vimfiler_safe_mode_by_default = 0
 
 nnoremap <silent> ff :<C-u>VimFilerBufferDir -quit<CR>
 nnoremap <silent> fi :<C-u>:VimFilerBufferDir -buffer-name=explorer -split -simple -winwidth=35 -no-quit<CR>
