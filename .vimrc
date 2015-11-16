@@ -25,7 +25,7 @@
 " NeoBundle 'git://repository_url'
 " ---------------------------------------------------------------------
 
-" e: vim-tiny か vim-small の場合は初期化しない
+" vim-tiny か vim-small の場合は初期化しない
 if 0 | endif
 
 if has('vim_starting')
@@ -324,10 +324,10 @@ NeoBundle "YankRing.vim"
 
 " }}} その他
 
-" Required
 call neobundle#end()
 
-filetype plugin indent on " ファイル別 plugin (~/.vim/ftplugin/拡張子.vim)
+" ファイル別 plugin (~/.vim/ftplugin/拡張子.vim)
+filetype plugin indent on 
 
 " If there are uninstalled bundles found on startup,
 " this will convenientlly prompt you to install them.
