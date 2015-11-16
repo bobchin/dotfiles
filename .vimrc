@@ -138,25 +138,28 @@ NeoBundleLazy 'Shougo/neosnippet.vim', {
             \}
 " }}}
 
-" Git {{{
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'airblade/vim-gitgutter'
-NeoBundle 'gregsexton/gitv'
-NeoBundle 'extradite.vim'
-" }}}
-
 " 入力補完 {{{
 function! s:meet_neocomplete_requirements()
   return has('lua') && (v:version > 703 || (v:version == 703 && has('patch885')))
 endfunction
 if s:meet_neocomplete_requirements()
-  NeoBundle 'Shougo/neocomplete.vim'
+  NeoBundleLazy 'Shougo/neocomplete.vim', {
+              \ 'depends': 'Shougo/context_filetype.vim',
+              \ 'insert': 1,
+              \ }
   NeoBundleFetch 'Shougo/neocomplcache.vim'
   NeoBundle 'violetyk/neocomplete-php.vim'
 else
   NeoBundleFetch 'Shougo/neocomplete.vim'
   NeoBundle 'Shougo/neocomplcache.vim'
 endif
+" }}}
+
+" Git {{{
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'airblade/vim-gitgutter'
+NeoBundle 'gregsexton/gitv'
+NeoBundle 'extradite.vim'
 " }}}
 
 " looks {{{
@@ -634,19 +637,19 @@ if s:meet_neocomplete_requirements()
 
     " 競合するのでAutoComplPopを無効化する
     let g:acp_enableAtStartup = 0
+    
     " 起動時にneocomplecacheを有効にする
     let g:neocomplete#enable_at_startup = 1
-    " 補完が自動的に開始される文字数
-    " let g:neocomplete#auto_completion_start_length = 3
+    
     " 大文字が入力されるまで大文字小文字の区別を無視する
     let g:neocomplete#enable_smart_case = 1
+    
     " シンタックスをキャッシュするときの最小文字数
     let g:neocomplete#sources#syntax#min_keyword_length = 3
+    
     " neocomplete を自動的にロックするバッファ名のパターン
     let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-    " 表示する候補の数
-    let g:neocomplete#max_list = 20
-
+    
     " 辞書補完の辞書を指定。filetype:辞書ファイル名
     let g:neocomplete#sources#dictionary#dictionaries = {
         \ 'default' : '',
@@ -655,53 +658,57 @@ if s:meet_neocomplete_requirements()
         \ 'php' : $HOME.'/.vim/dict/php.dict',
         \ }
 
-    " Define keyword.
+    " キーワードの定義
     if !exists('g:neocomplete#keyword_patterns')
       let g:neocomplete#keyword_patterns = {}
     endif
     let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
+    " キーマッピング
 
-    " FileType毎のOmni補完を設定
-    autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+    " <C-g>: UNDO  <C-l>: 補完候補の共通部分までを補完する
+    inoremap <expr><C-g> neocomplete#undo_completion()
+    inoremap <expr><C-l> neocomplete#complete_common_string()
+
+    " <C-y>: 補完を確定  <C-e>: 補完のキャンセル
+    inoremap <expr><C-y> neocomplete#close_popup()
+    inoremap <expr><C-e> neocomplete#cancel_popup()
+    
+    " <CR>: ポップアップを閉じてインデントを保存
+    inoremap <silent><CR> <C-r>=<SID>my_cr_function()<CR>
+    function! s:my_cr_function()
+        " return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+        " For no inserting <CR> key.
+        return pumvisible() ? "\<C-y>" : "\<CR>"
+    endfunction
+
+    " <TAB> で補完
+    inoremap <expr><TAB>   pumvisible() ? "\<Down>" : "\<TAB>"
+    inoremap <expr><S-TAB> pumvisible() ? "\<UP>"   : "\<S-TAB>"
+
+    " <C-h>, <BS>: ポップアップを閉じて<BS>
+    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+    inoremap <expr><BS> neocomplete#smart_close_popup()."\<BS>"
+
+    " オムニ補完を有効にする
     autocmd FileType css           setlocal omnifunc=csscomplete#CompleteCSS
+    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
     autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
 
-    " オムニ補完
+    " 重いオムニ補完を有効にする
     if !exists('g:neocomplete#sources#omni#input_patterns')
       let g:neocomplete#sources#omni#input#patterns = {}
     endif
 
     "ファイルタイプの関連付け
-    if !exists('g:neocomplete#same_filetypes')
-      let g:neocomplete_same_filetype_lists = {}
-    endif
-    let g:neocomplete_same_filetype_lists['ctp'] = 'php'
+    " if !exists('g:neocomplete#same_filetypes')
+    "   let g:neocomplete_same_filetype_lists = {}
+    " endif
+    " let g:neocomplete_same_filetype_lists['ctp'] = 'php'
+    "
+    " let g:neocomplete_php_locale = 'ja'
 
-    let g:neocomplete_php_locale = 'ja'
-
-    " key-mappings.
-    " UNDO
-    inoremap <expr><C-g> neocomplete#undo_completion()
-    " 補完候補の共通部分までを補完する
-    inoremap <expr><C-l> neocomplete#complete_common_string()
-
-    " 補完を確定して閉じる
-    inoremap <expr><C-y> neocomplete#close_popup()
-    " 補完をキャンセルして閉じる
-    inoremap <expr><C-c> neocomplete#cancel_popup()
-    " <CR> 候補が出ていれば確定にする
-    inoremap <expr><CR> pumvisible() ? neocomplete#close_popup() : "\<CR>"
-    " <TAB> で補完
-    inoremap <expr><TAB> pumvisible() ? "\<Down>" : "\<TAB>"
-    inoremap <expr><S-TAB> pumvisible() ? "\<UP>" : "\<S-TAB>"
-    " <C-h>, <BS>: close popup and delete backword char.
-    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><BS> neocomplete#smart_close_popup()."\<BS>"
-
-    " ファイル名補完をneocompleteで置き換える
-    " inoremap <expr><C-x><C-f> neocomplete#manual_filename_complete()
 else
     " neocomplcacheを使用する場合の設定
 
@@ -763,7 +770,7 @@ else
     " 補完を確定して閉じる
     inoremap <expr><C-y> neocomplcache#close_popup()
     " 補完をキャンセルして閉じる
-    inoremap <expr><C-c> neocomplcache#cancel_popup()
+    inoremap <expr><C-e> neocomplcache#cancel_popup()
     " <CR> 候補が出ていれば確定にする
     inoremap <expr><CR> pumvisible() ? neocomplcache#close_popup() : "\<CR>"
     " <TAB> で補完
@@ -1082,7 +1089,6 @@ set showmatch                   " カッコの入力で対応するカッコを�
 set splitright                  " vsplit で新規ウィンドウは右側に
 set title                       " ウィンドウタイトルを書き換える
 set number                      " 行番号を表示する
-" set/oldmethod=marker
 
 " カーソル行を強調表示
 set cursorline
