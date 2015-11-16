@@ -79,7 +79,7 @@ NeoBundleLazy 'Shougo/unite.vim', {
                 \ 'depends': 'Shougo/neomru.vim',
                 \ 'commands': [{
                 \   'name': ['unite'],
-                \   'complete': 'customlist,unite#complete_source',
+                \   'complete': 'vimshell,customlist,unite#complete_source',
                 \ }],
                 \ }
 NeoBundleLazy 'thinca/vim-unite-history'
@@ -101,7 +101,7 @@ NeoBundleLazy 'Shougo/vimfiler', {
 
 " vim shell {{{
 " vim でシェル vim bible 6-11
-NeoBundle 'Shougo/vimshell'
+NeoBundle 'Shougo/vimshell.vim'
 " }}}
 
 " Help {{{
@@ -414,40 +414,6 @@ nnoremap <silent> fi :<C-u>:VimFilerBufferDir -buffer-name=explorer -split -simp
 nnoremap <Leader>sh :<C-u>VimShell<CR>
 " }}}
 
-" vim-ref {{{
-" S-k でマニュアル検索
-let g:ref_phpmanual_path = $HOME . '/.vim/reference/php/'
-
-" webdict
-let g:ref_source_webdict_sites = {
-\   'eijiro': {
-\     'url': 'http://eow.alc.co.jp/search?q=%s',
-\   },
-\   'longman': {
-\     'url': 'http://www.ldoceonline.com/dictionary/%s_1',
-\   },
-\ }
-let g:ref_source_webdict_sites.default = 'eijiro'
-" 出力に対するフィルタ
-function! g:ref_source_webdict_sites.eijiro.filter(output)
-    return join(split(a:output, "\n")[35 :], "\n")
-endfunction
-function! g:ref_source_webdict_sites.longman.filter(output)
-    return join(split(a:output, "\n")[17 :], "\n")
-endfunction
-
-" ヘルプをqで閉じる
-augroup CloseHelpWithQRef
-    autocmd!
-    autocmd FileType ref-phpmanual nnoremap <buffer>q :<C-u>q<CR>
-    autocmd FileType ref-webdict nnoremap <buffer>q :<C-u>q<CR>
-    autocmd FileType ref-refe nnoremap <buffer>q :<C-u>q<CR>
-augroup END
-
-" カーソル下のキーワードをヘルプでひく
-nnoremap <C-i>k :<C-u>Ref webdict <C-r><C-w><Enter>
-" }}}
-
 " Help {{{
 set helplang=ja
 
@@ -730,6 +696,40 @@ let g:neosnippet#snippets_directory = $HOME.'/.vim/snippets'
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
 xmap <C-k> <Plug>(neosnippet_expand_target)
+" }}}
+
+" vim-ref {{{
+" S-k でマニュアル検索
+let g:ref_phpmanual_path = $HOME . '/.vim/reference/php/'
+
+" webdict
+let g:ref_source_webdict_sites = {
+\   'eijiro': {
+\     'url': 'http://eow.alc.co.jp/search?q=%s',
+\   },
+\   'longman': {
+\     'url': 'http://www.ldoceonline.com/dictionary/%s_1',
+\   },
+\ }
+let g:ref_source_webdict_sites.default = 'eijiro'
+" 出力に対するフィルタ
+function! g:ref_source_webdict_sites.eijiro.filter(output)
+    return join(split(a:output, "\n")[35 :], "\n")
+endfunction
+function! g:ref_source_webdict_sites.longman.filter(output)
+    return join(split(a:output, "\n")[17 :], "\n")
+endfunction
+
+" ヘルプをqで閉じる
+augroup CloseHelpWithQRef
+    autocmd!
+    autocmd FileType ref-phpmanual nnoremap <buffer>q :<C-u>q<CR>
+    autocmd FileType ref-webdict nnoremap <buffer>q :<C-u>q<CR>
+    autocmd FileType ref-refe nnoremap <buffer>q :<C-u>q<CR>
+augroup END
+
+" カーソル下のキーワードをヘルプでひく
+nnoremap <C-i>k :<C-u>Ref webdict <C-r><C-w><Enter>
 " }}}
 
 " taglist {{{
