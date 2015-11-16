@@ -113,7 +113,9 @@ NeoBundle 'sheerun/vim-polyglot'
 " }}}
 
 " ステータスラインをきれいに表示 {{{
-NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'itchyny/lightline.vim', {
+            \ 'depends': 'tpope/vim-fugitive',
+            \ }
 " }}}
 
 " Git {{{
@@ -483,6 +485,94 @@ function! s:MoveToNewTab()
 endfunction
 " }}}
 
+" lightline {{{
+" http://itchyny.hatenablog.com/entry/20130828/1377653592
+" http://itchyny.hatenablog.com/entry/20130917/1379369171
+
+set laststatus=2
+set noshowmode
+if !has('gui_running')
+    set t_Co=256
+endif
+ 
+" mode: モード表示(ex. NORMAL )
+" paste: Paste表示(ex. PASTE)
+" readonly: 読み込み専用表示(ex. RO)
+" filename: ファイル名表示(ex. .vimrc)
+" modified: 変更状態表示(ex. +)
+" fugitive: Gitリポジトリ表示
+" fileformat: 改行コード(ex. unix)
+" filetype: ファイル形式(ex. vim)
+" fileencoding: 文字コード(ex. utf-8)
+"
+" 'active': 左側表示を[モード+Paste][Gitリポジトリ+ファイル名]にする
+let g:lightline = {
+            \ 'colorscheme': 'jellybeans',
+            \ 'mod_map': {'c': 'NORMAL'},
+            \ 'active': {
+            \     'left': [ ['mode', 'paste'], ['fugitive', 'filename']]
+            \ },
+            \ 'component_function': {
+            \     'modified'     : 'LightLineModified',
+            \     'readonly'     : 'LightLineReadonly',
+            \     'fugitive'     : 'LightLineFugitive',
+            \     'filename'     : 'LightLineFilename',
+            \     'fileformat'   : 'LightLineFileformat',
+            \     'filetype'     : 'LightLineFiletype',
+            \     'fileencoding' : 'LightLineFileencoding',
+            \     'mode'         : 'LightLineMode',
+            \ },
+            \ }
+
+" モード表示(表示幅が狭ければ表示しない)
+" 変更状態(変更されていれば"+"、変更できない場合は"-")
+function! LightLineModified()
+    return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction
+
+" 読み込み専用(読み込み専用であれば"x")
+function! LightLineReadonly()
+    return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? 'x' : ''
+endfunction
+
+" Gitリポジトリ(fugitiveがあればリポジトリのHEAD名を表示)
+function! LightLineFugitive()
+    try
+        if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head')
+            return fugitive#head()
+        endif
+    catch
+    endtry
+    return ''
+endfunction
+
+" ファイル名(前後に読み込み専用と変更状態を挿入する)
+function! LightLineFilename()
+    return ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
+        \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+        \  &ft == 'unite' ? unite#get_status_string() :
+        \  &ft == 'vimshell' ? vimshell#get_status_string() :
+        \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+        \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
+endfunction
+
+function! LightLineFileformat()
+    return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+
+function! LightLineFiletype()
+    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+endfunction
+
+function! LightLineFileencoding()
+    return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+endfunction
+
+function!LightLineMode()
+    return winwidth(0) > 60 ? lightline#mode() : ''
+endfunction
+" }}}
+
 " neocomplete/neocomplcache {{{
 if s:meet_neocomplete_requirements()
     " neocomplete を使用する場合の設定
@@ -656,94 +746,6 @@ nnoremap <silent> ft :<C-u>TlistToggle<CR>
 " let g:indent_guideson_vim_startup = 1
 let g:indent_guides_color_change_percent = 30
 let g:indent_guides_guide_size = 1
-" }}}
-
-" lightline {{{
-" http://itchyny.hatenablog.com/entry/20130828/1377653592
-" http://itchyny.hatenablog.com/entry/20130917/1379369171
-" 
-" mode: モード表示(ex. NORMAL )
-" paste: Paste表示(ex. PASTE)
-" readonly: 読み込み専用表示(ex. RO)
-" filename: ファイル名表示(ex. .vimrc)
-" modified: 変更状態表示(ex. +)
-" fugitive: Gitリポジトリ表示
-" fileformat: 改行コード(ex. unix)
-" filetype: ファイル形式(ex. vim)
-" fileencoding: 文字コード(ex. utf-8)
-"
-" 'active': 左側表示を[モード+Paste][Gitリポジトリ+ファイル名]にする
-let g:lightline = {
-  \ 'colorscheme': 'jellybeans',
-  \ 'mod_map': {'c': 'NORMAL'},
-  \ 'active': {
-  \     'left': [ ['mode', 'paste'], ['fugitive', 'filename']]
-  \ },
-  \ 'component_function': {
-  \     'mode': 'MyMode',
-  \     'readonly': 'MyReadonly',
-  \     'modified': 'MyModified',
-  \     'filename': 'MyFilename',
-  \     'fugitive': 'MyFugitive',
-  \     'fileformat': 'MyFileformat',
-  \     'filetype': 'MyFiletype',
-  \     'fileencoding': 'MyFileencoding',
-  \ },
-  \ }
-
-" モード表示(表示幅が狭ければ表示しない)
-function!MyMode()
-    return winwidth(0) > 60 ? lightline#mode() : ''
-endfunction
-
-" 読み込み専用(読み込み専用であれば"x")
-function! MyReadonly()
-    return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? 'x' : ''
-endfunction
-
-" 変更状態(変更されていれば"+"、変更できない場合は"-")
-function! MyModified()
-    return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-endfunction
-
-" ファイル名(前後に読み込み専用と変更状態を挿入する)
-function! MyFilename()
-    return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
-        \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
-        \  &ft == 'unite' ? unite#get_status_string() :
-        \  &ft == 'vimshell' ? vimshell#get_status_string() :
-        \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
-        \ ('' != MyModified() ? ' ' . MyModified() : '')
-endfunction
-
-" Gitリポジトリ(fugitiveがあればリポジトリのHEAD名を表示)
-function! MyFugitive()
-    try
-        if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head')
-            return fugitive#head()
-        endif
-    catch
-    endtry
-    return ''
-endfunction
-
-function! MyFileformat()
-    return winwidth(0) > 70 ? &fileformat : ''
-endfunction
-
-function! MyFiletype()
-    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
-endfunction
-
-function! MyFileencoding()
-    return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
-endfunction
-
-set laststatus=2
-set noshowmode
-if !has('gui_running')
-    set t_Co=256
-endif
 " }}}
 
 " matchit {{{
