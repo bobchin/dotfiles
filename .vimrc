@@ -118,6 +118,10 @@ NeoBundle 'itchyny/lightline.vim', {
             \ }
 " }}}
 
+" folding {{{
+NeoBundle 'LeafCage/foldCC.vim'
+" }}}
+
 " Git {{{
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
@@ -294,10 +298,6 @@ NeoBundle 'mattn/webapi-vim'
 " }}}
 
 " その他 {{{
-
-" folding {{{
-NeoBundle 'LeafCage/foldCC.vim'
-" }}}
 
 " <Leader>r で編集中のファイルを簡単に実行できる vim bible 6-10 {{{
 NeoBundle 'thinca/vim-quickrun'
@@ -538,6 +538,75 @@ function!LightLineMode()
     return winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 " }}}
+
+" folding {{{
+" ---------------------------------------------------------------------
+" http://d.hatena.ne.jp/leafcage/20111223/1324705686
+" http://leafcage.hateblo.jp/entry/2013/04/24/053113
+" ---------------------------------------------------------------------
+set foldtext=FoldCCtext()
+let g:foldCCtext_enable_autofdc_adjuster = 1
+set foldcolumn=3
+set fillchars=vert:\|
+set foldmethod=marker
+
+" マーカーの追加
+nnoremap  z[     :<C-u>call <SID>put_foldmarker(0)<CR>
+nnoremap  z]     :<C-u>call <SID>put_foldmarker(1)<CR>
+function! s:put_foldmarker(foldclose_p) " {{{
+  let crrstr = getline('.')
+  let padding = crrstr=='' ? '' : crrstr=~'\s$' ? '' : ' '
+  let [cms_start, cms_end] = ['', '']
+  let outside_a_comment_p = synIDattr(synID(line('.'), col('$')-1, 1), 'name') !~? 'comment'
+  if outside_a_comment_p
+    let cms_start = matchstr(&cms,'\V\s\*\zs\.\+\ze%s')
+    let cms_end = matchstr(&cms,'\V%s\zs\.\+')
+  endif
+  let fmr = split(&fmr, ',')[a:foldclose_p]. (v:count ? v:count : '')
+    exe 'norm! A'. padding. cms_start. fmr. cms_end
+endfunction
+" }}}
+
+" 次のマーカーへ移動
+nnoremap <silent>zj :<C-u>call <SID>smart_foldjump('j')<CR>
+nnoremap <silent>zk :<C-u>call <SID>smart_foldjump('k')<CR>
+function! s:smart_foldjump(direction) "{{{
+  if a:direction == 'j'
+    let [cross, trace, compare] = ['zj', ']z', '<']
+  else
+    let [cross, trace, compare] = ['zk', '[z', '>']
+  endif
+ 
+  let i = v:count1
+  while i
+    let save_lnum = line('.')
+    exe 'keepj norm! '. trace
+    let trace_lnum = line('.')
+    exe save_lnum
+ 
+    exe 'keepj norm! '. cross
+    let cross_lnum = line('.')
+    if cross_lnum != save_lnum && eval('cross_lnum '. compare. ' trace_lnum') || trace_lnum == save_lnum
+      let i -= 1
+      continue
+    endif
+ 
+    exe trace_lnum
+    let i -= 1
+  endwhile
+  mark `
+  norm! zz
+endfunction
+"}}}
+
+" フォールドレベル
+nnoremap <silent>z0    :set foldlevel=0<CR>
+nnoremap <silent>z1    :set foldlevel=1<CR>
+nnoremap <silent>z2    :set foldlevel=2<CR>
+nnoremap <silent>z3    :set foldlevel=3<CR>
+nnoremap <silent>zu    :set foldlevel=<C-r>=foldlevel('.')-1<CR><CR>
+
+"}}}
 
 " neocomplete/neocomplcache {{{
 if s:meet_neocomplete_requirements()
@@ -906,75 +975,6 @@ let g:html_indent_style1 = "inc"
 
 
 " Basic Settings {{{
-
-" folding {{{
-" ---------------------------------------------------------------------
-" http://d.hatena.ne.jp/leafcage/20111223/1324705686
-" http://leafcage.hateblo.jp/entry/2013/04/24/053113
-" ---------------------------------------------------------------------
-set foldtext=FoldCCtext()
-let g:foldCCtext_enable_autofdc_adjuster = 1
-set foldcolumn=3
-set fillchars=vert:\|
-set foldmethod=marker
-
-" マーカーの追加
-nnoremap  z[     :<C-u>call <SID>put_foldmarker(0)<CR>
-nnoremap  z]     :<C-u>call <SID>put_foldmarker(1)<CR>
-function! s:put_foldmarker(foldclose_p) " {{{
-  let crrstr = getline('.')
-  let padding = crrstr=='' ? '' : crrstr=~'\s$' ? '' : ' '
-  let [cms_start, cms_end] = ['', '']
-  let outside_a_comment_p = synIDattr(synID(line('.'), col('$')-1, 1), 'name') !~? 'comment'
-  if outside_a_comment_p
-    let cms_start = matchstr(&cms,'\V\s\*\zs\.\+\ze%s')
-    let cms_end = matchstr(&cms,'\V%s\zs\.\+')
-  endif
-  let fmr = split(&fmr, ',')[a:foldclose_p]. (v:count ? v:count : '')
-    exe 'norm! A'. padding. cms_start. fmr. cms_end
-endfunction
-" }}}
-
-" 次のマーカーへ移動
-nnoremap <silent>zj :<C-u>call <SID>smart_foldjump('j')<CR>
-nnoremap <silent>zk :<C-u>call <SID>smart_foldjump('k')<CR>
-function! s:smart_foldjump(direction) "{{{
-  if a:direction == 'j'
-    let [cross, trace, compare] = ['zj', ']z', '<']
-  else
-    let [cross, trace, compare] = ['zk', '[z', '>']
-  endif
- 
-  let i = v:count1
-  while i
-    let save_lnum = line('.')
-    exe 'keepj norm! '. trace
-    let trace_lnum = line('.')
-    exe save_lnum
- 
-    exe 'keepj norm! '. cross
-    let cross_lnum = line('.')
-    if cross_lnum != save_lnum && eval('cross_lnum '. compare. ' trace_lnum') || trace_lnum == save_lnum
-      let i -= 1
-      continue
-    endif
- 
-    exe trace_lnum
-    let i -= 1
-  endwhile
-  mark `
-  norm! zz
-endfunction
-"}}}
-
-" フォールドレベル
-nnoremap <silent>z0    :set foldlevel=0<CR>
-nnoremap <silent>z1    :set foldlevel=1<CR>
-nnoremap <silent>z2    :set foldlevel=2<CR>
-nnoremap <silent>z3    :set foldlevel=3<CR>
-nnoremap <silent>zu    :set foldlevel=<C-r>=foldlevel('.')-1<CR><CR>
-
-"}}}
 
 " 文字コード {{{
 set encoding=utf-8                " vim 内部文字コード
