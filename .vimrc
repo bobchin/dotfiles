@@ -101,21 +101,42 @@ NeoBundleLazy 'Shougo/vimfiler', {
 
 " vim shell {{{
 " vim でシェル vim bible 6-11
-NeoBundle 'Shougo/vimshell.vim'
+NeoBundle 'Shougo/vimshell.vim', {
+            \ 'mappings': '<Plug>',
+            \ 'commands': [{
+            \   'name': ['VimShell'],
+            \   'complete': 'customlist,vimshell#complete'
+            \ }],
+            \ }
 " }}}
 
 " Help {{{
-NeoBundle 'vim-jp/vimdoc-ja'
+NeoBundleLazy 'vim-jp/vimdoc-ja', {
+            \ 'filetypes': 'help',
+            \ }
+NeoBundleLazy 'thinca/vim-ft-help_fold', {
+            \ 'filetype': 'help',
+            \ }
 " }}}
 
 " 言語パック（言語毎のインデントとか構文のサポート） {{{
-NeoBundle 'sheerun/vim-polyglot'
+NeoBundleLazy 'sheerun/vim-polyglot', {
+            \ 'filetypes': 'all',
+            \ }
 " }}}
 
-" ステータスラインをきれいに表示 {{{
-NeoBundle 'itchyny/lightline.vim', {
+" 見た目 {{{
+" ステータスラインをきれいに表示
+NeoBundleLazy 'itchyny/lightline.vim', {
             \ 'depends': 'tpope/vim-fugitive',
+            \ 'filetypes': 'all',
             \ }
+
+" colorscheme
+NeoBundle 'w0ng/vim-hybrid'
+
+" <LeVader>ig でインデントガイドのトグル vim bible 4-14
+NeoBundle 'nathanaelkane/vim-indent-guides'
 " }}}
 
 " folding {{{
@@ -160,16 +181,6 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'gregsexton/gitv'
 NeoBundle 'extradite.vim'
-" }}}
-
-" looks {{{
-" <Leader>ig でインデントガイドのトグル vim bible 4-14
-NeoBundle 'nathanaelkane/vim-indent-guides'
-
-" colorscheme
-" NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'w0ng/vim-hybrid'
-" NeoBundle 'tomasr/molokai'
 " }}}
 
 " php {{{
@@ -553,6 +564,16 @@ function!LightLineMode()
 endfunction
 " }}}
 
+" indent-guides {{{
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_start_level = 2
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#444433 ctermbg=black
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#333344 ctermbg=darkgray
+let g:indent_guides_color_change_percent = 30
+let g:indent_guides_guide_size = 1
+" }}}
+
 " folding {{{
 " ---------------------------------------------------------------------
 " http://d.hatena.ne.jp/leafcage/20111223/1324705686
@@ -829,12 +850,6 @@ endif
 nnoremap <silent> ft :<C-u>TlistToggle<CR>
 " }}}
 
-" indent-guides {{{
-" let g:indent_guideson_vim_startup = 1
-let g:indent_guides_color_change_percent = 30
-let g:indent_guides_guide_size = 1
-" }}}
-
 " matchit {{{
 let b:match_words = &matchpairs . ",\<if\>:\<endif\>,\<:\>"
 let b:match_ignorecase = 1
@@ -880,11 +895,6 @@ let g:user_emmet_settings = {
     \ }
 " }}}
 
-" Align {{{
-" let g:Align_xstrlen = 3       " for japanese string
-" let g:DrChipTopLvlMenu = ''   " remove 'DrChip' menu
-" }}}
-
 " toggle {{{
 imap <C-t> <Plug>ToggleI
 nmap <C-t> <Plug>ToggleN
@@ -902,10 +912,6 @@ augroup END
 let g:netrw_nogx = 1
 nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
-"}}}
-
-" qtmplsel {{{
-" let g:qts_templatedir = $HOME.'/.vim/template'
 "}}}
 
 " quickrun {{{
