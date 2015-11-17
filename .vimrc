@@ -384,7 +384,10 @@ if neobundle#tap('unite.vim')
                     \ })
     endfunction
 
-    autocmd FileType unite call s:unite_my_settings()
+    augroup unite_my_settings
+        autocmd!
+        autocmd FileType unite call s:unite_my_settings()
+    augroup END
     function! s:unite_my_settings()
         let g:unite_enable_start_insert = 0
 
@@ -569,8 +572,11 @@ endfunction
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_start_level = 2
 let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#444433 ctermbg=black
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#333344 ctermbg=darkgray
+augroup indentGuidesSettings
+    autocmd!
+    autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#444433 ctermbg=black
+    autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#333344 ctermbg=darkgray
+augroup END
 let g:indent_guides_color_change_percent = 30
 let g:indent_guides_guide_size = 1
 " }}}
@@ -713,10 +719,13 @@ if s:meet_neocomplete_requirements()
     inoremap <expr><BS> neocomplete#smart_close_popup()."\<BS>"
 
     " オムニ補完を有効にする
-    autocmd FileType css           setlocal omnifunc=csscomplete#CompleteCSS
-    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
+    augroup OmnicompleteSettings
+        autocmd!
+        autocmd FileType css           setlocal omnifunc=csscomplete#CompleteCSS
+        autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+        autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
+        autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
+    augroup END
 
     " 重いオムニ補完を有効にする
     if !exists('g:neocomplete#sources#omni#input_patterns')
@@ -767,10 +776,13 @@ else
     let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 
     " FileType毎のOmni補完を設定
-    autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType css           setlocal omnifunc=csscomplete#CompleteCSS
-    autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
+    augroup OmnicompleteSettings
+        autocmd!
+        autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
+        autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+        autocmd FileType css           setlocal omnifunc=csscomplete#CompleteCSS
+        autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
+    augroup END
 
     " オムニ補完
     if !exists('g:neocomplcache_omni_patterns')
@@ -864,9 +876,12 @@ let g:tcomment_types = {
     \ 'php_surround' : "<?php %s ?>",
     \ 'php_surround_echo' : "<?php echo %s ?>"
     \ }
-autocmd FileType php imap <buffer><C-_>c :TCommentAs php_surround<CR>
-autocmd FileType php imap <buffer><C-_>= :TCommentAs php_surround_echo<CR>
-autocmd FileType php imap <buffer><C-_>e :TCommentAs php_surround_echo<CR>
+augroup TCommentSettings
+    autocmd!
+    autocmd FileType php imap <buffer><C-_>c :TCommentAs php_surround<CR>
+    autocmd FileType php imap <buffer><C-_>= :TCommentAs php_surround_echo<CR>
+    autocmd FileType php imap <buffer><C-_>e :TCommentAs php_surround_echo<CR>
+augroup END
 
 " <C-_>b ブロックコメント
 " <C-_>i 囲むようにコメント
@@ -1205,7 +1220,10 @@ set hidden                      " 編集中に他ファイルを開ける
 set pastetoggle=<Space>sp
 
 " フォーカスを失ったら保存
-autocmd FocusLost * :wa
+augroup SaveOnFocusLost
+    autocmd!
+    autocmd FocusLost * :wa
+augroup END
 
 " Web+DB Vol52 {{{
 " .vimrc を編集する
