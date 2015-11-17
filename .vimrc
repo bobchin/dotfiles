@@ -65,24 +65,24 @@ let g:mapleader=' '
 
 " vimproc:vim から非同期実行 {{{
 NeoBundle 'Shougo/vimproc', { 
-    \ 'build' : {
-    \     'cygwin' : 'make -f make_cygwin.mak',
-    \     'mac'    : 'make',
-    \     'linux'  : 'make',
-    \     'unix'   : 'gmake',
-    \     },
-    \ }
+\ 'build' : {
+\     'cygwin' : 'make -f make_cygwin.mak',
+\     'mac'    : 'make',
+\     'linux'  : 'make',
+\     'unix'   : 'gmake',
+\     },
+\ }
 " }}}
 
 " unite {{{
 " Unite vim bible 10-1
 NeoBundleLazy 'Shougo/unite.vim', {
-                \ 'depends': 'Shougo/neomru.vim',
-                \ 'commands': [{
-                \   'name': ['unite'],
-                \   'complete': 'vimshell,customlist,unite#complete_source',
-                \ }],
-                \ }
+\ 'depends': 'Shougo/neomru.vim',
+\ 'commands': [{
+\   'name': ['unite'],
+\   'complete': 'vimshell,customlist,unite#complete_source',
+\ }],
+\ }
 NeoBundleLazy 'thinca/vim-unite-history'
 NeoBundleLazy 'Shougo/unite-help'
 NeoBundleLazy 'tsukkee/unite-tag'
@@ -94,44 +94,44 @@ NeoBundle 'h1mesuke/vim-alignta'
 " vimfile {{{
 " vim のファイラー vim bible 2-2
 NeoBundleLazy 'Shougo/vimfiler', {
-            \ 'depends' : 'Shougo/unite.vim',
-            \ 'mappings' : '<Plug>',
-            \ 'explorer' : '^\h\w*:',
-            \ }
+\ 'depends' : 'Shougo/unite.vim',
+\ 'mappings' : '<Plug>',
+\ 'explorer' : '^\h\w*:',
+\ }
 " }}}
 
 " vim shell {{{
 " vim でシェル vim bible 6-11
 NeoBundle 'Shougo/vimshell.vim', {
-            \ 'mappings': '<Plug>',
-            \ 'commands': [{
-            \   'name': ['VimShell'],
-            \   'complete': 'customlist,vimshell#complete'
-            \ }],
-            \ }
+\ 'mappings': '<Plug>',
+\ 'commands': [{
+\   'name': ['VimShell'],
+\   'complete': 'customlist,vimshell#complete'
+\ }],
+\ }
 " }}}
 
 " Help {{{
 NeoBundleLazy 'vim-jp/vimdoc-ja', {
-            \ 'filetypes': 'help',
-            \ }
+\ 'filetypes': 'help',
+\ }
 NeoBundleLazy 'thinca/vim-ft-help_fold', {
-            \ 'filetype': 'help',
-            \ }
+\ 'filetype': 'help',
+\ }
 " }}}
 
 " 言語パック（言語毎のインデントとか構文のサポート） {{{
 NeoBundleLazy 'sheerun/vim-polyglot', {
-            \ 'filetypes': 'all',
-            \ }
+\ 'filetypes': 'all',
+\ }
 " }}}
 
 " 見た目 {{{
 " ステータスラインをきれいに表示
 NeoBundleLazy 'itchyny/lightline.vim', {
-            \ 'depends': 'tpope/vim-fugitive',
-            \ 'filetypes': 'all',
-            \ }
+\ 'depends': 'tpope/vim-fugitive',
+\ 'filetypes': 'all',
+\ }
 
 " colorscheme
 NeoBundle 'w0ng/vim-hybrid'
@@ -146,18 +146,18 @@ NeoBundle 'LeafCage/foldCC.vim'
 
 " スニペット入力 {{{
 NeoBundleLazy 'Shougo/neosnippet.vim', {
-            \ 'depends': [
-            \   'Shougo/neosnippet-snippets',
-            \   'Shougo/context_filetype.vim',
-            \ ],
-            \ 'insert': 1,
-            \ 'filetypes': 'snippet',
-            \ 'unite_sources': [
-            \   'neosnippet',
-            \   'neosnippet/user',
-            \   'neosnippet/runtime',
-            \ ],
-            \}
+\ 'depends': [
+\   'Shougo/neosnippet-snippets',
+\   'Shougo/context_filetype.vim',
+\ ],
+\ 'insert': 1,
+\ 'filetypes': 'snippet',
+\ 'unite_sources': [
+\   'neosnippet',
+\   'neosnippet/user',
+\   'neosnippet/runtime',
+\ ],
+\}
 " }}}
 
 " 入力補完 {{{
@@ -166,9 +166,9 @@ function! s:meet_neocomplete_requirements()
 endfunction
 if s:meet_neocomplete_requirements()
   NeoBundleLazy 'Shougo/neocomplete.vim', {
-              \ 'depends': 'Shougo/context_filetype.vim',
-              \ 'insert': 1,
-              \ }
+  \ 'depends': 'Shougo/context_filetype.vim',
+  \ 'insert': 1,
+  \ }
   NeoBundleFetch 'Shougo/neocomplcache.vim'
   NeoBundle 'violetyk/neocomplete-php.vim'
 else
@@ -225,8 +225,8 @@ NeoBundle 'yuku-t/vim-ref-ri'
 
 " Excite翻訳
 NeoBundle 'mattn/excitetranslate-vim', {
-  \ 'depends': 'mattn/webapi-vim'
-  \ }
+\ 'depends': 'mattn/webapi-vim'
+\ }
 " }}}
 
 " ctags {{{
@@ -339,10 +339,6 @@ NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'banyan/recognize_charcode.vim'
 " }}}
 
-" 正規表現で検索 :M/ | :S | :G {{{
-" NeoBundle 'othree/eregex.vim'
-" }}}
-
 " region {{{
 NeoBundle 'terryma/vim-expand-region'
 " }}}
@@ -379,9 +375,9 @@ NeoBundleCheck
 if neobundle#tap('unite.vim')
     function! neobundle#hooks.on_source(bundle)
         call unite#custom#profile('default', 'context', {
-                    \ 'auto_select': 0,
-                    \ 'start_insert': 0,
-                    \ })
+        \ 'auto_select': 0,
+        \ 'start_insert': 0,
+        \ })
     endfunction
 
     augroup unite_my_settings
@@ -427,8 +423,8 @@ nnoremap <silent> [unite]l :<C-u>Unite alignta<CR>
 if neobundle#tap('vimfiler.vim')
     function! neobundle#hooks.on_source(bundle)
         call vimfiler#custom#profile('default', 'context', {
-                    \ 'safe': 0,
-                    \ })
+        \ 'safe': 0,
+        \ })
     endfunction
 endif
 
@@ -502,22 +498,22 @@ endif
 "
 " 'active': 左側表示を[モード+Paste][Gitリポジトリ+ファイル名]にする
 let g:lightline = {
-            \ 'colorscheme': 'jellybeans',
-            \ 'mod_map': {'c': 'NORMAL'},
-            \ 'active': {
-            \     'left': [ ['mode', 'paste'], ['fugitive', 'filename']]
-            \ },
-            \ 'component_function': {
-            \     'modified'     : 'LightLineModified',
-            \     'readonly'     : 'LightLineReadonly',
-            \     'fugitive'     : 'LightLineFugitive',
-            \     'filename'     : 'LightLineFilename',
-            \     'fileformat'   : 'LightLineFileformat',
-            \     'filetype'     : 'LightLineFiletype',
-            \     'fileencoding' : 'LightLineFileencoding',
-            \     'mode'         : 'LightLineMode',
-            \ },
-            \ }
+\ 'colorscheme': 'jellybeans',
+\ 'mod_map': {'c': 'NORMAL'},
+\ 'active': {
+\     'left': [ ['mode', 'paste'], ['fugitive', 'filename']]
+\ },
+\ 'component_function': {
+\     'modified'     : 'LightLineModified',
+\     'readonly'     : 'LightLineReadonly',
+\     'fugitive'     : 'LightLineFugitive',
+\     'filename'     : 'LightLineFilename',
+\     'fileformat'   : 'LightLineFileformat',
+\     'filetype'     : 'LightLineFiletype',
+\     'fileencoding' : 'LightLineFileencoding',
+\     'mode'         : 'LightLineMode',
+\ },
+\ }
 
 " モード表示(表示幅が狭ければ表示しない)
 " 変更状態(変更されていれば"+"、変更できない場合は"-")
@@ -544,11 +540,11 @@ endfunction
 " ファイル名(前後に読み込み専用と変更状態を挿入する)
 function! LightLineFilename()
     return ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
-        \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
-        \  &ft == 'unite' ? unite#get_status_string() :
-        \  &ft == 'vimshell' ? vimshell#get_status_string() :
-        \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
-        \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
+    \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+    \  &ft == 'unite' ? unite#get_status_string() :
+    \  &ft == 'vimshell' ? vimshell#get_status_string() :
+    \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+    \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
 endfunction
 
 function! LightLineFileformat()
@@ -680,11 +676,11 @@ if s:meet_neocomplete_requirements()
     
     " 辞書補完の辞書を指定。filetype:辞書ファイル名
     let g:neocomplete#sources#dictionary#dictionaries = {
-        \ 'default' : '',
-        \ 'vimshell' : $HOME.'/.vimshell_hist',
-        \ 'javascript' : $HOME.'/.vim/dict/jacascript.dict',
-        \ 'php' : $HOME.'/.vim/dict/php.dict',
-        \ }
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'javascript' : $HOME.'/.vim/dict/jacascript.dict',
+    \ 'php' : $HOME.'/.vim/dict/php.dict',
+    \ }
 
     " キーワードの定義
     if !exists('g:neocomplete#keyword_patterns')
@@ -764,10 +760,10 @@ else
 
     " 辞書補完の辞書を指定。filetype:辞書ファイル名
     let g:neocomplcache_dictionary_filetype_lists = {
-        \ 'default' : '',
-        \ 'javascript' : $HOME.'/.vim/dict/jacascript.dict',
-        \ 'php' : $HOME.'/.vim/dict/php.dict',
-        \ }
+    \ 'default' : '',
+    \ 'javascript' : $HOME.'/.vim/dict/jacascript.dict',
+    \ 'php' : $HOME.'/.vim/dict/php.dict',
+    \ }
 
     " Define keyword.
     if !exists('g:neocomplcache_keyword_patterns')
@@ -873,9 +869,9 @@ if !exists( 'g:tcomment_types' )
   let g:tcomment_types = {}
 endif
 let g:tcomment_types = {
-    \ 'php_surround' : "<?php %s ?>",
-    \ 'php_surround_echo' : "<?php echo %s ?>"
-    \ }
+\ 'php_surround' : "<?php %s ?>",
+\ 'php_surround_echo' : "<?php echo %s ?>"
+\ }
 augroup TCommentSettings
     autocmd!
     autocmd FileType php inoremap <buffer><C-_>c :TCommentAs php_surround<CR>
@@ -894,21 +890,21 @@ vnoremap <Leader>/ :TComment<CR>
 " <C-y>,
 " let g:user_zen_settings = {
 let g:user_emmet_settings = {
-    \ 'lang' : 'ja',
-    \ 'indentation' : '    ',
-    \ 'javascript' : {
-    \     'snippets' : {
-    \         'jq' : "$function(){\n\t${cursor}${child}\n};",
-    \         'jq:each' : "$.each(${cursor}, function(index, item){\n\t${child}\n});",
-    \         'fn' : "(function(){\n\t${cursor}\n})();",
-    \         'tm' : "setTimeout(function(){\n\t${cursor}\n}, 100);",
-    \     },
-    \ },
-    \ 'php' : {
-    \     'extends' : 'html',
-    \     'filters' : 'html',
-    \ },
-    \ }
+\ 'lang' : 'ja',
+\ 'indentation' : '    ',
+\ 'javascript' : {
+\     'snippets' : {
+\         'jq' : "$function(){\n\t${cursor}${child}\n};",
+\         'jq:each' : "$.each(${cursor}, function(index, item){\n\t${child}\n});",
+\         'fn' : "(function(){\n\t${cursor}\n})();",
+\         'tm' : "setTimeout(function(){\n\t${cursor}\n}, 100);",
+\     },
+\ },
+\ 'php' : {
+\     'extends' : 'html',
+\     'filters' : 'html',
+\ },
+\ }
 " }}}
 
 " toggle {{{
@@ -935,42 +931,42 @@ vmap gx <Plug>(openbrowser-smart-search)
 " 横分割するようにする
 " nnoremap <Leader>r :Quickrun<CR>
 let g:quickrun_config = {
-    \ '_': {
-    \   'hook/close_unite_quickfix/enable_hook_loaded': 1,
-    \   'hook/unite_quickfix/enable_failure': 1,
-    \   'hook/close_quickfix/enable_exit': 1,
-    \   'hook/close_buffer/enable_failure': 1,
-    \   'hook/close_buffer/enable_empty_data': 1,
-    \   'runner': 'vimproc',
-    \   'runner/vimproc/updatetime': 40,
-    \   'outputter': 'multi:buffer:quickfix',
-    \   'outputter/buffer/split': ':botright',
-    \ },
-    \ 'watchdogs_checker': {
-    \   '_': {
-    \     'hook/close_quickfix/enable_exit': 1,
-    \     'hook/back_window/enable_exit': 1,
-    \     'hook/back_window/priority_exit': 1,
-    \     'hook/quickfix_status_enable/enable_exit': 1,
-    \     'hook/quickfix_status_enable/priority_exit':1,
-    \   },
-    \   'php': {
-    \     'command': 'php',
-    \     'exec': '%c -d error_reporting=E_ALL -d display_errors=1 -d display_startup_errors=1 -d log_errors=0 -d xdebug.cli_color=0 -l %o %s:p',
-    \     'errorformat': '%m\ in\ %f\ on\ line\ %l',
-    \   },
-    \ },
-    \ 'markdown': {
-    \   'outputter': 'browser',
-    \ },
-    \ }
+\ '_': {
+\   'hook/close_unite_quickfix/enable_hook_loaded': 1,
+\   'hook/unite_quickfix/enable_failure': 1,
+\   'hook/close_quickfix/enable_exit': 1,
+\   'hook/close_buffer/enable_failure': 1,
+\   'hook/close_buffer/enable_empty_data': 1,
+\   'runner': 'vimproc',
+\   'runner/vimproc/updatetime': 40,
+\   'outputter': 'multi:buffer:quickfix',
+\   'outputter/buffer/split': ':botright',
+\ },
+\ 'watchdogs_checker': {
+\   '_': {
+\     'hook/close_quickfix/enable_exit': 1,
+\     'hook/back_window/enable_exit': 1,
+\     'hook/back_window/priority_exit': 1,
+\     'hook/quickfix_status_enable/enable_exit': 1,
+\     'hook/quickfix_status_enable/priority_exit':1,
+\   },
+\   'php': {
+\     'command': 'php',
+\     'exec': '%c -d error_reporting=E_ALL -d display_errors=1 -d display_startup_errors=1 -d log_errors=0 -d xdebug.cli_color=0 -l %o %s:p',
+\     'errorformat': '%m\ in\ %f\ on\ line\ %l',
+\   },
+\ },
+\ 'markdown': {
+\   'outputter': 'browser',
+\ },
+\ }
 
 " ファイル書き込み時にチェックするかどうか
 let g:watchdogs_check_BufWritePost_enable = 0
 " ファイルタイプ毎の設定
 let g:watchdogs_check_BufWritePost_enables = {
-    \   'php': 1,
-    \ }
+\   'php': 1,
+\ }
 " キー入力がなかったらチェックする
 let g:watchdogs_checkCursorHold_enable = 1
 "}}}
@@ -1045,6 +1041,7 @@ set shiftwidth=4                " インデント１つ分の空白文字の数
 set tabstop=4                   " tab 文字を表示するときに使用する空白文字の数
 set softtabstop=0               " 編集で tab 文字の幅として使用する空白文字の数（0で無効にする）
 set expandtab                   " 挿入モード時にtab文字を使用しないで空白文字を使用する
+let g:vim_indent_cont = 0
 " if has("autocmd")
 "   "ファイルタイプの検索を有効にする
 "   filetype plugin on
