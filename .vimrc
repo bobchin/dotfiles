@@ -878,16 +878,16 @@ let g:tcomment_types = {
     \ }
 augroup TCommentSettings
     autocmd!
-    autocmd FileType php imap <buffer><C-_>c :TCommentAs php_surround<CR>
-    autocmd FileType php imap <buffer><C-_>= :TCommentAs php_surround_echo<CR>
-    autocmd FileType php imap <buffer><C-_>e :TCommentAs php_surround_echo<CR>
+    autocmd FileType php inoremap <buffer><C-_>c :TCommentAs php_surround<CR>
+    autocmd FileType php inoremap <buffer><C-_>= :TCommentAs php_surround_echo<CR>
+    autocmd FileType php inoremap <buffer><C-_>e :TCommentAs php_surround_echo<CR>
 augroup END
 
 " <C-_>b ブロックコメント
 " <C-_>i 囲むようにコメント
 " Space + / コメントをトグル
-nmap <Leader>/ <C-_><C-_>
-vmap <Leader>/ <C-_><C-_>
+nnoremap <Leader>/ :TComment<CR>
+vnoremap <Leader>/ :TComment<CR>
 " }}}
 
 " emmet/Zencoding {{{
