@@ -4,7 +4,8 @@
 " http://yuroyoro.hatenablog.com/entries/2012/02/11
 " https://github.com/yuroyoro/dotfiles
 " ---------------------------------------------------------------------
-
+set encoding=utf-8
+scriptencoding utf-8
 
 " NeoBundle プラグインの指定 {{{
 
@@ -37,8 +38,8 @@ if has('vim_starting')
   set rtp+=~/.vim/bundle/neobundle.vim/
 endif
 
-let vundle_readme=expand('~/.vim/bundle/neobundle.vim/README.md')
-if !filereadable(vundle_readme)
+let s:vundle_readme=expand('~/.vim/bundle/neobundle.vim/README.md')
+if !filereadable(s:vundle_readme)
   echo "Installing NeoBundle..."
   echo ""
   silent !mkdir -p ~/.vim/bundle
@@ -59,7 +60,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " }}}
 
 " <Leader> をスペースにする<Space>ではうまく動かない {{{
-let mapleader=' '
+let g:mapleader=' '
 " }}}
 
 " vimproc:vim から非同期実行 {{{
@@ -842,9 +843,9 @@ nnoremap <C-i>k :<C-u>Ref webdict <C-r><C-w><Enter>
 
 " taglist {{{
 if (executable('/usr/bin/ctags'))
-  let Tlist_Ctags_Cmd = '/usr/bin/ctags'
+  let g:Tlist_Ctags_Cmd = '/usr/bin/ctags'
 elseif (executable('/usr/local/bin/ctags'))
-  let Tlist_Ctags_Cmd = '/usr/local/bin/ctags'
+  let g:Tlist_Ctags_Cmd = '/usr/local/bin/ctags'
 endif
 
 nnoremap <silent> ft :<C-u>TlistToggle<CR>
@@ -1001,11 +1002,9 @@ let g:html_indent_style1 = "inc"
 " Basic Settings {{{
 
 " 文字コード {{{
-set encoding=utf-8                " vim 内部文字コード
-set ffs=unix,dos,mac              "
+set fileformats=unix,dos,mac
 " set fencs=                      " 空白設定すると常に enc で開く
 set langmenu=japanese
-scriptencoding utf-8
 
 " 以下のファイルの時は文字コードをutf-8に設定
 " autocmd FileType js :set fileencoding=utf-8
