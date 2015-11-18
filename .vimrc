@@ -89,6 +89,7 @@ NeoBundleLazy 'tsukkee/unite-tag'
 NeoBundleLazy 'osyo-manga/unite-quickfix'
 NeoBundleLazy 'osyo-manga/unite-filetype'
 NeoBundle 'h1mesuke/vim-alignta'
+NeoBundle 'cohama/agit.vim'
 " }}}
 
 " vimfile {{{
@@ -378,6 +379,8 @@ if neobundle#tap('unite.vim')
         \ 'auto_select': 0,
         \ 'start_insert': 0,
         \ })
+        
+        call unite#custom#action('file,cdable', 'agit', s:agit_action)
     endfunction
 
     augroup unite_my_settings
@@ -391,6 +394,16 @@ if neobundle#tap('unite.vim')
         inoremap <silent> <buffer> <expr> <C-l> unite#do_action('split')
         nnoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
         inoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
+    endfunction
+
+    let s:agit_action = {}
+    function! s:agit_action.func(dir)
+        if isdirectory(a:dir.word)
+            let s:dir = fnamemodify(a:dir.word, ':p')
+        else
+            let s:dir = fnamemodify(a:dir.word, ':p:h')
+        endif
+        execute 'Agit --dir=' . s:dir
     endfunction
 
     call neobundle#untap()
