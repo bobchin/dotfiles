@@ -456,7 +456,7 @@ nnoremap <Leader>sh :<C-u>VimShell<CR>
 set helplang=ja
 
 " キーマッピング
-nnoremap <C-i> :<C-u>Unite -start-insert help<CR>
+nnoremap <C-i> :<C-u>Unite help<CR>
 nnoremap <C-i><C-i> :<C-u>UniteWithCursorWord help<CR>
 
 " 'K' でヘルプを開く
