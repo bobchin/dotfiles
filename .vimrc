@@ -456,7 +456,7 @@ nnoremap <Leader>sh :<C-u>VimShell<CR>
 set helplang=ja
 
 " キーマッピング
-nnoremap <C-i> :<C-u>Unite -start-insert help<CR>
+nnoremap <C-i> :<C-u>Unite help<CR>
 nnoremap <C-i><C-i> :<C-u>UniteWithCursorWord help<CR>
 
 " 'K' でヘルプを開く
@@ -1115,10 +1115,13 @@ syntax on                       " シンタックスの色付けを有効
 set ruler                       " 左下に行列位置を表示
 set showcmd                     " 入力中のコマンドを右下に表示
 set showmatch                   " カッコの入力で対応するカッコを一瞬強調
+set matchtime=1
 " set splitbelow                  " split で新規ウィンドウは下側に
 set splitright                  " vsplit で新規ウィンドウは右側に
 set title                       " ウィンドウタイトルを書き換える
 set number                      " 行番号を表示する
+set display=lastline
+set pumheight=10                " 補完候補の表示枠の大きさ
 
 " カーソル行を強調表示
 set cursorline
@@ -1219,6 +1222,13 @@ vnoremap <S-Tab> <gv
 " ウィンドウ分割
 noremap <Leader>h :split<CR>
 noremap <Leader>v :vsplit<CR>
+
+" 'Y' の動作を変更
+nnoremap Y y$
+
+" 数字のインクリメント・デクリメント
+nnoremap + <C-a>
+nnoremap - <C-x>
 "}}}
 
 " その他 {{{
