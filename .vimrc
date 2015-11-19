@@ -235,6 +235,19 @@ NeoBundle 'taglist.vim'
 " }}}
 
 " テキストオブジェクト {{{
+" ixxx, axxx xxxはテキストオブジェクトが入る。
+" 意味は i:inner a:a
+" aw iw             | 単語（iskeyword）
+" aW iW             | 単語（空白区切り）
+" as is             | 分（sentence）
+" ap ip             | 段落（paragraph）
+" a[ a] i[ i]       | [
+" a( a) i( i) ib    | (
+" a< a> i< i>       | <
+" at it             | Htmlタグ（tag）
+" a{ a} aB i{ i} iB | {
+" a" a' a` i" i' i` | " ' ``
+" 
 " テキストオブジェクトを囲んだりする vim bible 5-14
 " ys{motion}{surround}            : surround で囲む
 " ds{surround}                    : surround を削除する
