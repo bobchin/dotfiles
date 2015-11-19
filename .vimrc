@@ -1251,6 +1251,10 @@ set hidden                      " 編集中に他ファイルを開ける
 
 " set paste をトグル
 set pastetoggle=<Space>sp
+augroup OffPasteOnInserLeave
+    autocmd!
+    autocmd InsertLeave * set nopaste
+augroup END
 
 " フォーカスを失ったら保存
 augroup SaveOnFocusLost
