@@ -1117,7 +1117,6 @@ set noswapfile
 
 " 表示 {{{
 set background=dark             " 背景の明るさ。light or dark
-syntax on                       " シンタックスの色付けを有効
 set ruler                       " 左下に行列位置を表示
 set showcmd                     " 入力中のコマンドを右下に表示
 set showmatch                   " カッコの入力で対応するカッコを一瞬強調
@@ -1162,6 +1161,9 @@ set ttymouse=xterm2
 if has('mac')
     let g:hybrid_use_iTerm_colors = 1
 endif
+
+" syntax と colorschemeの設定順を変えないこと
+syntax on
 colorscheme hybrid
 "}}}
 
