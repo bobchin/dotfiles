@@ -141,6 +141,8 @@ NeoBundle 'w0ng/vim-hybrid'
 
 " <LeVader>ig でインデントガイドのトグル vim bible 4-14
 NeoBundle 'nathanaelkane/vim-indent-guides'
+
+NeoBundle 't9md/vim-quickhl'
 " }}}
 
 " folding {{{
@@ -603,6 +605,13 @@ augroup indentGuidesSettings
 augroup END
 let g:indent_guides_color_change_percent = 30
 let g:indent_guides_guide_size = 1
+" }}}
+
+" quickhl {{{
+nmap <Leader>m <Plug>(quickhl-manual-this)
+xmap <Leader>m <Plug>(quickhl-manual-this)
+nmap <Leader>M <Plug>(quickhl-manual-reset)
+xmap <Leader>M <Plug>(quickhl-manual-reset)
 " }}}
 
 " folding {{{
