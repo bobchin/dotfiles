@@ -29,21 +29,23 @@ scriptencoding utf-8
 " vim-tiny か vim-small の場合は初期化しない
 if 0 | endif
 
+let s:bundle_dir = '~/.vim/bundle/'
+let s:neobundle_dir = s:bundle_dir . 'neobundle.vim/'
+
 if has('vim_starting')
   if &compatible
     " vi との互換性をもたない
     set nocompatible
   endif
 
-  set rtp+=~/.vim/bundle/neobundle.vim/
+  let &runtimepath .= ','.s:neobundle_dir
 endif
 
-let s:vundle_readme=expand('~/.vim/bundle/neobundle.vim/README.md')
+let s:vundle_readme=expand(s:neobundle_dir . 'README.md')
 if !filereadable(s:vundle_readme)
-  echo "Installing NeoBundle..."
-  echo ""
-  silent !mkdir -p ~/.vim/bundle
-  silent !git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim/
+  echo "Installing NeoBundle...\n"
+  silent execute '!mkdir -p ' . s:bundle_dir
+  silent execute '!git clone https://github.com/Shougo/neobundle.vim ' . s:neobundle_dir
 endif
 " }}}
 
@@ -1069,11 +1071,6 @@ set softtabstop=0               " 編集で tab 文字の幅として使用す�
 set expandtab                   " 挿入モード時にtab文字を使用しないで空白文字を使用する
 let g:vim_indent_cont = 0
 " if has("autocmd")
-"   "ファイルタイプの検索を有効にする
-"   filetype plugin on
-"   "そのファイルタイプにあわせたインデントを利用する
-"   filetype indent on
-"
 "   autocmd FileType apache     setlocal sw=4 sts=4 ts=4 et
 "   autocmd FileType c          setlocal sw=4 sts=4 ts=4 et
 "   autocmd FileType cs         setlocal sw=4 sts=4 ts=4 et
@@ -1090,10 +1087,6 @@ let g:vim_indent_cont = 0
 "   autocmd FileType xml        setlocal sw=4 sts=4 ts=4 et
 "   autocmd FileType zsh        setlocal sw=4 sts=4 ts=4 et
 " endif
-"ファイルタイプの検索を有効にする
-filetype plugin on
-"そのファイルタイプにあわせたインデントを利用する
-filetype indent on
 "}}}
 
 " 削除 {{{
