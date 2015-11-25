@@ -190,8 +190,6 @@ NeoBundle 'cohama/lexima.vim'
 " Git {{{
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
-NeoBundle 'gregsexton/gitv'
-NeoBundle 'extradite.vim'
 " }}}
 
 " php {{{
