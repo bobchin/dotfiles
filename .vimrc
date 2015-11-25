@@ -182,6 +182,11 @@ else
 endif
 " }}}
 
+" 入力補助 {{{
+NeoBundle 'kana/vim-smartchr'
+NeoBundle 'cohama/lexima.vim'
+" }}}
+
 " Git {{{
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
@@ -852,6 +857,24 @@ else
 endif
 " }}}
 
+" smartchr/lexima {{{
+inoremap <expr>= smartchr#loop('=', ' = ', ' == ', ' === ')
+inoremap <expr>+ smartchr#loop('+', ' + ', '++')
+inoremap <expr>- smartchr#loop('-', ' - ', '--')
+inoremap <expr>/ smartchr#loop('/', ' / ', '// ')
+inoremap <expr>* smartchr#loop('*', ' * ')
+inoremap <expr>% smartchr#loop('%', ' % ')
+inoremap <expr>& smartchr#loop('&', ' & ', ' && ')
+inoremap <expr><Bar> smartchr#loop('<Bar>', ' <Bar> ', ' <Bar><Bar> ')
+inoremap <expr>, smartchr#loop(',', ', ')
+
+let g:lexima_no_default_rules     = 0
+let g:lexima_enable_basic_rules   = 1
+let g:lexima_enable_newline_rules = 0
+let g:lexima_enable_space_rules   = 1
+let g:lexima_enable_endwise_rules = 1
+" }}}
+
 " vim-ref {{{
 " S-k でマニュアル検索
 let g:ref_phpmanual_path = $HOME . '/.vim/reference/php/'
@@ -1187,13 +1210,6 @@ set history=1000                " コマンドの履歴数
 "}}}
 
 " 入力 {{{
-inoremap {} {}<Left>
-inoremap [] []<Left>
-inoremap () ()<Left>
-inoremap "" ""<Left>
-inoremap '' ''<Left>
-inoremap <> <><Left>
-
 " insert mode での移動
 inoremap <C-e> <END>
 inoremap <C-a> <HOME>
