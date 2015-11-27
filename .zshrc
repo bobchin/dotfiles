@@ -377,22 +377,6 @@ alias mv="mv -i"
 alias w3m="w3m -s"
 alias vi="vim"
 
-alias man="jman"
-
-# for git
-alias gs='git status '
-alias ga='git add '
-alias gaa='git add -A'
-alias gb='git branch '
-alias gc='git commit'
-alias gd='git diff'
-alias go='git checkout '
-alias gk='gitk --all&'
-alias gx='gitx --all'
-
-alias got='git '
-alias get='git '
-
 
 # ウィンドウタイトル
 ## 実行中のコマンドとユーザ名とホスト名とカレントディレクトリを表示。
