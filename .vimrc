@@ -131,7 +131,7 @@ NeoBundleLazy 'sheerun/vim-polyglot', {
 
 " 見た目 {{{
 " ステータスラインをきれいに表示
-NeoBundleLazy 'itchyny/lightline.vim', {
+NeoBundle 'itchyny/lightline.vim', {
 \ 'depends': 'tpope/vim-fugitive',
 \ 'filetypes': 'all',
 \ }
@@ -1237,8 +1237,8 @@ nnoremap ; :
 " insert mode 時 <C-w> で保存
 inoremap <C-w> <Esc>:<C-u>w<Enter>a
 
-" insert mode 時 jj でノーマルモードへ
-inoremap jj <ESC>
+" insert mode 時 C-j でノーマルモードへ
+inoremap <C-j> <ESC>
 
 " insert mode 時 Enter で途中改行
 " inoremap <Enter> <Esc>o
