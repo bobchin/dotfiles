@@ -856,14 +856,14 @@ endif
 " }}}
 
 " smartchr/lexima {{{
-inoremap <expr>= smartchr#loop('=', ' = ', ' == ', ' === ')
-inoremap <expr>+ smartchr#loop('+', ' + ', '++')
-inoremap <expr>- smartchr#loop('-', ' - ', '--')
-inoremap <expr>/ smartchr#loop('/', ' / ', '// ')
+inoremap <expr>= smartchr#loop('=', '==', ' = ', ' == ', ' === ')
+inoremap <expr>+ smartchr#loop('+', '++', ' + ')
+inoremap <expr>- smartchr#loop('-', '--', ' - ')
+inoremap <expr>/ smartchr#loop('/', '//', ' / ', '// ')
 inoremap <expr>* smartchr#loop('*', ' * ')
 inoremap <expr>% smartchr#loop('%', ' % ')
-inoremap <expr>& smartchr#loop('&', ' & ', ' && ')
-inoremap <expr><Bar> smartchr#loop('<Bar>', ' <Bar> ', ' <Bar><Bar> ')
+inoremap <expr>& smartchr#loop('&', '&&', ' & ', ' && ')
+inoremap <expr><Bar> smartchr#loop('<Bar>', '<Bar><Bar>', ' <Bar> ', ' <Bar><Bar> ')
 inoremap <expr>, smartchr#loop(',', ', ')
 
 let g:lexima_no_default_rules     = 0
