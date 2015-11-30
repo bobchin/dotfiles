@@ -1161,17 +1161,24 @@ set pumheight=10                " 補完候補の表示枠の大きさ
 " カーソル行を強調表示
 set cursorline
 
-" 全角スペースの表示
-scriptencoding utf-8
-augroup highlightIdegraphicSpace
-    autocmd!
-    autocmd ColorScheme * highlight IdegraphicSpace term=underline ctermbg=lightblue guibg=darkblue
-    autocmd VimEnter,WinEnter * match IdegraphicSpace /　/
-augroup END
-
 " http://vim-users.jp/2009/07/hack40/
 set list
 set listchars=tab:>.,trail:_,nbsp:%,extends:>,precedes:<
+
+" 全角スペースの表示
+function! ZenkakuSpace()
+    highlight ZenkakuSpace term=underline ctermbg=lightblue gui=underline guibg=darkblue
+endfunction
+
+if has('syntax')
+    augroup ZenkakuSpace
+        autocmd!
+        autocmd ColorScheme * call ZenkakuSpace()
+        autocmd VimEnter,WinEnter,BufWinEnter * let w:m1 = matchadd('ZenkakuSpace', '　')
+        " autocmd VimEnter,WinEnter,BufWinEnter * let w:m1 = matchadd('ZenkakuSpace', '\%u3000')
+    augroup END
+    call ZenkakuSpace()
+endif
 
 if !has('gui_running')
     set t_Co=256
