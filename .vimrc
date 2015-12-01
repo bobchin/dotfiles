@@ -712,7 +712,7 @@ if s:meet_neocomplete_requirements()
     inoremap <expr><BS> neocomplete#smart_close_popup()."\<BS>"
 
     function! s:my_cr_function()
-        " return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+        " return (pumvisible() ? "\<C-y>" : "") . "\<CR>"
         " For no inserting <CR> key.
         return pumvisible() ? "\<C-y>" : "\<CR>"
     endfunction
