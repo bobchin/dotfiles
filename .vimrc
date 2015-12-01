@@ -198,10 +198,6 @@ NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'arnaud-lb/vim-php-namespace'
 " }}}
 
-" javascript {{{
-" NeoBundle 'scrooloose/syntastic'
-" }}}
-
 " HTML {{{
 NeoBundle 'amirh/HTML-AutoCloseTag'
 NeoBundle 'hail2u/vim-css3-syntax'
@@ -210,35 +206,6 @@ NeoBundle 'tpope/vim-haml'
 " <C-y>, で展開する vim bible 9-7
 " NeoBundle 'mattn/zencoding-vim'
 NeoBundle 'mattn/emmet-vim'
-" }}}
-
-" Ruby {{{
-NeoBundle 'thoughtbot/vim-rspec'
-NeoBundle 'majutsushi/tagbar'
-" }}}
-
-" SQL {{{
-" NeoBundle 'dbext.vim'
-" }}}
-
-" ドキュメント管理 {{{
-" <S-k>でカーソル上のキーワードを参照する vim bible 6-5
-NeoBundle 'thinca/vim-ref'
-NeoBundle 'yuku-t/vim-ref-ri'
-
-" jQuery のリファレンス
-" NeoBundle 'mojako/ref-sources.vim'
-"javascript のリファレンス
-" NeoBundle 'tokuhirom/jsref'
-
-" Excite翻訳
-NeoBundle 'mattn/excitetranslate-vim', {
-\ 'depends': 'mattn/webapi-vim'
-\ }
-" }}}
-
-" ctags {{{
-NeoBundle 'taglist.vim'
 " }}}
 
 " テキストオブジェクト {{{
@@ -1003,24 +970,6 @@ let g:watchdogs_check_BufWritePost_enables = {
 \ }
 " キー入力がなかったらチェックする
 let g:watchdogs_checkCursorHold_enable = 1
-"}}}
-
-" CakePHP {{{
-" let g:cakephp_enable_fix_mode = 1
-" let g:cakephp_app = ""
-" let g:cakephp_enable_auto_mode = 1
-"
-" nnoremap <Leader>ca :Cakephp<Space>./<CR>
-" nnoremap <Leader>cc :Ccontroller<Space>
-" nnoremap <Leader>cm :Cmodel<Space>
-" nnoremap <Leader>cv :Cview<Space>
-" nnoremap <Leader>cs :Cshell<Space>
-" nnoremap <Leader>ct :Ctask<Space>
-" nnoremap <Leader>ccf :Cconfig<Space>
-" nnoremap <Leader>cf :Cconfig<Space>
-" nnoremap <Leader>ccp :Ccomponent<Space>
-" nnoremap <Leader>cp :Ccomponent<Space>
-" nnoremap <Leader>cl :Clog<Space>
 "}}}
 
 " YankRing {{{
