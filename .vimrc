@@ -1152,6 +1152,8 @@ vnoremap <S-Tab> <gv
 " ウィンドウ分割
 noremap <Leader>h :split<CR>
 noremap <Leader>v :vsplit<CR>
+nnoremap <C-w>- :split<CR>
+nnoremap <C-w><Bar> :vsplit<CR>
 
 " 'Y' の動作を変更
 nnoremap Y y$
