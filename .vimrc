@@ -123,6 +123,18 @@ NeoBundleLazy 'thinca/vim-ft-help_fold', {
 \ }
 " }}}
 
+" 辞書参照 {{{
+" <S-k>でカーソル上のキーワードを参照する vim bible 6-5
+NeoBundle 'thinca/vim-ref'
+NeoBundle 'mmisono/ref-dicts-en'
+NeoBundleLazy 'mattn/excitetranslate-vim', {
+\ 'depends': 'mattn/webapi-vim',
+\ 'autoload': { 'command': ['ExciteTranslate'] },
+\ }
+
+NeoBundle 'taglist.vim'
+" }}}
+
 " 言語パック（言語毎のインデントとか構文のサポート） {{{
 NeoBundleLazy 'sheerun/vim-polyglot', {
 \ 'filetypes': 'all',
@@ -476,6 +488,44 @@ function! s:MoveToNewTab()
 endfunction
 " }}}
 
+" vim-ref {{{
+" S-k でマニュアル検索
+let g:ref_phpmanual_path = $HOME . '/.vim/reference/php/'
+
+" webdict
+let g:ref_source_webdict_sites = {
+\   'eijiro': {
+\     'url': 'http://eow.alc.co.jp/search?q=%s',
+\   },
+\ }
+let g:ref_source_webdict_sites.default = 'eijiro'
+" 出力に対するフィルタ
+function! g:ref_source_webdict_sites.eijiro.filter(output)
+    return join(split(a:output, "\n")[35 :], "\n")
+endfunction
+
+" ヘルプをqで閉じる
+augroup CloseHelpWithQRef
+    autocmd!
+    autocmd FileType ref-* nnoremap <buffer><silent>q :<C-u>close<CR>
+    autocmd BufEnter ==Translate==\ Excite nnoremap <buffer><silent>q :<C-u>close<CR>
+augroup END
+
+" カーソル下のキーワードをヘルプでひく
+nnoremap <C-i>k :<C-u>Ref webdict <C-r><C-w><CR>
+nnoremap <C-i>e :ExciteTranslate<CR>
+" }}}
+
+" taglist {{{
+if (executable('/usr/bin/ctags'))
+  let g:Tlist_Ctags_Cmd = '/usr/bin/ctags'
+elseif (executable('/usr/local/bin/ctags'))
+  let g:Tlist_Ctags_Cmd = '/usr/local/bin/ctags'
+endif
+
+nnoremap <silent> ft :<C-u>TlistToggle<CR>
+" }}}
+
 " lightline {{{
 " http://itchyny.hatenablog.com/entry/20130828/1377653592
 " http://itchyny.hatenablog.com/entry/20130917/1379369171
@@ -813,51 +863,7 @@ let g:lexima_no_default_rules     = 0
 let g:lexima_enable_basic_rules   = 1
 let g:lexima_enable_newline_rules = 0
 let g:lexima_enable_space_rules   = 1
-let g:lexima_enable_endwise_rules = 1
-" }}}
-
-" vim-ref {{{
-" S-k でマニュアル検索
-let g:ref_phpmanual_path = $HOME . '/.vim/reference/php/'
-
-" webdict
-let g:ref_source_webdict_sites = {
-\   'eijiro': {
-\     'url': 'http://eow.alc.co.jp/search?q=%s',
-\   },
-\   'longman': {
-\     'url': 'http://www.ldoceonline.com/dictionary/%s_1',
-\   },
-\ }
-let g:ref_source_webdict_sites.default = 'eijiro'
-" 出力に対するフィルタ
-function! g:ref_source_webdict_sites.eijiro.filter(output)
-    return join(split(a:output, "\n")[35 :], "\n")
-endfunction
-function! g:ref_source_webdict_sites.longman.filter(output)
-    return join(split(a:output, "\n")[17 :], "\n")
-endfunction
-
-" ヘルプをqで閉じる
-augroup CloseHelpWithQRef
-    autocmd!
-    autocmd FileType ref-phpmanual nnoremap <buffer>q :<C-u>q<CR>
-    autocmd FileType ref-webdict nnoremap <buffer>q :<C-u>q<CR>
-    autocmd FileType ref-refe nnoremap <buffer>q :<C-u>q<CR>
-augroup END
-
-" カーソル下のキーワードをヘルプでひく
-nnoremap <C-i>k :<C-u>Ref webdict <C-r><C-w><Enter>
-" }}}
-
-" taglist {{{
-if (executable('/usr/bin/ctags'))
-  let g:Tlist_Ctags_Cmd = '/usr/bin/ctags'
-elseif (executable('/usr/local/bin/ctags'))
-  let g:Tlist_Ctags_Cmd = '/usr/local/bin/ctags'
-endif
-
-nnoremap <silent> ft :<C-u>TlistToggle<CR>
+let g:lexima_enable_endwise_rules = 0
 " }}}
 
 " matchit {{{
