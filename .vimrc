@@ -169,13 +169,13 @@ NeoBundleLazy 'Shougo/neosnippet.vim', {
 function! s:meet_neocomplete_requirements()
   return has('lua') && (v:version > 703 || (v:version == 703 && has('patch885')))
 endfunction
+
 if s:meet_neocomplete_requirements()
   NeoBundleLazy 'Shougo/neocomplete.vim', {
   \ 'depends': 'Shougo/context_filetype.vim',
   \ 'insert': 1,
   \ }
   NeoBundleFetch 'Shougo/neocomplcache.vim'
-  NeoBundle 'violetyk/neocomplete-php.vim'
 else
   NeoBundleFetch 'Shougo/neocomplete.vim'
   NeoBundle 'Shougo/neocomplcache.vim'
@@ -701,25 +701,23 @@ if s:meet_neocomplete_requirements()
 
     " 競合するのでAutoComplPopを無効化する
     let g:acp_enableAtStartup = 0
-    
+
     " 起動時にneocomplecacheを有効にする
     let g:neocomplete#enable_at_startup = 1
-    
+
     " 大文字が入力されるまで大文字小文字の区別を無視する
     let g:neocomplete#enable_smart_case = 1
-    
+
     " シンタックスをキャッシュするときの最小文字数
     let g:neocomplete#sources#syntax#min_keyword_length = 3
-    
+
     " neocomplete を自動的にロックするバッファ名のパターン
     let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-    
+
     " 辞書補完の辞書を指定。filetype:辞書ファイル名
     let g:neocomplete#sources#dictionary#dictionaries = {
     \ 'default' : '',
     \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'javascript' : $HOME.'/.vim/dict/jacascript.dict',
-    \ 'php' : $HOME.'/.vim/dict/php.dict',
     \ }
 
     " キーワードの定義
@@ -729,30 +727,28 @@ if s:meet_neocomplete_requirements()
     let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
     " キーマッピング
-
-    " <C-g>: UNDO  <C-l>: 補完候補の共通部分までを補完する
+    " <C-g>: UNDO
+    " <C-l>: 補完候補の共通部分までを補完する
+    " <C-y>: 補完を確定
+    " <C-e>: 補完のキャンセル
+    " <CR>: ポップアップを閉じてインデントを保存
+    " <TAB> で補完
+    " <C-h>, <BS>: ポップアップを閉じて<BS>
     inoremap <expr><C-g> neocomplete#undo_completion()
     inoremap <expr><C-l> neocomplete#complete_common_string()
-
-    " <C-y>: 補完を確定  <C-e>: 補完のキャンセル
     inoremap <expr><C-y> neocomplete#close_popup()
     inoremap <expr><C-e> neocomplete#cancel_popup()
-    
-    " <CR>: ポップアップを閉じてインデントを保存
     inoremap <silent><CR> <C-r>=<SID>my_cr_function()<CR>
+    inoremap <expr><TAB>   pumvisible() ? "\<Down>" : "\<TAB>"
+    inoremap <expr><S-TAB> pumvisible() ? "\<UP>"   : "\<S-TAB>"
+    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+    inoremap <expr><BS> neocomplete#smart_close_popup()."\<BS>"
+
     function! s:my_cr_function()
         " return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
         " For no inserting <CR> key.
         return pumvisible() ? "\<C-y>" : "\<CR>"
     endfunction
-
-    " <TAB> で補完
-    inoremap <expr><TAB>   pumvisible() ? "\<Down>" : "\<TAB>"
-    inoremap <expr><S-TAB> pumvisible() ? "\<UP>"   : "\<S-TAB>"
-
-    " <C-h>, <BS>: ポップアップを閉じて<BS>
-    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><BS> neocomplete#smart_close_popup()."\<BS>"
 
     " オムニ補完を有効にする
     augroup OmnicompleteSettings
@@ -767,14 +763,6 @@ if s:meet_neocomplete_requirements()
     if !exists('g:neocomplete#sources#omni#input_patterns')
       let g:neocomplete#sources#omni#input#patterns = {}
     endif
-
-    "ファイルタイプの関連付け
-    " if !exists('g:neocomplete#same_filetypes')
-    "   let g:neocomplete_same_filetype_lists = {}
-    " endif
-    " let g:neocomplete_same_filetype_lists['ctp'] = 'php'
-    "
-    " let g:neocomplete_php_locale = 'ja'
 
 else
     " neocomplcacheを使用する場合の設定
@@ -801,8 +789,6 @@ else
     " 辞書補完の辞書を指定。filetype:辞書ファイル名
     let g:neocomplcache_dictionary_filetype_lists = {
     \ 'default' : '',
-    \ 'javascript' : $HOME.'/.vim/dict/jacascript.dict',
-    \ 'php' : $HOME.'/.vim/dict/php.dict',
     \ }
 
     " Define keyword.
@@ -825,33 +811,23 @@ else
       let g:neocomplcache_omni_patterns = {}
     endif
 
-    "ファイルタイプの関連付け
-    if !exists('g:neocomplcache_same_filetype_lists')
-      let g:neocomplcache_same_filetype_lists = {}
-    endif
-    let g:neocomplcache_same_filetype_lists['ctp'] = 'php'
-
-    " key-mappings.
+    " キーマッピング
     " UNDO
-    inoremap <expr><C-g> neocomplcache#undo_completion()
     " 補完候補の共通部分までを補完する
-    inoremap <expr><C-l> neocomplcache#complete_common_string()
-
     " 補完を確定して閉じる
-    inoremap <expr><C-y> neocomplcache#close_popup()
     " 補完をキャンセルして閉じる
-    inoremap <expr><C-e> neocomplcache#cancel_popup()
     " <CR> 候補が出ていれば確定にする
-    inoremap <expr><CR> pumvisible() ? neocomplcache#close_popup() : "\<CR>"
     " <TAB> で補完
+    " <C-h>, <BS>: close popup and delete backword char.
+    inoremap <expr><C-g> neocomplcache#undo_completion()
+    inoremap <expr><C-l> neocomplcache#complete_common_string()
+    inoremap <expr><C-y> neocomplcache#close_popup()
+    inoremap <expr><C-e> neocomplcache#cancel_popup()
+    inoremap <expr><CR> pumvisible() ? neocomplcache#close_popup() : "\<CR>"
     inoremap <expr><TAB> pumvisible() ? "\<Down>" : "\<TAB>"
     inoremap <expr><S-TAB> pumvisible() ? "\<UP>" : "\<S-TAB>"
-    " <C-h>, <BS>: close popup and delete backword char.
     inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
     inoremap <expr><BS> neocomplcache#smart_close_popup()."\<BS>"
-
-    " ファイル名補完をneocomplcacheで置き換える
-    inoremap <expr><C-x><C-f> neocomplcache#manual_filename_complete()
 endif
 " }}}
 
