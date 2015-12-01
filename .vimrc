@@ -1076,10 +1076,6 @@ set fileformats=unix,dos,mac
 set langmenu=japanese
 
 " 以下のファイルの時は文字コードをutf-8に設定
-" autocmd FileType js :set fileencoding=utf-8
-" autocmd FileType css :set fileencoding=utf-8
-" autocmd FileType html :set fileencoding=utf-8
-" autocmd FileType php :set fileencoding=utf-8
 set fileencoding=utf-8
 set fileencodings=utf-8
 
@@ -1100,23 +1096,6 @@ set tabstop=4                   " tab 文字を表示するときに使用する
 set softtabstop=0               " 編集で tab 文字の幅として使用する空白文字の数（0で無効にする）
 set expandtab                   " 挿入モード時にtab文字を使用しないで空白文字を使用する
 let g:vim_indent_cont = 0
-" if has("autocmd")
-"   autocmd FileType apache     setlocal sw=4 sts=4 ts=4 et
-"   autocmd FileType c          setlocal sw=4 sts=4 ts=4 et
-"   autocmd FileType cs         setlocal sw=4 sts=4 ts=4 et
-"   autocmd FileType css        setlocal sw=2 sts=2 ts=2 et
-"   autocmd FileType html       setlocal sw=2 sts=2 ts=2 et
-"   autocmd FileType java       setlocal sw=4 sts=4 ts=4 et
-"   autocmd FileType javascript setlocal sw=2 sts=2 ts=2 et
-"   autocmd FileType perl       setlocal sw=4 sts=4 ts=4 et
-"   autocmd FileType php        setlocal sw=4 sts=4 ts=4 et
-"   autocmd FileType sh         setlocal sw=4 sts=4 ts=4 et
-"   autocmd FileType sql        setlocal sw=4 sts=4 ts=4 et
-"   autocmd FileType vim        setlocal sw=2 sts=2 ts=2 et
-"   autocmd FileType xhtml      setlocal sw=4 sts=4 ts=4 et
-"   autocmd FileType xml        setlocal sw=4 sts=4 ts=4 et
-"   autocmd FileType zsh        setlocal sw=4 sts=4 ts=4 et
-" endif
 "}}}
 
 " 削除 {{{
@@ -1219,14 +1198,6 @@ set history=1000                " コマンドの履歴数
 inoremap <C-e> <END>
 inoremap <C-a> <HOME>
 
-" inoremap <C-j> <Down>
-" inoremap <C-k> <Up>
-" inoremap <C-h> <Left>
-" inoremap <C-l> <Right>
-
-" inoremap <C-f> <PageDown>
-" inoremap <C-b> <PageUp>
-
 " F2で前のバッファ
 map <F2> <ESC>:bp<CR>
 " F3で次のバッファ
@@ -1239,17 +1210,13 @@ noremap <Leader>d <ESC>:bd<CR>
 set virtualedit+=block
 
 " normal mode 時 ; を : にする
-nnoremap ; :
+" nnoremap ; :
 
 " insert mode 時 <C-w> で保存
 inoremap <C-w> <Esc>:<C-u>w<Enter>a
 
 " insert mode 時 C-j でノーマルモードへ
 inoremap <C-j> <ESC>
-
-" insert mode 時 Enter で途中改行
-" inoremap <Enter> <Esc>o
-" inoremap <C-j> <Esc>o
 
 " ビジュアルモード時に連続でインデントする
 vnoremap > >gv
@@ -1298,10 +1265,6 @@ inoremap <expr> ,df strftime('%Y-%m-%d %T')
 inoremap <expr> ,dd strftime('%Y-%m-%d')
 inoremap <expr> ,dt strftime('%H:%M:%S')
 
-" " 最後に選択した範囲を選択する
-" nnoremap gc `[v`]
-" vnoremap gc :<C-u>normal gc<Enter>
-" onoremap gc :<C-u>normal gc<Enter>
 "}}}
 
 " カレントウィンドウのみカーソル行をハイライトする
@@ -1310,22 +1273,6 @@ augroup highlightOnlyCurrentWindow
     autocmd WinEnter * setlocal cursorline
     autocmd WinLeave * setlocal nocursorline
 augroup END
-
-" カーソルキーを使用しないようにする
-" nnoremap <Left>           :call DrillInstructor('left',  0)<CR>
-" nnoremap <Right>          :call DrillInstructor('right', 0)<CR>
-" nnoremap <Up>             :call DrillInstructor('up',    0)<CR>
-" nnoremap <Down>           :call DrillInstructor('down',  0)<CR>
-" inoremap <Left>     <ESC> :call DrillInstructor('left',  1)<CR>
-" inoremap <Right>    <ESC> :call DrillInstructor('right', 1)<CR>
-" inoremap <Up>       <ESC> :call DrillInstructor('up',    1)<CR>
-" inoremap <Down>     <ESC> :call DrillInstructor('down',  1)<CR>
-"
-" function! DrillInstructor(key, insert)
-"   let s:extra_msg = (a:insert) == 1 ? '[ESC] to ' : ''
-"   echo printf("Don't use %s-key!!! Press %s[h]", a:key, s:extra_msg)
-" endfunction
-"
 
 " vim 起動時は tmux のステータスを隠す
 if !has('gui_running') && $TMUX !=# ''
