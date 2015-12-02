@@ -293,10 +293,10 @@ NeoBundle 'kana/vim-textobj-function'
 
 " カーソル移動 {{{
 " <Leader><Leader>w/f で検索先をハイライトして移動 vim bible 4-9
-NeoBundle 'Lokaltog/vim-easymotion'
+" NeoBundle 'Lokaltog/vim-easymotion'
 
 " % コマンドによる移動を拡張 vim bible 4-10
-NeoBundle 'matchit.zip'
+NeoBundle 'tmhedberg/matchit'
 
 " w での単語移動をスマートにする
 NeoBundle 'kana/vim-smartword'
@@ -864,7 +864,7 @@ let g:lexima_enable_endwise_rules = 0
 " }}}
 
 " matchit {{{
-let b:match_words = &matchpairs . ",\<if\>:\<endif\>,\<:\>"
+" let b:match_words = &matchpairs . ',\<if\>:\<endif\>,\<:\>'
 let b:match_ignorecase = 1
 " }}}
 
