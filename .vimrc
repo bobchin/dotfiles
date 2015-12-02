@@ -318,9 +318,6 @@ NeoBundle 'taku-o/vim-toggle'
 NeoBundle 'tpope/vim-markdown'
 NeoBundle 'kannokanno/previm'
 
-" 翻訳
-NeoBundle 'mattn/webapi-vim'
-
 " }}}
 
 " その他 {{{
