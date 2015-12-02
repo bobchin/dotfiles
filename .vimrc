@@ -519,8 +519,10 @@ if (executable('/usr/bin/ctags'))
 elseif (executable('/usr/local/bin/ctags'))
   let g:Tlist_Ctags_Cmd = '/usr/local/bin/ctags'
 endif
+let g:Tlist_Exit_OnlyWindow = 1
+let g:Tlist_Use_Right_Window = 1
 
-nnoremap <silent> ft :<C-u>TlistToggle<CR>
+nnoremap <silent><Leader>l :<C-u>TlistToggle<CR>
 " }}}
 
 " lightline {{{
