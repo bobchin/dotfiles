@@ -456,6 +456,8 @@ esac
 # antigen
 [ -f ~/.zshrc.antigen ] && source ~/.zshrc.antigen
 
+# zplug
+[ -f ~/.zshrc.zplug ] && source ~/.zshrc.zplug
 
 
 
