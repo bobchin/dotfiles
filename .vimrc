@@ -211,6 +211,20 @@ NeoBundle 'bkad/CamelCaseMotion'
 
 " }}}
 
+" 編集 {{{
+" gcc/<C-_><C-_> でコメントアウト vim bible 6-3
+NeoBundle 'tomtom/tcomment_vim'
+
+" true <=> false などをトグル。Insertモードでは<C-t>, それ以外では +
+" <C-t> でトグル用にしている。
+NeoBundle 'taku-o/vim-toggle'
+
+" Markdownでメモ
+NeoBundle 'tpope/vim-markdown'
+NeoBundle 'kannokanno/previm'
+
+" }}}
+
 " Git {{{
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
@@ -300,20 +314,6 @@ NeoBundle 'thinca/vim-textobj-plugins'
 
 " [f] 関数の中身をテキストオブジェクトにする
 NeoBundle 'kana/vim-textobj-function'
-
-" }}}
-
-" 編集 {{{
-" gcc/<C-_><C-_> でコメントアウト vim bible 6-3
-NeoBundle 'tomtom/tcomment_vim'
-
-" true <=> false などをトグル。Insertモードでは<C-t>, それ以外では +
-" <C-t> でトグル用にしている。
-NeoBundle 'taku-o/vim-toggle'
-
-" Markdownでメモ
-NeoBundle 'tpope/vim-markdown'
-NeoBundle 'kannokanno/previm'
 
 " }}}
 
@@ -901,6 +901,19 @@ nnoremap <Leader>/ :TComment<CR>
 vnoremap <Leader>/ :TComment<CR>
 " }}}
 
+" toggle {{{
+imap <C-t> <Plug>ToggleI
+nmap <C-t> <Plug>ToggleN
+vmap <C-t> <Plug>ToggleV
+"}}}
+
+" previm {{{
+augroup PrevimSettings
+  autocmd!
+  autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+augroup END
+"}}}
+
 " emmet/Zencoding {{{
 " <C-y>,
 " let g:user_zen_settings = {
@@ -921,19 +934,6 @@ let g:user_emmet_settings = {
 \ },
 \ }
 " }}}
-
-" toggle {{{
-imap <C-t> <Plug>ToggleI
-nmap <C-t> <Plug>ToggleN
-vmap <C-t> <Plug>ToggleV
-"}}}
-
-" previm {{{
-augroup PrevimSettings
-  autocmd!
-  autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
-augroup END
-"}}}
 
 " open-browser {{{
 let g:netrw_nogx = 1
