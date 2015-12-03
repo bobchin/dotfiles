@@ -1,0 +1,33 @@
+ZPLUG="$HOME/dotfiles/zplug/zplug"
+
+if [ -f $ZPLUG ]; then
+    source $ZPLUG
+
+    zplug "zsh-users/zsh-completions"
+    zplug "zsh-users/zsh-syntax-highlighting"
+
+    zplug "plugins/git",   from:oh-my-zsh
+    zplug "plugins/ruby",  from:oh-my-zsh
+    zplug "plugins/rbenv", from:oh-my-zsh
+    zplug "plugins/tmux",  from:oh-my-zsh
+    zplug "plugins/yum",   from:oh-my-zsh
+
+    zplug "mollifier/anyframe"
+
+    # 未インストールのものがあれば
+    # インストールするかどうか聞く
+    if ! zplug check --verbose; then
+        printf "Install? [y/N]: "
+        if read -q; then
+            echo; zplug install
+        fi
+    fi
+
+    # プラグインをロードしてパスを通す
+    zplug load --verbose
+
+    export ZSH_THEME=dpoggi
+    export ZSH=$ZPLUG_HOME/repos/robbyrussell/oh-my-zsh
+    source $ZSH/oh-my-zsh.sh
+fi
+
