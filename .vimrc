@@ -1175,6 +1175,9 @@ nnoremap Y y$
 " 数字のインクリメント・デクリメント
 nnoremap + <C-a>
 nnoremap - <C-x>
+
+" キー入力の反応
+set timeout timeoutlen=1000 ttimeoutlen=75
 "}}}
 
 " その他 {{{
