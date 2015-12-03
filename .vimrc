@@ -199,6 +199,18 @@ NeoBundle 'kana/vim-smartchr'
 NeoBundle 'cohama/lexima.vim'
 " }}}
 
+" カーソル移動 {{{
+" % コマンドによる移動を拡張 vim bible 4-10
+NeoBundle 'tmhedberg/matchit'
+
+" w での単語移動をスマートにする
+NeoBundle 'kana/vim-smartword'
+
+" ,w でキャメルケースやアンダーバー区切りで単語移動
+NeoBundle 'bkad/CamelCaseMotion'
+
+" }}}
+
 " Git {{{
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
@@ -288,21 +300,6 @@ NeoBundle 'thinca/vim-textobj-plugins'
 
 " [f] 関数の中身をテキストオブジェクトにする
 NeoBundle 'kana/vim-textobj-function'
-
-" }}}
-
-" カーソル移動 {{{
-" <Leader><Leader>w/f で検索先をハイライトして移動 vim bible 4-9
-" NeoBundle 'Lokaltog/vim-easymotion'
-
-" % コマンドによる移動を拡張 vim bible 4-10
-NeoBundle 'tmhedberg/matchit'
-
-" w での単語移動をスマートにする
-NeoBundle 'kana/vim-smartword'
-
-" ,w でキャメルケースやアンダーバー区切りで単語移動
-NeoBundle 'camelcasemotion'
 
 " }}}
 
@@ -868,6 +865,18 @@ let g:lexima_enable_endwise_rules = 0
 " matchit {{{
 " let b:match_words = &matchpairs . ',\<if\>:\<endif\>,\<:\>'
 let b:match_ignorecase = 1
+" }}}
+
+" smartword {{{
+map w <Plug>(smartword-w)
+map b <Plug>(smartword-b)
+map e <Plug>(smartword-e)
+map ge <Plug>(smartword-ge)
+
+map ,w <Plug>CamelCaseMotion_w
+map ,b <Plug>CamelCaseMotion_b
+map ,e <Plug>CamelCaseMotion_e
+map ,ge <Plug>CamelCaseMotion_ge
 " }}}
 
 " tcomment {{{
