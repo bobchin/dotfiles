@@ -1177,6 +1177,11 @@ nnoremap + <C-a>
 nnoremap - <C-x>
 
 " キー入力の反応
+" <C-w>h を入力するとした場合
+" <C-w> <= ([timeoutlen]msec) => h
+" ttimeoutlen: キーコード待ち（エスケープシーケンスを正しく解釈するため）
+" カーソルの左キーは ^[OD すなわち <ESC>OD のキーコードとなる
+" これを１つの塊とみなす時間指定がttimelenとなる
 set timeout timeoutlen=1000 ttimeoutlen=75
 "}}}
 
