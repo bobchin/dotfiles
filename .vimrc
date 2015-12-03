@@ -1169,6 +1169,12 @@ noremap <Leader>v :vsplit<CR>
 nnoremap <C-w>- :split<CR>
 nnoremap <C-w><Bar> :vsplit<CR>
 
+" ウィンドウの移動
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
 " 'Y' の動作を変更
 nnoremap Y y$
 
