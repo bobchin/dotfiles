@@ -1050,9 +1050,9 @@ set incsearch                   " インクリメンタルサーチ
 set wrapscan                    " 検索が終わったら最初から検索しなおしする
 set gdefault                    " 置換で g オプションをデフォルトにする
 " enter で検索ハイライトをクリア
-nnoremap <silent> <cr> :noh<cr><cr>
+nnoremap <silent> <CR> :nohlsearch<CR><CR>
 " visual 選択中に * で選択文字列を検索
-vnoremap * y/\V<c-r>=substitute(escape(@@,"/\\"),"\n","\\\\n","ge")<cr><cr>gV
+vnoremap * y/\V<c-r>=substitute(escape(@@,"/\\"),"\n","\\\\n","ge")<CR><CR>gV
 "}}}
 
 " バックアップ {{{
