@@ -220,7 +220,9 @@ NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'taku-o/vim-toggle'
 
 " Markdownでメモ
-NeoBundle 'tpope/vim-markdown'
+NeoBundle 'rcmdnk/vim-markdown', {
+\ 'depends': 'godlygeek/tabular',
+\ }
 NeoBundle 'kannokanno/previm'
 
 " }}}
@@ -906,6 +908,10 @@ imap <C-t> <Plug>ToggleI
 nmap <C-t> <Plug>ToggleN
 vmap <C-t> <Plug>ToggleV
 "}}}
+
+" vim-markdown {{{
+let g:vim_markdown_folding_disabled=1
+" }}}
 
 " previm {{{
 augroup PrevimSettings
