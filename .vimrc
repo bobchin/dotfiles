@@ -227,6 +227,14 @@ NeoBundle 'kannokanno/previm'
 
 " }}}
 
+" quickrun {{{
+NeoBundle 'thinca/vim-quickrun', {
+\   'depends': 'Shougo/vimproc',
+\ }
+NeoBundle 'osyo-manga/shabadou.vim'
+NeoBundle 'osyo-manga/vim-watchdogs'
+" }}}
+
 " Git {{{
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
@@ -320,12 +328,6 @@ NeoBundle 'kana/vim-textobj-function'
 " }}}
 
 " その他 {{{
-
-" <Leader>r で編集中のファイルを簡単に実行できる vim bible 6-10 {{{
-NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'osyo-manga/shabadou.vim'
-NeoBundle 'osyo-manga/vim-watchdogs'
-" }}}
 
 " gx でカーソルの文字をブラウザで検索 {{{
 NeoBundle 'tyru/open-browser.vim'
@@ -920,48 +922,21 @@ augroup PrevimSettings
 augroup END
 "}}}
 
-" emmet/Zencoding {{{
-" <C-y>,
-" let g:user_zen_settings = {
-let g:user_emmet_settings = {
-\ 'lang' : 'ja',
-\ 'indentation' : '    ',
-\ 'javascript' : {
-\     'snippets' : {
-\         'jq' : "$function(){\n\t${cursor}${child}\n};",
-\         'jq:each' : "$.each(${cursor}, function(index, item){\n\t${child}\n});",
-\         'fn' : "(function(){\n\t${cursor}\n})();",
-\         'tm' : "setTimeout(function(){\n\t${cursor}\n}, 100);",
-\     },
-\ },
-\ 'php' : {
-\     'extends' : 'html',
-\     'filters' : 'html',
-\ },
-\ }
-" }}}
-
-" open-browser {{{
-let g:netrw_nogx = 1
-nmap gx <Plug>(openbrowser-smart-search)
-vmap gx <Plug>(openbrowser-smart-search)
-"}}}
-
 " quickrun {{{
 " <Leader>r で実行
 " 横分割するようにする
 " nnoremap <Leader>r :Quickrun<CR>
 let g:quickrun_config = {
 \ '_': {
+\   'runner': 'vimproc',
+\   'runner/vimproc/updatetime': 40,
+\   'outputter': 'multi:buffer:quickfix',
+\   'outputter/buffer/split': ':botright',
 \   'hook/close_unite_quickfix/enable_hook_loaded': 1,
 \   'hook/unite_quickfix/enable_failure': 1,
 \   'hook/close_quickfix/enable_exit': 1,
 \   'hook/close_buffer/enable_failure': 1,
 \   'hook/close_buffer/enable_empty_data': 1,
-\   'runner': 'vimproc',
-\   'runner/vimproc/updatetime': 40,
-\   'outputter': 'multi:buffer:quickfix',
-\   'outputter/buffer/split': ':botright',
 \ },
 \ 'watchdogs_checker': {
 \   '_': {
@@ -990,6 +965,36 @@ let g:watchdogs_check_BufWritePost_enables = {
 \ }
 " キー入力がなかったらチェックする
 let g:watchdogs_checkCursorHold_enable = 1
+
+" <Leader>qでquickfixを閉じる
+nnoremap <silent><Leader>q :<C-u>bwipeout! \[quickrun\ output\]<CR>
+"}}}
+
+" emmet/Zencoding {{{
+" <C-y>,
+" let g:user_zen_settings = {
+let g:user_emmet_settings = {
+\ 'lang' : 'ja',
+\ 'indentation' : '    ',
+\ 'javascript' : {
+\     'snippets' : {
+\         'jq' : "$function(){\n\t${cursor}${child}\n};",
+\         'jq:each' : "$.each(${cursor}, function(index, item){\n\t${child}\n});",
+\         'fn' : "(function(){\n\t${cursor}\n})();",
+\         'tm' : "setTimeout(function(){\n\t${cursor}\n}, 100);",
+\     },
+\ },
+\ 'php' : {
+\     'extends' : 'html',
+\     'filters' : 'html',
+\ },
+\ }
+" }}}
+
+" open-browser {{{
+let g:netrw_nogx = 1
+nmap gx <Plug>(openbrowser-smart-search)
+vmap gx <Plug>(openbrowser-smart-search)
 "}}}
 
 " YankRing {{{
