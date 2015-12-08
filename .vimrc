@@ -78,25 +78,25 @@ NeoBundle 'Shougo/vimproc', {
 
 " unite {{{
 " Unite vim bible 10-1
-NeoBundleLazy 'Shougo/unite.vim', {
+NeoBundle 'Shougo/unite.vim', {
 \ 'depends': 'Shougo/neomru.vim',
 \ 'commands': [{
 \   'name': ['unite'],
 \   'complete': 'vimshell,customlist,unite#complete_source',
 \ }],
 \ }
-NeoBundleLazy 'thinca/vim-unite-history'
-NeoBundleLazy 'Shougo/unite-help'
-NeoBundleLazy 'tsukkee/unite-tag'
-NeoBundleLazy 'osyo-manga/unite-quickfix'
-NeoBundleLazy 'osyo-manga/unite-filetype'
+NeoBundle 'thinca/vim-unite-history'
+NeoBundle 'Shougo/unite-help'
+NeoBundle 'tsukkee/unite-tag'
+NeoBundle 'osyo-manga/unite-quickfix'
+NeoBundle 'osyo-manga/unite-filetype'
 NeoBundle 'h1mesuke/vim-alignta'
 NeoBundle 'cohama/agit.vim'
 " }}}
 
 " vimfile {{{
 " vim のファイラー vim bible 2-2
-NeoBundleLazy 'Shougo/vimfiler', {
+NeoBundle 'Shougo/vimfiler', {
 \ 'depends' : 'Shougo/unite.vim',
 \ 'mappings' : '<Plug>',
 \ 'explorer' : '^\h\w*:',
@@ -115,10 +115,10 @@ NeoBundle 'Shougo/vimshell.vim', {
 " }}}
 
 " Help {{{
-NeoBundleLazy 'vim-jp/vimdoc-ja', {
+NeoBundle 'vim-jp/vimdoc-ja', {
 \ 'filetypes': 'help',
 \ }
-NeoBundleLazy 'thinca/vim-ft-help_fold', {
+NeoBundle 'thinca/vim-ft-help_fold', {
 \ 'filetype': 'help',
 \ }
 " }}}
@@ -127,7 +127,7 @@ NeoBundleLazy 'thinca/vim-ft-help_fold', {
 " <S-k>でカーソル上のキーワードを参照する vim bible 6-5
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'mmisono/ref-dicts-en'
-NeoBundleLazy 'mattn/excitetranslate-vim', {
+NeoBundle 'mattn/excitetranslate-vim', {
 \ 'depends': 'mattn/webapi-vim',
 \ 'autoload': { 'command': ['ExciteTranslate'] },
 \ }
@@ -136,7 +136,7 @@ NeoBundle 'taglist.vim'
 " }}}
 
 " 言語パック（言語毎のインデントとか構文のサポート） {{{
-NeoBundleLazy 'sheerun/vim-polyglot', {
+NeoBundle 'sheerun/vim-polyglot', {
 \ 'filetypes': 'all',
 \ }
 " }}}
@@ -162,7 +162,7 @@ NeoBundle 'LeafCage/foldCC.vim'
 " }}}
 
 " スニペット入力 {{{
-NeoBundleLazy 'Shougo/neosnippet.vim', {
+NeoBundle 'Shougo/neosnippet.vim', {
 \ 'depends': [
 \   'Shougo/neosnippet-snippets',
 \   'Shougo/context_filetype.vim',
@@ -183,7 +183,7 @@ function! s:meet_neocomplete_requirements()
 endfunction
 
 if s:meet_neocomplete_requirements()
-  NeoBundleLazy 'Shougo/neocomplete.vim', {
+  NeoBundle 'Shougo/neocomplete.vim', {
   \ 'depends': 'Shougo/context_filetype.vim',
   \ 'insert': 1,
   \ }
