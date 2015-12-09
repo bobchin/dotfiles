@@ -80,10 +80,6 @@ NeoBundle 'Shougo/vimproc', {
 " Unite vim bible 10-1
 NeoBundle 'Shougo/unite.vim', {
 \ 'depends': 'Shougo/neomru.vim',
-\ 'commands': [{
-\   'name': ['unite'],
-\   'complete': 'vimshell,customlist,unite#complete_source',
-\ }],
 \ }
 NeoBundle 'thinca/vim-unite-history'
 NeoBundle 'Shougo/unite-help'
