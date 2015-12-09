@@ -227,8 +227,22 @@ NeoBundle 'kannokanno/previm'
 NeoBundle 'thinca/vim-quickrun', {
 \   'depends': 'Shougo/vimproc',
 \ }
-NeoBundle 'osyo-manga/shabadou.vim'
-NeoBundle 'osyo-manga/vim-watchdogs'
+NeoBundle 'osyo-manga/shabadou.vim', {
+\   'depends': [
+\       'thinca/vim-quickrun',
+\       'Shougo/vimproc',
+\       'Shougo/unite.vim',
+\       'osyo-manga/unite-quickfix',
+\   ],
+\ }
+NeoBundle 'osyo-manga/vim-watchdogs', {
+\   'depends': [
+\       'thinca/vim-quickrun',
+\       'Shougo/vimproc',
+\       'osyo-manga/shabadou.vim',
+\       'jceb/vim-hier',
+\   ],
+\ }
 " }}}
 
 " Git {{{
@@ -919,51 +933,70 @@ augroup END
 "}}}
 
 " quickrun {{{
-" <Leader>r で実行
-" 横分割するようにする
-" nnoremap <Leader>r :Quickrun<CR>
+" quickrun の実行を非同期実行にする
+" 実行処理設定(runner)    : vimproc
+" 出力処理設定(outputter) : multi(bufferとquickfixを使う)
+" フック処理(hook)        :
+"  close_buffer: 実行に失敗した場合にバッファを閉じる
+"  close_quickfix: 実行終了時にquickfixを閉じる
+"  unite_quickfix: 実行失敗時にunite_quickfixを起動する
+"  close_unite_quickfix:
+"  すでにunite_quickfixを開いている場合は閉じてから実行
+"
+" execオプションの書式
+" %%: %自体
+" %c: コマンド('command'で指定したもの)
+" %o: コマンドラインオプション('cmdopt'で指定したもの)
+" %s: ソースファイル
+" %a: スクリプトの引数
 let g:quickrun_config = {
 \ '_': {
 \   'runner': 'vimproc',
 \   'runner/vimproc/updatetime': 40,
 \   'outputter': 'multi:buffer:quickfix',
-\   'outputter/buffer/split': ':botright',
-\   'hook/close_unite_quickfix/enable_hook_loaded': 1,
-\   'hook/unite_quickfix/enable_failure': 1,
-\   'hook/close_quickfix/enable_exit': 1,
+\   'outputter/buffer/split': ':botright 8sp',
+\   'outputter/buffer/close_on_empty': 1,
 \   'hook/close_buffer/enable_failure': 1,
-\   'hook/close_buffer/enable_empty_data': 1,
+\   'hook/close_quickfix/enable_exit': 1,
+\   'hook/unite_quickfix/enable_failure': 1,
+\   'hook/close_unite_quickfix/enable_hook_loaded': 1,
 \ },
-\ 'watchdogs_checker': {
-\   '_': {
-\     'hook/close_quickfix/enable_exit': 1,
-\     'hook/back_window/enable_exit': 1,
-\     'hook/back_window/priority_exit': 1,
-\     'hook/quickfix_status_enable/enable_exit': 1,
-\     'hook/quickfix_status_enable/priority_exit':1,
-\   },
-\   'php': {
-\     'command': 'php',
-\     'exec': '%c -d error_reporting=E_ALL -d display_errors=1 -d display_startup_errors=1 -d log_errors=0 -d xdebug.cli_color=0 -l %o %s:p',
-\     'errorformat': '%m\ in\ %f\ on\ line\ %l',
-\   },
+\ 'watchdogs_checker/_': {
 \ },
-\ 'markdown': {
-\   'outputter': 'browser',
+\ 'watchdogs_checker/php': {
+\   'command': 'php',
+\   'exec': '%c -d error_reporting=E_ALL -d display_errors=1 -d display_startup_errors=1 -d log_errors=0 -d xdebug.cli_color=0 -l %o %s:p',
+\   'errorformat': '%m\ in\ %f\ on\ line\ %l',
 \ },
 \ }
+
+" watchdogsの設定をquickrunに追加する
+call watchdogs#setup(g:quickrun_config)
 
 " ファイル書き込み時にチェックするかどうか
 let g:watchdogs_check_BufWritePost_enable = 0
-" ファイルタイプ毎の設定
 let g:watchdogs_check_BufWritePost_enables = {
 \   'php': 1,
 \ }
-" キー入力がなかったらチェックする
-let g:watchdogs_checkCursorHold_enable = 1
+
+" 一定時間キー入力がなかったらチェックする
+let g:watchdogs_checkCursorHold_enable = 0
+let g:watchdogs_checkCursorHold_enables = {
+\   'php': 1,
+\ }
 
 " <Leader>qでquickfixを閉じる
-nnoremap <silent><Leader>q :<C-u>bwipeout! \[quickrun\ output\]<CR>
+" nnoremap <silent><Leader>q :<C-u>bwipeout! \[quickrun\ output\]<CR>
+nnoremap <silent><Leader>q :<C-u>call <SID>QuickrunCloseWithQ()<CR>
+function! s:QuickrunCloseWithQ()
+    try
+        if exists(":UniteClose")
+            silent execute ":UniteClose"
+        endif
+        bwipeout! [quickrun
+    catch
+    endtry
+endfunction
 "}}}
 
 " emmet/Zencoding {{{
