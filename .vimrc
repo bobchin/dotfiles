@@ -111,12 +111,8 @@ NeoBundle 'Shougo/vimshell.vim', {
 " }}}
 
 " Help {{{
-NeoBundle 'vim-jp/vimdoc-ja', {
-\ 'filetypes': 'help',
-\ }
-NeoBundle 'thinca/vim-ft-help_fold', {
-\ 'filetype': 'help',
-\ }
+NeoBundle 'vim-jp/vimdoc-ja'
+NeoBundle 'thinca/vim-ft-help_fold'
 " }}}
 
 " 辞書参照 {{{
@@ -125,23 +121,22 @@ NeoBundle 'thinca/vim-ref'
 NeoBundle 'mmisono/ref-dicts-en'
 NeoBundle 'mattn/excitetranslate-vim', {
 \ 'depends': 'mattn/webapi-vim',
-\ 'autoload': { 'command': ['ExciteTranslate'] },
 \ }
 
 NeoBundle 'taglist.vim'
 " }}}
 
 " 言語パック（言語毎のインデントとか構文のサポート） {{{
-NeoBundle 'sheerun/vim-polyglot', {
-\ 'filetypes': 'all',
-\ }
+NeoBundle 'sheerun/vim-polyglot'
 " }}}
 
 " 見た目 {{{
 " ステータスラインをきれいに表示
 NeoBundle 'itchyny/lightline.vim', {
-\ 'depends': 'tpope/vim-fugitive',
-\ 'filetypes': 'all',
+\ 'depends': [
+\   'tpope/vim-fugitive',
+\   'osyo-manga/vim-anzu',
+\ ],
 \ }
 
 " colorscheme
@@ -163,13 +158,6 @@ NeoBundle 'Shougo/neosnippet.vim', {
 \   'Shougo/neosnippet-snippets',
 \   'Shougo/context_filetype.vim',
 \ ],
-\ 'insert': 1,
-\ 'filetypes': 'snippet',
-\ 'unite_sources': [
-\   'neosnippet',
-\   'neosnippet/user',
-\   'neosnippet/runtime',
-\ ],
 \}
 " }}}
 
@@ -181,7 +169,6 @@ endfunction
 if s:meet_neocomplete_requirements()
   NeoBundle 'Shougo/neocomplete.vim', {
   \ 'depends': 'Shougo/context_filetype.vim',
-  \ 'insert': 1,
   \ }
   NeoBundleFetch 'Shougo/neocomplcache.vim'
 else
