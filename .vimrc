@@ -523,7 +523,75 @@ let g:Tlist_Use_Right_Window = 1
 nnoremap <silent><Leader>l :<C-u>TlistToggle<CR>
 " }}}
 
-" lightline {{{
+" quickrun {{{
+" quickrun の実行を非同期実行にする
+" 実行処理設定(runner)    : vimproc
+" 出力処理設定(outputter) : multi(bufferとquickfixを使う)
+" フック処理(hook)        :
+"  close_buffer: 実行に失敗した場合にバッファを閉じる
+"  close_quickfix: 実行終了時にquickfixを閉じる
+"  unite_quickfix: 実行失敗時にunite_quickfixを起動する
+"  close_unite_quickfix:
+"  すでにunite_quickfixを開いている場合は閉じてから実行
+"
+" execオプションの書式
+" %%: %自体
+" %c: コマンド('command'で指定したもの)
+" %o: コマンドラインオプション('cmdopt'で指定したもの)
+" %s: ソースファイル
+" %a: スクリプトの引数
+let g:quickrun_config = {
+\ '_': {
+\   'runner': 'vimproc',
+\   'runner/vimproc/updatetime': 40,
+\   'outputter': 'multi:buffer:quickfix',
+\   'outputter/buffer/split': ':botright 8sp',
+\   'outputter/buffer/close_on_empty': 1,
+\   'hook/close_buffer/enable_failure': 1,
+\   'hook/close_quickfix/enable_exit': 1,
+\   'hook/unite_quickfix/enable_failure': 1,
+\   'hook/close_unite_quickfix/enable_hook_loaded': 1,
+\   'hook/quickfix_status_enable/enable_exit': 1,
+\ },
+\ 'watchdogs_checker/_': {
+\ },
+\ 'watchdogs_checker/php': {
+\   'command': 'php',
+\   'exec': '%c -d error_reporting=E_ALL --d display_errors=1 -d display_startup_errors=1 -d log_errors=0 -d xdebug.cli_color=0 -l %o %s:p',
+\   'errorformat': '%m\ in\ %f\ on\ line\- %l',
+\ },
+\ }
+
+" watchdogsの設定をquickrunに追加する
+call watchdogs#setup(g:quickrun_config)
+
+" ファイル書き込み時にチェックするかどうか
+let g:watchdogs_check_BufWritePost_enable = 0
+let g:watchdogs_check_BufWritePost_enables = {
+\   'php': 1,
+\ }
+
+" 一定時間キー入力がなかったらチェックする
+let g:watchdogs_checkCursorHold_enable = 0
+let g:watchdogs_checkCursorHold_enables = {
+\   'php': 1,
+\ }
+
+" <Leader>qでquickfixを閉じる
+" nnoremap <silent><Leader>q :<C-u>bwipeout! \[quickrun\ output\]<CR>
+nnoremap <silent><Leader>q :<C-u>call <SID>QuickrunCloseWithQ()<CR>
+function! s:QuickrunCloseWithQ()
+    try
+        if exists(":UniteClose")
+            silent execute ":UniteClose"
+        endif
+        bwipeout! [quickrun
+    catch
+    endtry
+endfunction
+"}}}
+
+" LightLine {{{
 " http://itchyny.hatenablog.com/entry/20130828/1377653592
 " http://itchyny.hatenablog.com/entry/20130917/1379369171
 
@@ -532,7 +600,7 @@ set noshowmode
 if !has('gui_running')
     set t_Co=256
 endif
- 
+
 " mode: モード表示(ex. NORMAL )
 " paste: Paste表示(ex. PASTE)
 " readonly: 読み込み専用表示(ex. RO)
@@ -544,44 +612,49 @@ endif
 " fileencoding: 文字コード(ex. utf-8)
 "
 " 'active': 左側表示を[モード+Paste][Gitリポジトリ+ファイル名]にする
+"
+" "\ue0a0" : Git
+" "\ue0a1" : LN
+" "\ue0a2" : 鍵マーク
+" "\ue0b0" : 右向き三角（塗りつぶし）
+" "\ue0b2" : 左向き三角（塗りつぶし）
+" "\ue0b1" : 右向き三角（塗りつぶしなし）
+" "\ue0b3" : 左向き三角（塗りつぶしなし）
 let g:lightline = {
 \ 'colorscheme': 'jellybeans',
-\ 'mod_map': {'c': 'NORMAL'},
 \ 'active': {
-\     'left': [ ['mode', 'paste'], ['fugitive', 'filename']]
+\   'left' : [ ['mode', 'paste'], ['fugitive', 'filename', 'anzu'] ],
+\   'right': [ ['lineinfo'], ['percent'], ['fileformat', 'fileencoding', 'filetype'] ],
+\ },
+\ 'component': {
+\   'lineinfo': "\ue0a1  %3l:%-2v",
 \ },
 \ 'component_function': {
-\     'modified'     : 'LightLineModified',
-\     'readonly'     : 'LightLineReadonly',
-\     'fugitive'     : 'LightLineFugitive',
-\     'filename'     : 'LightLineFilename',
-\     'fileformat'   : 'LightLineFileformat',
-\     'filetype'     : 'LightLineFiletype',
-\     'fileencoding' : 'LightLineFileencoding',
-\     'mode'         : 'LightLineMode',
+\   'mode'         : 'LightLineMode',
+\   'readonly'     : 'LightLineReadonly',
+\   'filename'     : 'LightLineFilename',
+\   'modified'     : 'LightLineModified',
+\   'fugitive'     : 'LightLineFugitive',
+\   'fileformat'   : 'LightLineFileformat',
+\   'fileencoding' : 'LightLineFileencoding',
+\   'filetype'     : 'LightLineFiletype',
+\   'anzu'         : 'LightLineAnzu',
 \ },
+\ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
+\ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" },
 \ }
 
 " モード表示(表示幅が狭ければ表示しない)
-" 変更状態(変更されていれば"+"、変更できない場合は"-")
-function! LightLineModified()
-    return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+function! LightLineMode()
+    return &ft == 'unite' ? 'Unite' :
+        \ &ft == 'vimfiler' ? 'VimFiler' :
+        \ &ft == 'vimshell' ? 'VimShell' :
+        \ winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 
 " 読み込み専用(読み込み専用であれば"x")
 function! LightLineReadonly()
-    return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? 'x' : ''
-endfunction
-
-" Gitリポジトリ(fugitiveがあればリポジトリのHEAD名を表示)
-function! LightLineFugitive()
-    try
-        if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head')
-            return fugitive#head()
-        endif
-    catch
-    endtry
-    return ''
+    return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? "\ue0a2" : ''
 endfunction
 
 " ファイル名(前後に読み込み専用と変更状態を挿入する)
@@ -594,21 +667,45 @@ function! LightLineFilename()
     \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
 endfunction
 
-function! LightLineFileformat()
-    return winwidth(0) > 70 ? &fileformat : ''
+" 変更状態(変更されていれば"+"、変更できない場合は"-")
+function! LightLineModified()
+    return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
 endfunction
 
-function! LightLineFiletype()
-    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+" Gitリポジトリ(fugitiveがあればリポジトリのHEAD名を表示)
+function! LightLineFugitive()
+    try
+        if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head')
+            let _ = fugitive#head()
+            return strlen(_) ? "\ue0a0" . _ : ''
+        endif
+    catch
+    endtry
+    return ''
+endfunction
+
+function! LightLineFileformat()
+    return winwidth(0) > 70 ? &fileformat : ''
 endfunction
 
 function! LightLineFileencoding()
     return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
 endfunction
 
-function!LightLineMode()
-    return winwidth(0) > 60 ? lightline#mode() : ''
+function! LightLineFiletype()
+    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
 endfunction
+
+function! LightLineAnzu()
+    return anzu#search_status()
+endfunction
+" }}}
+
+" vim-anzu {{{
+nmap n <Plug>(anzu-n)
+nmap N <Plug>(anzu-N)
+nmap * <Plug>(anzu-star)
+nmap # <Plug>(anzu-sharp)
 " }}}
 
 " indent-guides {{{
