@@ -967,16 +967,16 @@ endif
 " }}}
 
 " smartchr/lexima {{{
-inoremap <expr>= smartchr#loop('=', '==', ' = ', ' == ', ' === ')
-inoremap <expr>+ smartchr#loop('+', '++', ' + ')
-inoremap <expr>- smartchr#loop('-', '--', ' - ')
-inoremap <expr>/ smartchr#loop('/', '//', ' / ', '// ')
-inoremap <expr>* smartchr#loop('*', ' * ')
-inoremap <expr>% smartchr#loop('%', ' % ')
-inoremap <expr>& smartchr#loop('&', '&&', ' & ', ' && ')
-inoremap <expr><Bar> smartchr#loop('<Bar>', '<Bar><Bar>', ' <Bar> ', ' <Bar><Bar> ')
-inoremap <expr>, smartchr#loop(',', ', ')
-
+" inoremap <expr>= smartchr#loop('=', '==', ' = ', ' == ', ' === ')
+" inoremap <expr>+ smartchr#loop('+', '++', ' + ')
+" inoremap <expr>- smartchr#loop('-', '--', ' - ')
+" inoremap <expr>/ smartchr#loop('/', '//', ' / ', '// ')
+" inoremap <expr>* smartchr#loop('*', ' * ')
+" inoremap <expr>% smartchr#loop('%', ' % ')
+" inoremap <expr>& smartchr#loop('&', '&&', ' & ', ' && ')
+" inoremap <expr><Bar> smartchr#loop('<Bar>', '<Bar><Bar>', ' <Bar> ', ' <Bar><Bar> ')
+" inoremap <expr>, smartchr#loop(',', ', ')
+"
 let g:lexima_no_default_rules     = 0
 let g:lexima_enable_basic_rules   = 1
 let g:lexima_enable_newline_rules = 0
