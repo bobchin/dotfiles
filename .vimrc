@@ -319,9 +319,6 @@ NeoBundle 'h1mesuke/textobj-wiw'
 " [g] $/@/& などで始まる文字列（変数でよく使われれる）をテキストオブジェクトにする
 NeoBundle 'vimtaku/vim-textobj-sigil'
 
-" いろんなものをテキストオブジェクトにする
-NeoBundle 'thinca/vim-textobj-plugins'
-
 " [f] 関数の中身をテキストオブジェクトにする
 NeoBundle 'kana/vim-textobj-function'
 
