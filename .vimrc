@@ -173,6 +173,10 @@ NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 't9md/vim-quickhl'
 " }}}
 
+" ウィンドウ操作 {{{
+NeoBundle "simeji/winresizer"
+" }}}
+
 " folding {{{
 NeoBundle 'LeafCage/foldCC.vim'
 " }}}
