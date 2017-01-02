@@ -1,0 +1,267 @@
+# ---------------------------------------------------------------------
+# Github から取得する場合
+# repo = 'user_name/repository_name'
+#
+# vim-scriptsから取得する場合
+# スクリプト名一覧 http://vim-scripts.org/vim/scripts.html
+# repo = 'script_name'
+#
+# 上記以外のgitリポジトリから取得する場合
+# repo = 'git://repository_url'
+# ---------------------------------------------------------------------
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'Shougo/vimproc'
+hook_post_update = '''
+  if dein#util#_is_cygwin()
+    let cmd = 'make -f make_cygwin.mak'
+  elseif executable('gmake')
+    let cmd = 'gmake'
+  else
+    let cmd = 'make'
+  endif
+  let g:dein#plugin.build = cmd
+'''
+
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+
+[[plugins]]
+repo = 'Shougo/unite.vim'
+
+[[plugins]]
+repo = 'Shougo/unite-help'
+
+[[plugins]]
+repo = 'osyo-manga/unite-quickfix'
+
+[[plugins]]
+repo = 'osyo-manga/unite-filetype'
+
+[[plugins]]
+repo = 'h1mesuke/vim-alignta'
+
+[[plugins]]
+repo = 'thinca/vim-ref'
+
+[[plugins]]
+repo = 'mmisono/ref-dicts-en'
+
+[[plugins]]
+repo = 'mattn/webapi-vim'
+
+[[plugins]]
+repo = 'mattn/excitetranslate-vim'
+
+[[plugins]]
+repo = 'taglist.vim'
+
+[[plugins]]
+repo = 'Shougo/vimfiler'
+
+[[plugins]]
+repo = 'vim-jp/vimdoc-ja'
+
+[[plugins]]
+repo = 'thinca/vim-ft-help_fold'
+
+[[plugins]]
+repo = 'sheerun/vim-polyglot'
+
+# quickrun ####
+[[plugins]]
+repo = 'thinca/vim-quickrun'
+
+[[plugins]]
+repo = 'osyo-manga/shabadou.vim'
+
+[[plugins]]
+repo = 'cohama/vim-hier'
+
+[[plugins]]
+repo = 'dannyob/quickfixstatus'
+
+[[plugins]]
+repo = 'KazuakiM/vim-qfsigns'
+
+[[plugins]]
+repo = 'KazuakiM/vim-qfstatusline'
+
+[[plugins]]
+repo = 'osyo-manga/vim-watchdogs'
+##############
+
+[[plugins]]
+repo = 'osyo-manga/vim-anzu'
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+
+[[plugins]]
+repo = 'w0ng/vim-hybrid'
+
+[[plugins]]
+repo = 'nathanaelkane/vim-indent-guides'
+
+[[plugins]]
+repo = 't9md/vim-quickhl'
+
+[[plugins]]
+repo = 'LeafCage/foldCC.vim'
+
+[[plugins]]
+repo = 'Shougo/neosnippet.vim'
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+
+[[plugins]]
+repo = 'Shougo/neocomplete.vim'
+
+[[plugins]]
+repo = 'cohama/lexima.vim'
+
+[[plugins]]
+repo = 'violetyk/neocomplete-php.vim'
+
+[[plugins]]
+repo = 'tmhedberg/matchit'
+
+[[plugins]]
+repo = 'kana/vim-smartword'
+
+[[plugins]]
+repo = 'bkad/CamelCaseMotion'
+
+[[plugins]]
+repo = 'tomtom/tcomment_vim'
+
+[[plugins]]
+repo = 'taku-o/vim-toggle'
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+
+[[plugins]]
+repo = 'vim-scripts/HTML-AutoCloseTag'
+
+[[plugins]]
+repo = 'hail2u/vim-css3-syntax'
+
+[[plugins]]
+repo = 'gorodinskiy/vim-coloresque'
+
+[[plugins]]
+repo = 'tpope/vim-haml'
+
+# テキストオブジェクト {{{
+# ixxx, axxx xxxはテキストオブジェクトが入る。
+# 意味は i:inner a:a
+# aw iw             | 単語（iskeyword）
+# aW iW             | 単語（空白区切り）
+# as is             | 分（sentence）
+# ap ip             | 段落（paragraph）
+# a[ a] i[ i]       | [
+# a( a) i( i) ib    | (
+# a< a> i< i>       | <
+# at it             | Htmlタグ（tag）
+# a{ a} aB i{ i} iB | {
+# a# a' a` i# i' i` | # ' ``
+# 
+# テキストオブジェクトを囲んだりする vim bible 5-14
+# ys{motion}{surround}            : surround で囲む
+# ds{surround}                    : surround を削除する
+# cs{old-surround}{new-surround}  : surround を変更する
+[[plugins]]
+repo = 'tpope/vim-surround'
+
+# . で surround.vim の作業を繰り返す vim bible 5-16
+[[plugins]]
+repo = 'tpope/vim-repeat'
+
+# テキストオブジェクト vim bible 5-15
+# テキストオブジェクトを簡単に作成するためのコアモジュール
+[[plugins]]
+repo = 'kana/vim-textobj-user'
+
+# [i] インデントをテキストオブジェクトにする
+[[plugins]]
+repo = 'kana/vim-textobj-indent'
+
+# [y] syntax highlight されたものをテキストオブジェクトにする
+[[plugins]]
+repo = 'kana/vim-textobj-syntax'
+
+# [l] １行をテキストオブジェクトにする
+[[plugins]]
+repo = 'kana/vim-textobj-line'
+
+# [z] フォールディングをテキストオブジェクトにする
+[[plugins]]
+repo = 'kana/vim-textobj-fold'
+
+# [e] テキスト全体をテキストオブジェクトにする
+[[plugins]]
+repo = 'kana/vim-textobj-entire'
+
+# [d] 日付をテキストオブジェクトにする
+[[plugins]]
+repo = 'kana/vim-textobj-datetime'
+
+# [j] カッコをテキストオブジェクトにする
+[[plugins]]
+repo = 'kana/vim-textobj-jabraces'
+
+# [/][?] 最後の検索にマッチした箇所をテキストオブジェクトにする
+[[plugins]]
+repo = 'kana/vim-textobj-lastpat'
+
+# [f] 任意の文字で囲まれた範囲をテキストオブジェクトにする
+[[plugins]]
+repo = 'thinca/vim-textobj-between'
+
+# [c] コメントをテキストオブジェクトにする
+[[plugins]]
+repo = 'thinca/vim-textobj-comment'
+
+# [,]+w/b/e/ge スネークケースやキャメルケースをテキストオブジェクトにする
+[[plugins]]
+repo = 'h1mesuke/textobj-wiw'
+
+# [g] $/@/& などで始まる文字列（変数でよく使われれる）をテキストオブジェクトにする
+[[plugins]]
+repo = 'vimtaku/vim-textobj-sigil'
+
+# [f] 関数の中身をテキストオブジェクトにする
+[[plugins]]
+repo = 'kana/vim-textobj-function'
+
+# }}}
+
+[[plugins]]
+repo = 'banyan/recognize_charcode.vim'
+
+[[plugins]]
+repo = 'terryma/vim-expand-region'
+
+[[plugins]]
+repo = 'YankRing.vim'
+
+
+
+
+
+
+
+
+
+
+

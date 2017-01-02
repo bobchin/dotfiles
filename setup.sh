@@ -44,7 +44,7 @@ do
   [ -a ~/$i ] || ln -snfv ${DOTPATH}/$i ~/$i
 done
 
-vim -c ':NeoBundleInstall vimproc' -c ':q!' -c ':q!'
+# vim -c ':NeoBundleInstall vimproc' -c ':q!' -c ':q!'
 vim
 
 popd

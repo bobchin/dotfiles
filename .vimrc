@@ -7,379 +7,79 @@
 set encoding=utf-8
 scriptencoding utf-8
 
-" NeoBundle プラグインの指定 {{{
-
-" NeoBundle 起動設定 {{{
-" ---------------------------------------------------------------------
-" インストール
-"  $ mkdir -p ~/.vim/bundle
-"  $ git clone https://github.com/Shougo/neobundle.vim neobundle.vim
-"
-" Github から取得する場合
-" NeoBundle 'user_name/repository_name'
-"
-" vim-scriptsから取得する場合
-" スクリプト名一覧 http://vim-scripts.org/vim/scripts.html
-" NeoBundle 'script_name'
-"
-" 上記以外のgitリポジトリから取得する場合
-" NeoBundle 'git://repository_url'
-" ---------------------------------------------------------------------
-
 " vim-tiny か vim-small の場合は初期化しない
 if 0 | endif
 
-let s:bundle_dir = '~/.vim/bundle/'
-let s:neobundle_dir = s:bundle_dir . 'neobundle.vim/'
+" dein設定 {{{
 
 if has('vim_starting')
   if &compatible
     " vi との互換性をもたない
     set nocompatible
   endif
-
-  let &runtimepath .= ','.s:neobundle_dir
 endif
 
-let s:vundle_readme=expand(s:neobundle_dir . 'README.md')
-if !filereadable(s:vundle_readme)
-  echo "Installing NeoBundle...\n"
-  silent execute '!mkdir -p ' . s:bundle_dir
-  silent execute '!git clone https://github.com/Shougo/neobundle.vim ' . s:neobundle_dir
+" deinのパス設定
+let s:dein_dir = expand('~/.vim/dein/')
+let s:dein_repo_name = 'Shougo/dein.vim'
+let s:dein_repo_dir = s:dein_dir . 'repos/github.com/' . s:dein_repo_name
+let s:toml_file = expand('~/.dein.toml')
+let s:lazy_toml_file = expand('~/.dein_lazy.toml')
+
+" deinのインストール {{{
+if !isdirectory(s:dein_repo_dir)
+  echo "Installing dein...\n"
+  silent execute '!mkdir -p ' . s:dein_repo_dir
+  silent execute '!git clone https://github.com/' . s:dein_repo_name . ' ' . s:dein_repo_dir
 endif
 " }}}
+let &runtimepath .= ',' . s:dein_repo_dir
 
-"*****************************************************************************
-"" NeoBundle Install Packages
-"*****************************************************************************
+if dein#load_state(s:dein_dir)
 
-" ここから実際のプラグイン指定 {{{
+    call dein#begin(s:dein_dir, [$MYVIMRC, s:toml_file, s:lazy_toml_file])
+    if filereadable(s:toml_file)
+        call dein#load_toml(s:toml_file, {'lazy' : 0})
+    endif
+    if filereadable(s:lazy_toml_file)
+        call dein#load_toml(s:lazy_toml_file, {'lazy' : 1})
+    endif
 
-call neobundle#begin(expand('~/.vim/bundle/'))
+    call dein#end()
+    call dein#save_state()
 
-" NeoBundle 自身を NeoBundle で管理する {{{
-NeoBundleFetch 'Shougo/neobundle.vim'
+endif
+
+" vimprocのみ先にインストールする
+if dein#check_install(['vimproc'])
+    call dein#install(['vimproc'])
+endif
+if dein#check_install()
+    call dein#install()
+endif
+
 " }}}
+
+
+" 各プラグインの設定 {{{
 
 " <Leader> をスペースにする<Space>ではうまく動かない {{{
 let g:mapleader=' '
 " }}}
 
-" vimproc:vim から非同期実行 {{{
-NeoBundle 'Shougo/vimproc', { 
-\ 'build' : {
-\     'cygwin' : 'make -f make_cygwin.mak',
-\     'mac'    : 'make',
-\     'linux'  : 'make',
-\     'unix'   : 'gmake',
-\     },
-\ }
-" }}}
-
-" unite {{{
-" Unite vim bible 10-1
-NeoBundle 'Shougo/unite.vim', {
-\ 'depends': 'Shougo/neomru.vim',
-\ }
-NeoBundle 'thinca/vim-unite-history'
-NeoBundle 'Shougo/unite-help'
-NeoBundle 'tsukkee/unite-tag'
-NeoBundle 'osyo-manga/unite-quickfix'
-NeoBundle 'osyo-manga/unite-filetype'
-NeoBundle 'h1mesuke/vim-alignta'
-NeoBundle 'cohama/agit.vim'
-" }}}
-
-" vimfile {{{
-" vim のファイラー vim bible 2-2
-NeoBundle 'Shougo/vimfiler', {
-\ 'depends' : 'Shougo/unite.vim',
-\ 'mappings' : '<Plug>',
-\ 'explorer' : '^\h\w*:',
-\ }
-" }}}
-
-" vim shell {{{
-" vim でシェル vim bible 6-11
-NeoBundle 'Shougo/vimshell.vim', {
-\ 'mappings': '<Plug>',
-\ 'commands': [{
-\   'name': ['VimShell'],
-\   'complete': 'customlist,vimshell#complete'
-\ }],
-\ }
-" }}}
-
-" Help {{{
-NeoBundle 'vim-jp/vimdoc-ja'
-NeoBundle 'thinca/vim-ft-help_fold'
-" }}}
-
-" 辞書参照 {{{
-" <S-k>でカーソル上のキーワードを参照する vim bible 6-5
-NeoBundle 'thinca/vim-ref'
-NeoBundle 'mmisono/ref-dicts-en'
-NeoBundle 'mattn/excitetranslate-vim', {
-\ 'depends': 'mattn/webapi-vim',
-\ }
-
-NeoBundle 'taglist.vim'
-" }}}
-
-" 言語パック（言語毎のインデントとか構文のサポート） {{{
-NeoBundle 'sheerun/vim-polyglot'
-" }}}
-
-" quickrun {{{
-NeoBundle 'thinca/vim-quickrun', {
-\   'depends': 'Shougo/vimproc',
-\ }
-NeoBundle 'osyo-manga/shabadou.vim', {
-\   'depends': [
-\       'thinca/vim-quickrun',
-\       'Shougo/vimproc',
-\       'Shougo/unite.vim',
-\       'osyo-manga/unite-quickfix',
-\   ],
-\ }
-NeoBundle 'osyo-manga/vim-watchdogs', {
-\   'depends': [
-\       'thinca/vim-quickrun',
-\       'Shougo/vimproc',
-\       'osyo-manga/shabadou.vim',
-\       'cohama/vim-hier',
-\       'dannyob/quickfixstatus',
-\       'KazuakiM/vim-qfsigns',
-\       'KazuakiM/vim-qfstatusline',
-\   ],
-\ }
-" }}}
-
-" 見た目 {{{
-" ステータスラインをきれいに表示
-NeoBundle 'itchyny/lightline.vim', {
-\ 'depends': [
-\   'tpope/vim-fugitive',
-\   'osyo-manga/vim-anzu',
-\ ],
-\ }
-
-" colorscheme
-NeoBundle 'w0ng/vim-hybrid'
-
-" <LeVader>ig でインデントガイドのトグル vim bible 4-14
-NeoBundle 'nathanaelkane/vim-indent-guides'
-
-NeoBundle 't9md/vim-quickhl'
-" }}}
-
-" ウィンドウ操作 {{{
-NeoBundle "simeji/winresizer"
-" }}}
-
-" folding {{{
-NeoBundle 'LeafCage/foldCC.vim'
-" }}}
-
-" スニペット入力 {{{
-NeoBundle 'Shougo/neosnippet.vim', {
-\ 'depends': [
-\   'Shougo/neosnippet-snippets',
-\   'Shougo/context_filetype.vim',
-\ ],
-\}
-" }}}
-
-" 入力補完 {{{
-function! s:meet_neocomplete_requirements()
-  return has('lua') && (v:version > 703 || (v:version == 703 && has('patch885')))
-endfunction
-
-if s:meet_neocomplete_requirements()
-  NeoBundle 'Shougo/neocomplete.vim', {
-  \ 'depends': 'Shougo/context_filetype.vim',
-  \ }
-  NeoBundleFetch 'Shougo/neocomplcache.vim'
-else
-  NeoBundleFetch 'Shougo/neocomplete.vim'
-  NeoBundle 'Shougo/neocomplcache.vim'
-endif
-" }}}
-
-" 入力補助 {{{
-NeoBundle 'kana/vim-smartchr'
-NeoBundle 'cohama/lexima.vim'
-" }}}
-
-" カーソル移動 {{{
-" % コマンドによる移動を拡張 vim bible 4-10
-NeoBundle 'tmhedberg/matchit'
-
-" w での単語移動をスマートにする
-NeoBundle 'kana/vim-smartword'
-
-" ,w でキャメルケースやアンダーバー区切りで単語移動
-NeoBundle 'bkad/CamelCaseMotion'
-
-" }}}
-
-" 編集 {{{
-" gcc/<C-_><C-_> でコメントアウト vim bible 6-3
-NeoBundle 'tomtom/tcomment_vim'
-
-" true <=> false などをトグル。Insertモードでは<C-t>, それ以外では +
-" <C-t> でトグル用にしている。
-NeoBundle 'taku-o/vim-toggle'
-
-" Markdownでメモ
-NeoBundle 'rcmdnk/vim-markdown', {
-\ 'depends': 'godlygeek/tabular',
-\ }
-NeoBundle 'kannokanno/previm'
-
-" }}}
-
-" Git {{{
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'airblade/vim-gitgutter'
-" }}}
-
-" php {{{
-" CakePHP
-" NeoBundle 'violetyk/cake.vim'
-NeoBundle 'arnaud-lb/vim-php-namespace'
-" }}}
-
-" HTML {{{
-NeoBundle 'amirh/HTML-AutoCloseTag'
-NeoBundle 'hail2u/vim-css3-syntax'
-NeoBundle 'gorodinskiy/vim-coloresque'
-NeoBundle 'tpope/vim-haml'
-" <C-y>, で展開する vim bible 9-7
-" NeoBundle 'mattn/zencoding-vim'
-NeoBundle 'mattn/emmet-vim'
-" }}}
-
-" テキストオブジェクト {{{
-" ixxx, axxx xxxはテキストオブジェクトが入る。
-" 意味は i:inner a:a
-" aw iw             | 単語（iskeyword）
-" aW iW             | 単語（空白区切り）
-" as is             | 分（sentence）
-" ap ip             | 段落（paragraph）
-" a[ a] i[ i]       | [
-" a( a) i( i) ib    | (
-" a< a> i< i>       | <
-" at it             | Htmlタグ（tag）
-" a{ a} aB i{ i} iB | {
-" a" a' a` i" i' i` | " ' ``
-" 
-" テキストオブジェクトを囲んだりする vim bible 5-14
-" ys{motion}{surround}            : surround で囲む
-" ds{surround}                    : surround を削除する
-" cs{old-surround}{new-surround}  : surround を変更する
-NeoBundle 'tpope/vim-surround'
-
-" . で surround.vim の作業を繰り返す vim bible 5-16
-NeoBundle 'tpope/vim-repeat'
-
-" テキストオブジェクト vim bible 5-15
-" テキストオブジェクトを簡単に作成するためのコアモジュール
-NeoBundle 'kana/vim-textobj-user'
-
-" [i] インデントをテキストオブジェクトにする
-NeoBundle 'kana/vim-textobj-indent'
-
-" [y] syntax highlight されたものをテキストオブジェクトにする
-NeoBundle 'kana/vim-textobj-syntax'
-
-" [l] １行をテキストオブジェクトにする
-NeoBundle 'kana/vim-textobj-line'
-
-" [z] フォールディングをテキストオブジェクトにする
-NeoBundle 'kana/vim-textobj-fold'
-
-" [e] テキスト全体をテキストオブジェクトにする
-NeoBundle 'kana/vim-textobj-entire'
-
-" [d] 日付をテキストオブジェクトにする
-NeoBundle 'kana/vim-textobj-datetime'
-
-" [j] カッコをテキストオブジェクトにする
-NeoBundle 'kana/vim-textobj-jabraces'
-
-" [/][?] 最後の検索にマッチした箇所をテキストオブジェクトにする
-NeoBundle 'kana/vim-textobj-lastpat'
-
-" [f] 任意の文字で囲まれた範囲をテキストオブジェクトにする
-NeoBundle 'thinca/vim-textobj-between'
-
-" [c] コメントをテキストオブジェクトにする
-NeoBundle 'thinca/vim-textobj-comment'
-
-" [,]+w/b/e/ge スネークケースやキャメルケースをテキストオブジェクトにする
-NeoBundle 'h1mesuke/textobj-wiw'
-
-" [g] $/@/& などで始まる文字列（変数でよく使われれる）をテキストオブジェクトにする
-NeoBundle 'vimtaku/vim-textobj-sigil'
-
-" [f] 関数の中身をテキストオブジェクトにする
-NeoBundle 'kana/vim-textobj-function'
-
-" }}}
-
-" その他 {{{
-
-" gx でカーソルの文字をブラウザで検索 {{{
-NeoBundle 'tyru/open-browser.vim'
-" }}}
-
-" 文字コードの自動認識 {{{
-NeoBundle 'banyan/recognize_charcode.vim'
-" }}}
-
-" region {{{
-NeoBundle 'terryma/vim-expand-region'
-" }}}
-
-" coding {{{
-" trinity
-NeoBundle 'Source-Explorer-srcexpl.vim'
-NeoBundle 'trinity.vim'
-
-" }}}
-
-" ヤンクの履歴を保存し後から使用できるようにする vim bible 4-4 {{{
-NeoBundle "YankRing.vim"
-" }}}
-
-" }}} その他
-
-call neobundle#end()
-
-" ファイル別 plugin (~/.vim/ftplugin/拡張子.vim)
+" ファイル別 plugin (~/.vim/ftplugin/拡張子.vim) {{{
 filetype plugin indent on 
-
-" If there are uninstalled bundles found on startup,
-" this will convenientlly prompt you to install them.
-NeoBundleCheck
 " }}}
-
-" }}}
-
-
-" NeoBundle 各プラグインの設定 {{{
 
 " unite {{{
-if neobundle#tap('unite.vim')
-    function! neobundle#hooks.on_source(bundle)
-        call unite#custom#profile('default', 'context', {
-        \ 'auto_select': 0,
-        \ 'start_insert': 0,
-        \ })
-        
-        call unite#custom#action('file,cdable', 'agit', s:agit_action)
-    endfunction
+if dein#tap('unite.vim')
+    " function! dein#hooks.on_source(bundle)
+    "     call unite#custom#profile('default', 'context', {
+    "     \ 'auto_select': 0,
+    "     \ 'start_insert': 0,
+    "     \ })
+    "     
+    " endfunction
 
     augroup unite_my_settings
         autocmd!
@@ -394,17 +94,7 @@ if neobundle#tap('unite.vim')
         inoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
     endfunction
 
-    let s:agit_action = {}
-    function! s:agit_action.func(dir)
-        if isdirectory(a:dir.word)
-            let s:dir = fnamemodify(a:dir.word, ':p')
-        else
-            let s:dir = fnamemodify(a:dir.word, ':p:h')
-        endif
-        execute 'Agit --dir=' . s:dir
-    endfunction
-
-    call neobundle#untap()
+    " call dein#untap()
 endif
 
 " キーバインド
@@ -431,12 +121,12 @@ nnoremap <silent> [unite]l :<C-u>Unite alignta<CR>
 " }}}
 
 " vimfiler {{{
-if neobundle#tap('vimfiler.vim')
-    function! neobundle#hooks.on_source(bundle)
+if dein#tap('vimfiler.vim')
+    "function! dein#hooks.on_source(bundle)
         call vimfiler#custom#profile('default', 'context', {
         \ 'safe': 0,
         \ })
-    endfunction
+    "endfunction
 endif
 
 " vimfiler をデフォルトのファイラーにする
@@ -444,10 +134,6 @@ let g:vimfiler_as_default_explorer = 1
 
 nnoremap <silent> ff :<C-u>VimFilerBufferDir -quit<CR>
 nnoremap <silent> fi :<C-u>:VimFilerBufferDir -buffer-name=explorer -split -simple -winwidth=35 -no-quit<CR>
-" }}}
-
-" vimshell {{{
-nnoremap <Leader>sh :<C-u>VimShell<CR>
 " }}}
 
 " Help {{{
@@ -646,7 +332,7 @@ let g:lightline = {
 \   'right': [ ['lineinfo'], ['percent'], ['fileformat', 'fileencoding', 'filetype'] ],
 \ },
 \ 'component': {
-\   'lineinfo': "\ue0a1  %3l:%-2v",
+\   'lineinfo': "%3l:%-2v",
 \ },
 \ 'component_expand': {
 \   'qfstatusline': 'qfstatusline#Update',
@@ -665,21 +351,20 @@ let g:lightline = {
 \   'filetype'     : 'LightLineFiletype',
 \   'anzu'         : 'LightLineAnzu',
 \ },
-\ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
-\ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" },
+\ 'separator': { 'left': "", 'right': "" },
+\ 'subseparator': { 'left': "|", 'right': "|" },
 \ }
 
 " モード表示(表示幅が狭ければ表示しない)
 function! LightLineMode()
     return &ft == 'unite' ? 'Unite' :
         \ &ft == 'vimfiler' ? 'VimFiler' :
-        \ &ft == 'vimshell' ? 'VimShell' :
         \ winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 
 " 読み込み専用(読み込み専用であれば"x")
 function! LightLineReadonly()
-    return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? "\ue0a2" : ''
+    return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? "ReadOnly" : ''
 endfunction
 
 " ファイル名(前後に読み込み専用と変更状態を挿入する)
@@ -687,7 +372,6 @@ function! LightLineFilename()
     return ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
     \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
     \  &ft == 'unite' ? unite#get_status_string() :
-    \  &ft == 'vimshell' ? vimshell#get_status_string() :
     \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
     \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
 endfunction
@@ -702,7 +386,7 @@ function! LightLineFugitive()
     try
         if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head')
             let _ = fugitive#head()
-            return strlen(_) ? "\ue0a0" . _ : ''
+            return strlen(_) ? "Git: " . _ : ''
         endif
     catch
     endtry
@@ -834,153 +518,78 @@ smap <C-k> <Plug>(neosnippet_expand_or_jump)
 xmap <C-k> <Plug>(neosnippet_expand_target)
 " }}}
 
-" neocomplete/neocomplcache {{{
-if s:meet_neocomplete_requirements()
-    " neocomplete を使用する場合の設定
+" neocomplete {{{
+" neocomplete を使用する場合の設定
 
-    " 競合するのでAutoComplPopを無効化する
-    let g:acp_enableAtStartup = 0
+" 競合するのでAutoComplPopを無効化する
+let g:acp_enableAtStartup = 0
 
-    " 起動時にneocomplecacheを有効にする
-    let g:neocomplete#enable_at_startup = 1
+" 起動時にneocomplecacheを有効にする
+let g:neocomplete#enable_at_startup = 1
 
-    " 大文字が入力されるまで大文字小文字の区別を無視する
-    let g:neocomplete#enable_smart_case = 1
+" 大文字が入力されるまで大文字小文字の区別を無視する
+let g:neocomplete#enable_smart_case = 1
 
-    " シンタックスをキャッシュするときの最小文字数
-    let g:neocomplete#sources#syntax#min_keyword_length = 3
+" シンタックスをキャッシュするときの最小文字数
+let g:neocomplete#sources#syntax#min_keyword_length = 3
 
-    " neocomplete を自動的にロックするバッファ名のパターン
-    let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+" neocomplete を自動的にロックするバッファ名のパターン
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
-    " 辞書補完の辞書を指定。filetype:辞書ファイル名
-    let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ }
+" 辞書補完の辞書を指定。filetype:辞書ファイル名
+let g:neocomplete#sources#dictionary#dictionaries = {
+\ 'default' : '',
+\ }
 
-    " キーワードの定義
-    if !exists('g:neocomplete#keyword_patterns')
-      let g:neocomplete#keyword_patterns = {}
-    endif
-    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-    " キーマッピング
-    " <C-g>: UNDO
-    " <C-l>: 補完候補の共通部分までを補完する
-    " <C-y>: 補完を確定
-    " <C-e>: 補完のキャンセル
-    " <CR>: ポップアップを閉じてインデントを保存
-    " <TAB> で補完
-    " <C-h>, <BS>: ポップアップを閉じて<BS>
-    inoremap <expr><C-g> neocomplete#undo_completion()
-    inoremap <expr><C-l> neocomplete#complete_common_string()
-    inoremap <expr><C-y> neocomplete#close_popup()
-    inoremap <expr><C-e> neocomplete#cancel_popup()
-    inoremap <silent><CR> <C-r>=<SID>my_cr_function()<CR>
-    inoremap <expr><TAB>   pumvisible() ? "\<Down>" : "\<TAB>"
-    inoremap <expr><S-TAB> pumvisible() ? "\<UP>"   : "\<S-TAB>"
-    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><BS> neocomplete#smart_close_popup()."\<BS>"
-
-    function! s:my_cr_function()
-        " return (pumvisible() ? "\<C-y>" : "") . "\<CR>"
-        " For no inserting <CR> key.
-        return pumvisible() ? "\<C-y>" : "\<CR>"
-    endfunction
-
-    " オムニ補完を有効にする
-    augroup OmnicompleteSettings
-        autocmd!
-        autocmd FileType css           setlocal omnifunc=csscomplete#CompleteCSS
-        autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-        autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
-        autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
-    augroup END
-
-    " 重いオムニ補完を有効にする
-    if !exists('g:neocomplete#sources#omni#input_patterns')
-      let g:neocomplete#sources#omni#input#patterns = {}
-    endif
-
-else
-    " neocomplcacheを使用する場合の設定
-
-    " 競合するのでAutoComplPopを無効化する
-    let g:acp_enableAtStartup = 0
-    " 起動時にneocomplecacheを有効にする
-    let g:neocomplcache_enable_at_startup = 1
-    " 補完が自動的に開始される文字数
-    let g:neocomplcache_auto_completion_start_length = 3
-    " 大文字が入力されるまで大文字小文字の区別を無視する
-    let g:neocomplcache_enable_smart_case = 1
-    " Camel Case を有効にする。大文字を区切りとして補完する
-    let g:neocomplcache_enable_camel_case_completion = 1
-    " アンダーバー区切りとして補完する
-    let g:neocomplcache_enable_underbar_completion = 1
-    " シンタックスをキャッシュするときの最小文字数
-    let g:neocomplcache_min_syntax_length = 3
-    " neocomplcache を自動的にロックするバッファ名のパターン
-    let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
-    " 表示する候補の数
-    let g:neocomplcache_max_list = 20
-
-    " 辞書補完の辞書を指定。filetype:辞書ファイル名
-    let g:neocomplcache_dictionary_filetype_lists = {
-    \ 'default' : '',
-    \ }
-
-    " Define keyword.
-    if !exists('g:neocomplcache_keyword_patterns')
-      let g:neocomplcache_keyword_patterns = {}
-    endif
-    let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
-
-    " FileType毎のOmni補完を設定
-    augroup OmnicompleteSettings
-        autocmd!
-        autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
-        autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-        autocmd FileType css           setlocal omnifunc=csscomplete#CompleteCSS
-        autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
-    augroup END
-
-    " オムニ補完
-    if !exists('g:neocomplcache_omni_patterns')
-      let g:neocomplcache_omni_patterns = {}
-    endif
-
-    " キーマッピング
-    " UNDO
-    " 補完候補の共通部分までを補完する
-    " 補完を確定して閉じる
-    " 補完をキャンセルして閉じる
-    " <CR> 候補が出ていれば確定にする
-    " <TAB> で補完
-    " <C-h>, <BS>: close popup and delete backword char.
-    inoremap <expr><C-g> neocomplcache#undo_completion()
-    inoremap <expr><C-l> neocomplcache#complete_common_string()
-    inoremap <expr><C-y> neocomplcache#close_popup()
-    inoremap <expr><C-e> neocomplcache#cancel_popup()
-    inoremap <expr><CR> pumvisible() ? neocomplcache#close_popup() : "\<CR>"
-    inoremap <expr><TAB> pumvisible() ? "\<Down>" : "\<TAB>"
-    inoremap <expr><S-TAB> pumvisible() ? "\<UP>" : "\<S-TAB>"
-    inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-    inoremap <expr><BS> neocomplcache#smart_close_popup()."\<BS>"
+" キーワードの定義
+if !exists('g:neocomplete#keyword_patterns')
+  let g:neocomplete#keyword_patterns = {}
 endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" キーマッピング
+" <C-g>: UNDO
+" <C-l>: 補完候補の共通部分までを補完する
+" <C-y>: 補完を確定
+" <C-e>: 補完のキャンセル
+" <CR>: ポップアップを閉じてインデントを保存
+" <TAB> で補完
+" <C-h>, <BS>: ポップアップを閉じて<BS>
+inoremap <expr><C-g> neocomplete#undo_completion()
+inoremap <expr><C-l> neocomplete#complete_common_string()
+inoremap <expr><C-y> neocomplete#close_popup()
+inoremap <expr><C-e> neocomplete#cancel_popup()
+inoremap <silent><CR> <C-r>=<SID>my_cr_function()<CR>
+inoremap <expr><TAB>   pumvisible() ? "\<Down>" : "\<TAB>"
+inoremap <expr><S-TAB> pumvisible() ? "\<UP>"   : "\<S-TAB>"
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<BS>"
+
+function! s:my_cr_function()
+    " return (pumvisible() ? "\<C-y>" : "") . "\<CR>"
+    " For no inserting <CR> key.
+    return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+
+" オムニ補完を有効にする
+augroup OmnicompleteSettings
+    autocmd!
+    autocmd FileType css           setlocal omnifunc=csscomplete#CompleteCSS
+    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
+    autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
+augroup END
+
+" 重いオムニ補完を有効にする
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input#patterns = {}
+endif
+
+" neocomplete-php
+let g:neocomplete_php_locale = 'ja'
 " }}}
 
-" smartchr/lexima {{{
-" inoremap <expr>= smartchr#loop('=', '==', ' = ', ' == ', ' === ')
-" inoremap <expr>+ smartchr#loop('+', '++', ' + ')
-" inoremap <expr>- smartchr#loop('-', '--', ' - ')
-" inoremap <expr>/ smartchr#loop('/', '//', ' / ', '// ')
-" inoremap <expr>* smartchr#loop('*', ' * ')
-" inoremap <expr>% smartchr#loop('%', ' % ')
-" inoremap <expr>& smartchr#loop('&', '&&', ' & ', ' && ')
-" inoremap <expr><Bar> smartchr#loop('<Bar>', '<Bar><Bar>', ' <Bar> ', ' <Bar><Bar> ')
-" inoremap <expr>, smartchr#loop(',', ', ')
-"
+" lexima {{{
 let g:lexima_no_default_rules     = 0
 let g:lexima_enable_basic_rules   = 1
 let g:lexima_enable_newline_rules = 0
@@ -1033,17 +642,6 @@ nmap <C-t> <Plug>ToggleN
 vmap <C-t> <Plug>ToggleV
 "}}}
 
-" vim-markdown {{{
-let g:vim_markdown_folding_disabled=1
-" }}}
-
-" previm {{{
-augroup PrevimSettings
-  autocmd!
-  autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
-augroup END
-"}}}
-
 " emmet/Zencoding {{{
 " <C-y>,
 " let g:user_zen_settings = {
@@ -1064,12 +662,6 @@ let g:user_emmet_settings = {
 \ },
 \ }
 " }}}
-
-" open-browser {{{
-let g:netrw_nogx = 1
-nmap gx <Plug>(openbrowser-smart-search)
-vmap gx <Plug>(openbrowser-smart-search)
-"}}}
 
 " YankRing {{{
 let g:yankring_history_dir = expand('$HOME')
