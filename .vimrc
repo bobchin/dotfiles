@@ -20,17 +20,18 @@ if has('vim_starting')
 endif
 
 " deinのパス設定
-let s:dein_dir = expand('~/.vim/dein/')
+let s:dein_dir       = expand('~/.vim/dein/')
 let s:dein_repo_name = 'Shougo/dein.vim'
-let s:dein_repo_dir = s:dein_dir . 'repos/github.com/' . s:dein_repo_name
-let s:toml_file = expand('~/.dein.toml')
+let s:dein_repo_dir  = s:dein_dir . 'repos/github.com/' . s:dein_repo_name
+let s:dein_git_url   = 'https://github.com/' . s:dein_repo_name
+let s:toml_file      = expand('~/.dein.toml')
 let s:lazy_toml_file = expand('~/.dein_lazy.toml')
 
 " deinのインストール {{{
 if !isdirectory(s:dein_repo_dir)
   echo "Installing dein...\n"
   silent execute '!mkdir -p ' . s:dein_repo_dir
-  silent execute '!git clone https://github.com/' . s:dein_repo_name . ' ' . s:dein_repo_dir
+  silent execute '!git clone ' . s:dein_git_url . ' ' . s:dein_repo_dir
 endif
 " }}}
 let &runtimepath .= ',' . s:dein_repo_dir
