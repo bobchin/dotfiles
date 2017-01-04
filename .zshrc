@@ -347,6 +347,7 @@ case $(uname) in
 	    alias ls="gnuls"
 	    alias la="ls -lhAF --color=auto"
 	else
+        alias ls="ls -G"
 	    alias la="ls -lhAFG"
 	fi
 	alias ps="ps -fU$(whoami)"
@@ -454,10 +455,10 @@ esac
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
 # antigen
-[ -f ~/.zshrc.antigen ] && source ~/.zshrc.antigen
+# [ -f ~/.zshrc.antigen ] && source ~/.zshrc.antigen
 
 # zplug
-# [ -f ~/.zshrc.zplug ] && source ~/.zshrc.zplug
+[ -f ~/.zshrc.zplug ] && source ~/.zshrc.zplug
 
 
 

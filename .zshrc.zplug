@@ -1,0 +1,54 @@
+ZPLUG_PATH="$HOME/.zplug/repos/zplug/zplug"
+
+# 未インストールの場合はインストールする
+if ! [ -d $ZPLUG_PATH ]; then
+    git clone https://github.com/zplug/zplug.git $ZPLUG_PATH
+    [[ -f $ZPLUG_PATH ]] || return
+fi
+
+source $ZPLUG_PATH/init.zsh
+
+# プラグインの定義 {{{
+# zplug "username/reponame", tag:value, tag:value, ...
+
+# from zsh-users
+zplug "zsh-users/zsh-completions"
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-history-substring-search"
+
+# from oh-my-zsh
+# zplug "plugins/ruby",   from:oh-my-zsh
+# zplug "plugins/rbenv",  from:oh-my-zsh
+# zplug "plugins/tmux",   from:oh-my-zsh
+# zplug "plugins/yum",    from:oh-my-zsh
+zplug "plugins/golang",  from:oh-my-zsh
+zplug "lib/directories", from:oh-my-zsh
+zplug "themes/dpoggi",   from:oh-my-zsh, as:theme
+
+# from others
+zplug "zplug/zplug"
+# }}}
+
+# インストール {{{
+# 未インストールのものがあればインストールするかどうか聞く
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    else
+        echo
+    fi
+fi
+# }}}
+
+# プラグインをロードしてパスを通す
+zplug load --verbose
+
+# コマンドをインストールしたときのためにパスを通しておく
+export PATH=$ZPLUG_HOME/bin:$PATH
+
+# プラグイン設定
+if zplug check zsh-users/zsh-history-substring-search; then
+    bindkey '^[[A' history-substring-search-up
+    bindkey '^[[B' history-substring-search-down
+fi
