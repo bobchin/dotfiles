@@ -117,7 +117,7 @@ repo = 'mattn/webapi-vim'
 repo = 'mattn/excitetranslate-vim'
 
 [[plugins]]
-repo = 'taglist.vim'
+repo = 'vim-scripts/taglist.vim'
 hook_add = '''
     if (executable('/usr/bin/ctags'))
       let g:Tlist_Ctags_Cmd = '/usr/bin/ctags'
@@ -672,7 +672,7 @@ hook_add = '''
 '''
 
 [[plugins]]
-repo = 'YankRing.vim'
+repo = 'vim-scripts/YankRing.vim'
 hook_add = '''
     let g:yankring_history_dir = expand('$HOME')
     let g:yankring_history_file = '.yankring_history'
